@@ -1,4 +1,4 @@
-package main
+package gpio
 
 import (
 	"fmt"
@@ -11,7 +11,12 @@ var (
 	pin = rpio.Pin(14)
 )
 
-func main() {
+/*
+
+	return - 0 if counter has not been met
+					 1 if counter has been met
+*/
+func pour() {
 	if err := rpio.Open(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -25,7 +30,7 @@ func main() {
 
 	fmt.Println("Start Pourin")
 	i := 0
-	for {
+	for i < 468 {
 		if pin.EdgeDetected() {
 			i++
 			fmt.Println(i)
