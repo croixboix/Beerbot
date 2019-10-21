@@ -48,7 +48,7 @@ func Taggle() {
 
 	time.Sleep(time.Second / 5)
 
-	
+
 
 	pin.Low()
 
@@ -56,16 +56,12 @@ func Taggle() {
 
 	time.Sleep(time.Second / 5)
 
-	
+
 
 	pin.Toggle()
 
-	
+
 
 	time.Sleep(time.Second / 5)
-
-	
-
-
 
 }
