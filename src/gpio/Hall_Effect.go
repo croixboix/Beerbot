@@ -1,41 +1,30 @@
 package gpio
 
-import (
+import(
 	"fmt"
 	"os"
-
+	"time"
 	"github.com/stianeikeland/go-rpio"
 )
-
 var (
-	pin = rpio.Pin(14)
+	pinRead = rpio.Pin(2)
 )
-
-/*
-
-	return - 0 if counter has not been met
-					 1 if counter has been met
-*/
-func pour() {
+func Pour() {
 	if err := rpio.Open(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
 	defer rpio.Close()
-
-	pin.Input()
-	pin.PullUp()
-	pin.Detect(rpio.FallEdge)
-
+	pinRead.Input()
+	pinRead.PullUp()
+	pinRead.Detect(rpio.FallEdge)
 	fmt.Println("Start Pourin")
 	i := 0
 	for i < 468 {
-		if pin.EdgeDetected() {
+		if pinRead.EdgeDetected() {
 			i++
 			fmt.Println(i)
-
-		}
+		}	}
+		//pinRead.Detect(rpio.NoEdge)
+		time.Sleep(time.Second / 5)
 	}
-	pin.Detect(rpio.NoEdge)
-}
