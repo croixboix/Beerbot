@@ -18,7 +18,7 @@ import(
 
 var (
 
-	pin = rpio.Pin(1)
+	pin = rpio.Pin(2)
 
 )
 
