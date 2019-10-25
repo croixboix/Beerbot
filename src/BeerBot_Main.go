@@ -10,8 +10,22 @@ var (
 
 )
 
+// TODO:
+// NOTE: Make sure you have disabled I2C interface in sudo raspi-config - I
+// think it might be enabled by default which might cause your pin 2 to be
+// changed from input mode to I2C.
+// SEE: https://github.com/stianeikeland/go-rpio/issues/35
+// Add dtoverlay=gpio-no-irq to /boot/config.txt and restart your pi
+//  This disables IRQ which may break some other GPIO libs/drivers
 
 func main() {
+
+  //Initialize GPIO pins
+  GPIO_INIT()
+  fmt.Println("GPIO Initialized!")
+
+  //Close GPIO once program ends
+  rpio.Close()
 
   //Solenoid normal state = closed
   //Open solenoid
@@ -24,7 +38,14 @@ func main() {
 
   fmt.Println("Closing solenoid")
   gpio.Taggle()
-  
-  time.Sleep(time.Second / 5)
+
+
+  //Give the Pi some time to catch up, remove this eventually just for debugging
+  time.Sleep(time.Second)
+
+  //Close GPIO/clear GPIO memory
+  rpio.Close()
+
+
 
 }
