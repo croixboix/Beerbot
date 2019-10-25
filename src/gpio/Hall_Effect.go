@@ -20,7 +20,7 @@ func Pour() {
 	//pinRead.Input()
 	//pinRead.PullUp()
 
-
+	//Enable edge detection
 	pinRead.Detect(rpio.FallEdge)
 
 	//TEST DELAY, remove eventually!
@@ -33,6 +33,8 @@ func Pour() {
 			i++
 			fmt.Println(i)
 		}	}
-		//pinRead.Detect(rpio.NoEdge)
+
+		//Disable edge detection
+		pinRead.Detect(rpio.NoEdge)
 		time.Sleep(time.Second / 10)
 	}
