@@ -25,9 +25,6 @@ func main() {
   gpio.GPIO_INIT()
   fmt.Println("GPIO Initialized!")
 
-  //Close GPIO once program ends
-  rpio.Close()
-
   //Solenoid normal state = closed
   //Open solenoid
   gpio.Taggle()
