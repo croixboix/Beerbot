@@ -4,9 +4,9 @@ package gpio
 
 import(
 
-	"fmt"
+	//"fmt"
 
-	"os"
+	//"os"
 
 	"time"
 

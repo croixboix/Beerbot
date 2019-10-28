@@ -2,7 +2,7 @@ package gpio
 
 import(
 	"fmt"
-	"os"
+	//"os"
 	"time"
 	"github.com/stianeikeland/go-rpio"
 )

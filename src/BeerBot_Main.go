@@ -4,6 +4,7 @@ import(
   "fmt"
   gpio "./gpio/"
   "time"
+  "github.com/stianeikeland/go-rpio"
 )
 
 var (
@@ -21,7 +22,7 @@ var (
 func main() {
 
   //Initialize GPIO pins
-  GPIO_INIT()
+  gpio.GPIO_INIT()
   fmt.Println("GPIO Initialized!")
 
   //Close GPIO once program ends
