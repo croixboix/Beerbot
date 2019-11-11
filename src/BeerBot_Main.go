@@ -32,9 +32,11 @@ func main() {
   gpio.Taggle()
   fmt.Println("Solenoid opened")
 
- fmt.Println("Begin measuring flow (12oz cutoff)")
+  fmt.Println("Begin measuring flow (12oz cutoff)")
   gpio.Pour()
- fmt.Println("Pour limit reached! (12oz)")
+  fmt.Println("Pour limit reached! (12oz)")
+
+//  time.Sleep(time.Second)
 
   fmt.Println("Closing solenoid")
   gpio.Taggle()
