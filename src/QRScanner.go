@@ -100,14 +100,15 @@ func main() {
     Processed bool `json:"processed"`
   }
 
+  //Code scanned by Scanner HERE
   var user string = "test"
 
   fmt.Println("Verify Order")
 
-  var verifyResponse []byte = verifyOrder(user)
+  var verifyResp []byte = verifyOrder(user)
   var verifyData verifyResponse
 
-  err := json.Unmarshal(verifyResponse, &verifyData)
+  err := json.Unmarshal(verifyResp, &verifyData)
   if err != nil {
         fmt.Println("error:", err)
     }
@@ -137,7 +138,7 @@ func main() {
     fmt.Println("processed: ", processData.Processed)
 
     if(processData.Processed == true){
-      //Call pour
+      //Call pour!
       fmt.Println("ORDER PROCESSED, LET USER POUR")
     } else{
       fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
