@@ -104,10 +104,10 @@ func main() {
 
   fmt.Println("Verify Order")
 
-  var response []byte = verifyOrder(user)
+  var verifyResponse []byte = verifyOrder(user)
   var verifyData verifyResponse
 
-  err := json.Unmarshal(response, &verifyData)
+  err := json.Unmarshal(verifyResponse, &verifyData)
   if err != nil {
         fmt.Println("error:", err)
     }
