@@ -3,8 +3,8 @@ package main
 import(
   "fmt"
   "encoding/json"
-  //"bufio"
-  //"os"
+  "bufio"
+  "os"
   "strings"
   "net/http"
   "io/ioutil"
@@ -85,6 +85,25 @@ func processOrder(uname string) []byte{
   return body
 }
 
+func scanCode() string{
+  var userCode string
+
+  scanner := bufio.NewScanner(os.Stdin)
+
+  for scanner.Scan() {
+    fmt.Println("Scanned barcode: ", scanner.Text())
+    userCode = scanner.Text()
+    if scanner.Text() != "" {
+      break
+    }
+  }
+  if err := scanner.Err(); err != nil {
+    fmt.Fprintln(os.Stderr, "reading standard input:", err)
+  }
+
+  return userCode;
+}
+
 
 func main() {
 
@@ -100,9 +119,14 @@ func main() {
     Processed bool `json:"processed"`
   }
 
-  //Code scanned by Scanner HERE
-  var user string = "test"
+  //var user string = "test"
+  var user string
 
+  //Scan the Bar/QR Code
+  fmt.Println("Scan Barcode Now!")
+  user = scanCode()
+
+  //Verify and process the order!
   fmt.Println("Verify Order")
 
   var verifyResp []byte = verifyOrder(user)
@@ -144,25 +168,4 @@ func main() {
       fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
     }
   }
-
-
-
-
-  /*
-  scanner := bufio.NewScanner(os.Stdin)
-
-  for scanner.Scan() {
-    fmt.Println("Scanned barcode: ", scanner.Text())
-	if scanner.Text() == string(orders) {
-		fmt.Println("QR CODE MATCH!")
-		break
-	}
-  }
-
-  if err := scanner.Err(); err != nil {
-    fmt.Fprintln(os.Stderr, "reading standard input:", err)
-  }
-  */
-
-
 }
