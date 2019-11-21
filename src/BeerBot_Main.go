@@ -192,6 +192,7 @@ func main() {
 
 		if processData.Processed == true {
 			//Call pour!
+			togglePour()
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
 		} else {
 			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
