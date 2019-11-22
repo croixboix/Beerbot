@@ -1,21 +1,21 @@
 package gpio
 
-import(
+import (
 	"fmt"
+	"github.com/stianeikeland/go-rpio"
 	"os"
 	"time"
-	"github.com/stianeikeland/go-rpio"
-)
-var (
-	pinFlowSensor = rpio.Pin(23)
-  pinSolenoid = rpio.Pin(24)
 )
 
+var (
+	pinFlowSensor = rpio.Pin(23)
+	pinSolenoid   = rpio.Pin(24)
+)
 
 func GPIO_INIT() {
 
-  //Enable/Open GPIO
-  if err := rpio.Open(); err != nil {
+	//Enable/Open GPIO
+	if err := rpio.Open(); err != nil {
 
 		fmt.Println(err)
 
@@ -23,16 +23,15 @@ func GPIO_INIT() {
 
 	}
 
-  time.Sleep(time.Second / 5)
+	time.Sleep(time.Second / 5)
 
-    //Configure Flow Sensor GPIO pin for input and PullUp
-    pinFlowSensor.Input()
-  	pinFlowSensor.PullUp()
-		//ALSO TRY pinFlowSensor.PullDown() if having issues!
+	//Configure Flow Sensor GPIO pin for input and PullUp
+	pinFlowSensor.Input()
+	pinFlowSensor.PullUp()
+	//ALSO TRY pinFlowSensor.PullDown() if having issues!
 
-		//Configure solenoid GPIO pin for output and set LOW to start
-    pinSolenoid.Output()
-		pinSolenoid.Low()
+	//Configure solenoid GPIO pin for output and set LOW to start
+	pinSolenoid.Output()
+	pinSolenoid.Low()
 
-
-	}
+}

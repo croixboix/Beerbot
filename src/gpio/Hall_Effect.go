@@ -1,14 +1,16 @@
 package gpio
 
-import(
+import (
 	"fmt"
 	//"os"
-	"time"
 	"github.com/stianeikeland/go-rpio"
+	"time"
 )
+
 var (
 	pinRead = rpio.Pin(23)
 )
+
 func Pour() {
 
 	/*if err := rpio.Open(); err != nil {
@@ -28,13 +30,14 @@ func Pour() {
 
 	fmt.Println("Start Pourin")
 	i := 0
-	for i < 468 {
+	for i < 234 {
 		if pinRead.EdgeDetected() {
 			i++
 			fmt.Println(i)
-		}	}
-
-		//Disable edge detection
-		pinRead.Detect(rpio.NoEdge)
-		time.Sleep(time.Second / 10)
+		}
 	}
+
+	//Disable edge detection
+	pinRead.Detect(rpio.NoEdge)
+	time.Sleep(time.Second / 10)
+}

@@ -191,6 +191,7 @@ func main() {
 		fmt.Println("processed: ", processData.Processed)
 
 		if processData.Processed == true {
+			//Let user pour the drink!
 			//Call pour!
 			togglePour()
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
@@ -201,7 +202,7 @@ func main() {
 
 	//Give the Pi some time to catch up, remove this eventually just for debugging
 	time.Sleep(time.Second)
-  //Close GPIO/clear GPIO memory
+	//Close GPIO/clear GPIO memory
 	rpio.Close()
 
 }
