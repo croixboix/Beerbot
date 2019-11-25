@@ -154,7 +154,8 @@ func main() {
 
 	//Scan the Bar/QR Code
 	fmt.Println("Scan Barcode Now!")
-	user = scanCode()
+	//user = scanCode()
+	user = "test"
 
 	//Verify and process the order!
 	fmt.Println("Verify Order")
