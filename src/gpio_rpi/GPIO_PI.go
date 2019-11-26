@@ -16,13 +16,14 @@ var (
 func GPIO_INIT() {
 
 	//Enable/Open GPIO
-	if err := gpio.Open(); err != nil {
+	/*if err := gpio.Open(); err != nil {
 
 		fmt.Println(err)
 
 		os.Exit(1)
 
-	}
+	}*/
+	err := gpio.Open()
 
 	time.Sleep(time.Second / 10)
 
