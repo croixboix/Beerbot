@@ -24,7 +24,7 @@ func GPIO_INIT() {
 
 	}
 
-	//time.Sleep(time.Second / 10)
+	time.Sleep(time.Second / 10)
 
 	//Configure Flow Sensor GPIO pin for input and PullUp
 	pinFlowSensor1.Input()
@@ -37,8 +37,8 @@ func GPIO_INIT() {
 
 }
 
-func Flow1CounterIncrement(*Pin) {
-	// handle change in pin value
+func handleFlowEdge(pin *gpio.Pin) {
+	// handle falling edge flow sensor
 	flow1Counter++
 	fmt.Println(flow1Counter)
 }
@@ -51,14 +51,14 @@ func Pour() {
 	flow1Counter = 0
 
 	//Enable wacher
-	pinFlowSensor1.Watch(gpio.EdgeFalling, Flow1CounterIncrement())
+	pinFlowSensor1.Watch(gpio.EdgeFalling, handleFlowEdge)
 
 	//TEST DELAY, remove eventually!
 	//time.Sleep(time.Second / 10)
 
 	fmt.Println("Start Pourin")
 	for flow1Counter < 234 {
-		time.Sleep()
+		time.Sleep(time.Second)
 	}
 
 	//Disable edge detection

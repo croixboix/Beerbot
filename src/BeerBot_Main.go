@@ -1,7 +1,7 @@
 package main
 
 import (
-	gpio_rpi "./gpio_rpi/"
+	gpio_rpi "gpio_rpi"
 	"bufio"
 	"encoding/json"
 	"fmt"
@@ -116,7 +116,7 @@ func scanCode() string {
 func togglePour() {
 	//Solenoid normal state = closed
 	//Open solenoid
-	gpio_rpi.Taggle()
+	gpio_rpi.Toggle()
 	fmt.Println("Solenoid opened")
 
 	fmt.Println("Begin measuring flow (12oz cutoff)")
@@ -126,7 +126,7 @@ func togglePour() {
 	//  time.Sleep(time.Second)
 
 	fmt.Println("Closing solenoid")
-	gpio_rpi.Taggle()
+	gpio_rpi.Toggle()
 }
 
 func main() {

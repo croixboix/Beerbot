@@ -1,0 +1,7 @@
+go build -gcflags=all="-N -l" BeerBot_Main.go
+
+source /usr/local/go/src/runtime/runtime-gdb.py
+
+gdb BeerBot_Main 
+run
+bt
