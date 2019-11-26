@@ -1,16 +1,16 @@
 package main
 
 import (
-	gpio_rpi "./gpio_rpi/"
+	gpio "./gpio/"
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/warthog618/gpio"
+	"github.com/stianeikeland/go-rpio"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
-	//"time"
+	"time"
 )
 
 var ()
@@ -116,17 +116,17 @@ func scanCode() string {
 func togglePour() {
 	//Solenoid normal state = closed
 	//Open solenoid
-	gpio_rpi.Taggle()
+	gpio.Taggle()
 	fmt.Println("Solenoid opened")
 
 	fmt.Println("Begin measuring flow (12oz cutoff)")
-	gpio_rpi.Pour()
+	gpio.Pour()
 	fmt.Println("Pour limit reached! (12oz)")
 
 	//  time.Sleep(time.Second)
 
 	fmt.Println("Closing solenoid")
-	gpio_rpi.Taggle()
+	gpio.Taggle()
 }
 
 func main() {
@@ -147,8 +147,10 @@ func main() {
 	var user string
 
 	//Initialize GPIO pins
-	gpio_rpi.GPIO_INIT()
+	gpio.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
+
+	time.Sleep(time.Second)
 
 	//Scan the Bar/QR Code
 	fmt.Println("Scan Barcode Now!")
@@ -200,9 +202,8 @@ func main() {
 	}
 
 	//Give the Pi some time to catch up, remove this eventually just for debugging
-	//time.Sleep(time.Second)
-
-	//Close GPIO/clear GPIO memory at end of program
-	gpio.Close()
+	time.Sleep(time.Second)
+	//Close GPIO/clear GPIO memory
+	rpio.Close()
 
 }
