@@ -13,7 +13,16 @@ import (
 	//"time"
 )
 
-var ()
+var (
+	user string
+	size int = 0
+	tap int = 0
+)
+
+const (
+	sizeSixOunce int = 234
+	sizeTwelveOunce int = 468
+)
 
 // TODO:
 // NOTE: Make sure you have disabled I2C interface in sudo raspi-config - I
@@ -113,23 +122,20 @@ func scanCode() string {
 	return userCode
 }
 
-func togglePour() {
+func togglePour(size int, tap int) {
 	//Solenoid normal state = closed
-	//Open solenoid
-	gpio_rpi.Toggle()
-	fmt.Println("Solenoid opened")
 
-	fmt.Println("Begin measuring flow (12oz cutoff)")
-	gpio_rpi.Pour()
-	fmt.Println("Pour limit reached! (12oz)")
+	fmt.Printf("Begin measuring flow for %d on tap %d\n", size, tap)
+	gpio_rpi.Pour(size, tap)
+	fmt.Println("Pour limit reached!")
 
-	//  time.Sleep(time.Second)
-
-	fmt.Println("Closing solenoid")
-	gpio_rpi.Toggle()
 }
 
 func main() {
+
+	//Initialize GPIO pins
+	gpio_rpi.GPIO_INIT()
+	fmt.Println("GPIO Initialized!")
 
 	type verifyResponse struct {
 		ID        int    `json:"id"`
@@ -143,17 +149,15 @@ func main() {
 		Processed bool `json:"processed"`
 	}
 
-	//var user string = "test"
-	var user string
-
-	//Initialize GPIO pins
-	gpio_rpi.GPIO_INIT()
-	fmt.Println("GPIO Initialized!")
 
 	//Scan the Bar/QR Code
 	fmt.Println("Scan Barcode Now!")
 	//user = scanCode()
+
+	//TEST VALUES HERE
 	user = "test"
+	size = sizeSixOunce
+	tap = 1
 
 	//Verify and process the order!
 	fmt.Println("Verify Order")
@@ -192,15 +196,12 @@ func main() {
 		if processData.Processed == true {
 			//Let user pour the drink!
 			//Call pour!
-			togglePour()
+			togglePour(size, tap)
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
 		} else {
 			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
 		}
 	}
-
-	//Give the Pi some time to catch up, remove this eventually just for debugging
-	//time.Sleep(time.Second)
 
 	//Close GPIO/clear GPIO memory at end of program
 	gpio.Close()
