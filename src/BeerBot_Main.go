@@ -14,16 +14,20 @@ import (
 )
 
 const (
+	//Constants for drink size integers for flow sensor
 	sizeSixOunce     int = 234
 	sizeTwelveOunce  int = 468
 	sizeSixteenOunce int = 624
+
+	//Define number of taps on system
+	numberOfTaps int = 8
 )
 
 var (
-	user string
-	//drinkSize int
-	tap int
-	tapSize = [8]int{}
+//user string
+//drinkSize int
+//tap int
+//tapSize = [numberOfTaps]int{}
 )
 
 // TODO:
@@ -124,13 +128,31 @@ func scanCode() string {
 	return userCode
 }
 
-func togglePour(drinkSize int, tap int) {
+func togglePour(customerOrder Order) {
 	//Solenoid normal state = closed
+	for i := 0; i < numberOfTaps; i++ {
+		fmt.Printf("Begin measuring flow for user: %s on tap: %d of size: %d", customerOrder.user, i+1, customerOrder.tap[i])
+		go gpio_rpi.Pour(drinkSize, tap)
+		fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d", customerOrder.user, i+1, customerOrder.tap[i])
+	}
+}
 
-	fmt.Printf("Begin measuring flow for %d on tap %d\n", drinkSize, tap)
-	gpio_rpi.Pour(drinkSize, tap)
-	fmt.Println("Pour limit reached!")
-
+//Create a new order
+func newOrder(user string, tap []int) *customerOrder {
+	fmt.Println("Begin new order")
+	o := Order{user: user}
+	fmt.Printf("Username: %s\n", o.user)
+	for i := 0; i < numberOfTaps; i++ {
+		o.tap[i] = tap[i]
+		i++
+		fmt.Printf("Tap # %d value(drink size) is %d\n", i, o.tap[i])
+	}
+	/*for i := 0; i < numberOfTaps; i++ {
+		o.drinkSize[i] = drinksize[i]
+		i++
+		fmt.Printf("Drinksize on tap %d value is %d\n", i, o.drinkSize[i])
+	}*/
+	return &o
 }
 
 func main() {
@@ -151,19 +173,33 @@ func main() {
 		Processed bool `json:"processed"`
 	}
 
-	//Scan the Bar/QR Code
-	fmt.Println("Scan Barcode Now!")
-	//user = scanCode()
+	type Order struct {
+		//User's username
+		user string
+		//Tap(s) to pour on with array value being drink size
+		tap []int
+		//Size of drink(s) for corresponding tap(s)
+		//drinkSize []int
+	}
 
-	//TEST VALUES HERE
-	user = "test"
-	tap = 8;
-	tapSize[tap-1] = sizeSixOunce
+	//Scan the Bar/QR Code
+	/*
+		fmt.Println("Scan Barcode Now!")
+		user = scanCode()
+	*/
+
+	//TEST VALUES HERE~~~~~~~~~~~~~~~
+	var user string = "test"
+	//tap = numberOfTaps
+	//tapSize[tap-1] = sizeSixOunce*/
+	//func newOrder(user string, tap []int, drinkSize []int)
+	var testTapOrder = [numberOfTaps]int{0, sizeSixOunce, 0, 0, 0, 0, sizeTwelveOunce, sizeSixteenOunce}
+	testOrder := newOrder(user, testTapOrder)
 
 	//Verify and process the order!
 	fmt.Println("Verify Order")
 
-	var verifyResp []byte = verifyOrder(user)
+	var verifyResp []byte = verifyOrder(testOrder.user)
 	var verifyData verifyResponse
 
 	err := json.Unmarshal(verifyResp, &verifyData)
@@ -197,7 +233,8 @@ func main() {
 		if processData.Processed == true {
 			//Let user pour the drink!
 			//Call pour!
-			togglePour(tapSize[tap-1], tap)
+			//togglePour(drinkSize[tap-1], tap)
+			togglePour(testOrder)
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
 		} else {
 			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")

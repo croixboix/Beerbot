@@ -25,7 +25,7 @@ var (
 	pinSolenoid7   *gpio.Pin
 	pinFlowSensor8 *gpio.Pin
 	pinSolenoid8   *gpio.Pin
-	flowCounter int = 0
+	flowCounter    int = 0
 )
 
 func GPIO_INIT() {
