@@ -22,6 +22,7 @@ const (
 var (
 	user string
 	//drinkSize int
+	tap int
 	tapSize = [8]int{}
 )
 
