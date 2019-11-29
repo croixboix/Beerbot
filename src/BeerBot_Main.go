@@ -156,7 +156,7 @@ func main() {
 	//TEST VALUES HERE
 	user = "test"
 	size = sizeSixOunce
-	tap = 1
+	tap = 8
 
 	//Verify and process the order!
 	fmt.Println("Verify Order")

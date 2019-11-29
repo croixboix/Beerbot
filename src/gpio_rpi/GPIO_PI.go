@@ -109,13 +109,13 @@ func handleFlowEdge(pin *gpio.Pin) {
 	flow6Counter++
 	flow7Counter++
 	flow8Counter++
-	fmt.Println(flow1Counter)
+	/*fmt.Println(flow1Counter)
 	fmt.Println(flow2Counter)
 	fmt.Println(flow3Counter)
 	fmt.Println(flow4Counter)
 	fmt.Println(flow5Counter)
 	fmt.Println(flow6Counter)
-	fmt.Println(flow7Counter)
+	fmt.Println(flow7Counter)*/
 	fmt.Println(flow8Counter)
 }
 
