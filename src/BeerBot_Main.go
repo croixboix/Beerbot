@@ -149,7 +149,6 @@ func main() {
 		Processed bool `json:"processed"`
 	}
 
-
 	//Scan the Bar/QR Code
 	fmt.Println("Scan Barcode Now!")
 	//user = scanCode()
