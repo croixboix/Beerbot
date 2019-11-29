@@ -8,15 +8,7 @@ import (
 )
 
 var (
-	flow1Counter int = 0
-	flow2Counter int = 0
-	flow3Counter int = 0
-	flow4Counter int = 0
-	flow5Counter int = 0
-	flow6Counter int = 0
-	flow7Counter int = 0
-	flow8Counter int = 0
-
+	//Need to eventually create a struct for all these
 	pinFlowSensor1 *gpio.Pin
 	pinSolenoid1   *gpio.Pin
 	pinFlowSensor2 *gpio.Pin
@@ -33,6 +25,7 @@ var (
 	pinSolenoid7   *gpio.Pin
 	pinFlowSensor8 *gpio.Pin
 	pinSolenoid8   *gpio.Pin
+	flowCounter int = 0
 )
 
 func GPIO_INIT() {
@@ -63,6 +56,7 @@ func GPIO_INIT() {
 
 	//Configure Flow Sensor GPIO pin for input and PullUp
 	//ALSO TRY pinFlowSensor.PullDown() if having issues!
+	//Need to rewrite this to use structs and a loop to set these values
 	pinFlowSensor1.Input()
 	pinFlowSensor1.PullUp()
 	pinFlowSensor2.Input()
@@ -81,6 +75,7 @@ func GPIO_INIT() {
 	pinFlowSensor8.PullUp()
 
 	//Configure solenoid GPIO pin for output and set LOW to start
+	//Need to rewrite this to use structs and a loop to set these values
 	pinSolenoid1.Output()
 	pinSolenoid1.High()
 	pinSolenoid2.Output()
@@ -101,35 +96,13 @@ func GPIO_INIT() {
 
 func handleFlowEdge(pin *gpio.Pin) {
 	// handle falling edge flow sensor
-	flow1Counter++
-	flow2Counter++
-	flow3Counter++
-	flow4Counter++
-	flow5Counter++
-	flow6Counter++
-	flow7Counter++
-	flow8Counter++
-	/*fmt.Println(flow1Counter)
-	fmt.Println(flow2Counter)
-	fmt.Println(flow3Counter)
-	fmt.Println(flow4Counter)
-	fmt.Println(flow5Counter)
-	fmt.Println(flow6Counter)
-	fmt.Println(flow7Counter)*/
-	fmt.Println(flow8Counter)
+	flowCounter++
+	fmt.Println(flowCounter)
 }
 
 func Pour(size int, tap int) {
-	//Reset flow counters
-	flow1Counter = 0
-	flow2Counter = 0
-	flow3Counter = 0
-	flow4Counter = 0
-	flow5Counter = 0
-	flow6Counter = 0
-	flow7Counter = 0
-	flow8Counter = 0
-
+	//Reset flow counter for this tap
+	flowCounter = 0
 	//Open selected tap and meter flow
 	fmt.Println("Start Pourin")
 	switch tap {
@@ -139,7 +112,7 @@ func Pour(size int, tap int) {
 		//Open solenoid
 		pinSolenoid1.Low()
 		//Count number of ticks from flow sensor
-		for flow1Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		//Disable flow sensor watcher
@@ -147,49 +120,49 @@ func Pour(size int, tap int) {
 	case 2:
 		pinFlowSensor2.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid2.Low()
-		for flow2Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor2.Unwatch()
 	case 3:
 		pinFlowSensor3.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid3.Low()
-		for flow2Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor3.Unwatch()
 	case 4:
 		pinFlowSensor4.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid4.Low()
-		for flow2Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor4.Unwatch()
 	case 5:
 		pinFlowSensor5.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid5.Low()
-		for flow2Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor5.Unwatch()
 	case 6:
 		pinFlowSensor6.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid6.Low()
-		for flow2Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor6.Unwatch()
 	case 7:
 		pinFlowSensor7.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid7.Low()
-		for flow2Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor7.Unwatch()
 	case 8:
 		pinFlowSensor8.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid8.Low()
-		for flow2Counter < size {
+		for flowCounter < size {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor8.Unwatch()

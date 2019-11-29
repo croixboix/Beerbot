@@ -13,15 +13,16 @@ import (
 	//"time"
 )
 
-var (
-	user string
-	size int = 0
-	tap  int = 0
+const (
+	sizeSixOunce     int = 234
+	sizeTwelveOunce  int = 468
+	sizeSixteenOunce int = 624
 )
 
-const (
-	sizeSixOunce    int = 234
-	sizeTwelveOunce int = 468
+var (
+	user string
+	//drinkSize int
+	tapSize = [8]int{}
 )
 
 // TODO:
@@ -122,11 +123,11 @@ func scanCode() string {
 	return userCode
 }
 
-func togglePour(size int, tap int) {
+func togglePour(drinkSize int, tap int) {
 	//Solenoid normal state = closed
 
-	fmt.Printf("Begin measuring flow for %d on tap %d\n", size, tap)
-	gpio_rpi.Pour(size, tap)
+	fmt.Printf("Begin measuring flow for %d on tap %d\n", drinkSize, tap)
+	gpio_rpi.Pour(drinkSize, tap)
 	fmt.Println("Pour limit reached!")
 
 }
@@ -155,8 +156,8 @@ func main() {
 
 	//TEST VALUES HERE
 	user = "test"
-	size = sizeSixOunce
-	tap = 8
+	tap = 8;
+	tapSize[tap-1] = sizeSixOunce
 
 	//Verify and process the order!
 	fmt.Println("Verify Order")
@@ -195,7 +196,7 @@ func main() {
 		if processData.Processed == true {
 			//Let user pour the drink!
 			//Call pour!
-			togglePour(size, tap)
+			togglePour(tapSize[tap-1], tap)
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
 		} else {
 			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
