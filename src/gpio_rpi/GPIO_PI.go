@@ -82,21 +82,21 @@ func GPIO_INIT() {
 
 	//Configure solenoid GPIO pin for output and set LOW to start
 	pinSolenoid1.Output()
-	pinSolenoid1.Low()
+	pinSolenoid1.High()
 	pinSolenoid2.Output()
-	pinSolenoid2.Low()
+	pinSolenoid2.High()
 	pinSolenoid3.Output()
-	pinSolenoid3.Low()
+	pinSolenoid3.High()
 	pinSolenoid4.Output()
-	pinSolenoid4.Low()
+	pinSolenoid4.High()
 	pinSolenoid5.Output()
-	pinSolenoid5.Low()
+	pinSolenoid5.High()
 	pinSolenoid6.Output()
-	pinSolenoid6.Low()
+	pinSolenoid6.High()
 	pinSolenoid7.Output()
-	pinSolenoid7.Low()
+	pinSolenoid7.High()
 	pinSolenoid8.Output()
-	pinSolenoid8.Low()
+	pinSolenoid8.High()
 }
 
 func handleFlowEdge(pin *gpio.Pin) {
