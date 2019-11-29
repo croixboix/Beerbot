@@ -1,11 +1,11 @@
 package main
 
 import (
-	gpio_rpi "gpio_rpi"
 	"bufio"
 	"encoding/json"
 	"fmt"
 	"github.com/warthog618/gpio"
+	gpio_rpi "gpio_rpi"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -16,11 +16,11 @@ import (
 var (
 	user string
 	size int = 0
-	tap int = 0
+	tap  int = 0
 )
 
 const (
-	sizeSixOunce int = 234
+	sizeSixOunce    int = 234
 	sizeTwelveOunce int = 468
 )
 

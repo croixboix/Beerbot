@@ -53,13 +53,13 @@ func GPIO_INIT() {
 	pinFlowSensor4 = gpio.NewPin(16)
 	pinSolenoid4 = gpio.NewPin(20)
 	pinFlowSensor5 = gpio.NewPin(21)
-	pinSolenoid5 = gpio.NewPin(2)
-	pinFlowSensor6 = gpio.NewPin(3)
-	pinSolenoid6 = gpio.NewPin(4)
-	pinFlowSensor7 = gpio.NewPin(17)
-	pinSolenoid7 = gpio.NewPin(27)
-	pinFlowSensor8 = gpio.NewPin(22)
-	pinSolenoid8 = gpio.NewPin(10)
+	pinSolenoid5 = gpio.NewPin(9)
+	pinFlowSensor6 = gpio.NewPin(11)
+	pinSolenoid6 = gpio.NewPin(5)
+	pinFlowSensor7 = gpio.NewPin(6)
+	pinSolenoid7 = gpio.NewPin(13)
+	pinFlowSensor8 = gpio.NewPin(19)
+	pinSolenoid8 = gpio.NewPin(26)
 
 	//Configure Flow Sensor GPIO pin for input and PullUp
 	//ALSO TRY pinFlowSensor.PullDown() if having issues!
