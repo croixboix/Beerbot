@@ -148,7 +148,7 @@ func togglePour(customerOrder Order) {
 	for i := 0; i <= numberOfTaps; i++ {
 		fmt.Printf("Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-		fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 	}
 	// Wait for all goroutines to be finished
     	wg.Wait()
@@ -191,7 +191,7 @@ func main() {
 		Processed bool `json:"processed"`
 	}
 
-	
+
 
 	//Scan the Bar/QR Code
 	/*

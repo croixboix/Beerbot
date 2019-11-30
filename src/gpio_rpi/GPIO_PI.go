@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/warthog618/gpio"
 	"os"
-	"time"
 	"sync"
+	"time"
 
 	//For debugging only
 	"runtime"
@@ -31,7 +31,15 @@ var (
 	pinSolenoid7   *gpio.Pin
 	pinFlowSensor8 *gpio.Pin
 	pinSolenoid8   *gpio.Pin
-	flowCounter    int = 0
+	flowCounter1   int = 0
+	flowCounter2   int = 0
+	flowCounter3   int = 0
+	flowCounter4   int = 0
+	flowCounter5   int = 0
+	flowCounter6   int = 0
+	flowCounter7   int = 0
+	flowCounter8   int = 0
+	tap            int = -1
 )
 
 func GPIO_INIT() {
@@ -102,106 +110,143 @@ func GPIO_INIT() {
 
 func handleFlowEdge(pin *gpio.Pin) {
 	// handle falling edge flow sensor
-	flowCounter++
-	fmt.Println(flowCounter)
+	//flowCounter++
+	//fmt.Println(flowCounter)
+
+	switch tapFlow {
+	case 1:
+		flowCounter1++
+		fmt.Println("Flow Counter 1: ", flowCounter1)
+	case 2:
+		flowCounter2++
+		fmt.Println("Flow Counter 2: ", flowCounter2)
+	case 3:
+		flowCounter3++
+		fmt.Println("Flow Counter 3: ", flowCounter3)
+	case 4:
+		flowCounter4++
+		fmt.Println("Flow Counter 4: ", flowCounter4)
+	case 5:
+		flowCounter5++
+		fmt.Println("Flow Counter 5: ", flowCounter5)
+	case 6:
+		flowCounter6++
+		fmt.Println("Flow Counter 6: ", flowCounter6)
+	case 7:
+		flowCounter7++
+		fmt.Println("Flow Counter 7: ", flowCounter7)
+	case 8:
+		flowCounter8++
+		fmt.Println("Flow Counter 8: ", flowCounter8)
+	default:
+		fmt.Println("Invalid Tap # attempted to flow!!")
+	}
 }
 
 func Pour(size int, tap int, wg *sync.WaitGroup) {
 	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
-    	defer wg.Done()
+	defer wg.Done()
 
-	//Reset flow counter for this tap
-	flowCounter = 0
+	tapFlow = tap
 
 	//Open selected tap and meter flow
 	fmt.Println("Start func Pour of GOID: ", goid())
-	if(size != 0){
-	switch tap {
-	case 1:
-		//Enable watcher
-		pinFlowSensor1.Watch(gpio.EdgeFalling, handleFlowEdge)
-		//Open solenoid
-		pinSolenoid1.Low()
-		//Count number of ticks from flow sensor
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
+	if size != 0 {
+		switch tap {
+		case 1:
+			//Reset flow counter for this tap
+			flow1Counter = 0
+			//Enable watcher
+			pinFlowSensor1.Watch(gpio.EdgeFalling, handleFlowEdge)
+			//Open solenoid
+			pinSolenoid1.Low()
+			//Count number of ticks from flow sensor
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			//Disable flow sensor watcher
+			pinFlowSensor1.Unwatch()
+		case 2:
+			flow2Counter = 0
+			pinFlowSensor2.Watch(gpio.EdgeFalling, handleFlowEdge)
+			pinSolenoid2.Low()
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			pinFlowSensor2.Unwatch()
+		case 3:
+			flow3Counter = 0
+			pinFlowSensor3.Watch(gpio.EdgeFalling, handleFlowEdge)
+			pinSolenoid3.Low()
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			pinFlowSensor3.Unwatch()
+		case 4:
+			flow4Counter = 0
+			pinFlowSensor4.Watch(gpio.EdgeFalling, handleFlowEdge)
+			pinSolenoid4.Low()
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			pinFlowSensor4.Unwatch()
+		case 5:
+			flow5Counter = 0
+			pinFlowSensor5.Watch(gpio.EdgeFalling, handleFlowEdge)
+			pinSolenoid5.Low()
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			pinFlowSensor5.Unwatch()
+		case 6:
+			flow6Counter = 0
+			pinFlowSensor6.Watch(gpio.EdgeFalling, handleFlowEdge)
+			pinSolenoid6.Low()
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			pinFlowSensor6.Unwatch()
+		case 7:
+			flow7Counter = 0
+			pinFlowSensor7.Watch(gpio.EdgeFalling, handleFlowEdge)
+			pinSolenoid7.Low()
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			pinFlowSensor7.Unwatch()
+		case 8:
+			flow8Counter = 0
+			pinFlowSensor8.Watch(gpio.EdgeFalling, handleFlowEdge)
+			pinSolenoid8.Low()
+			for flowCounter < size {
+				time.Sleep(time.Millisecond * 50)
+			}
+			pinFlowSensor8.Unwatch()
+		default:
+			fmt.Println("Invalid Tap # attempted to open!!")
 		}
-		//Disable flow sensor watcher
-		pinFlowSensor1.Unwatch()
-	case 2:
-		pinFlowSensor2.Watch(gpio.EdgeFalling, handleFlowEdge)
-		pinSolenoid2.Low()
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
-		}
-		pinFlowSensor2.Unwatch()
-	case 3:
-		pinFlowSensor3.Watch(gpio.EdgeFalling, handleFlowEdge)
-		pinSolenoid3.Low()
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
-		}
-		pinFlowSensor3.Unwatch()
-	case 4:
-		pinFlowSensor4.Watch(gpio.EdgeFalling, handleFlowEdge)
-		pinSolenoid4.Low()
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
-		}
-		pinFlowSensor4.Unwatch()
-	case 5:
-		pinFlowSensor5.Watch(gpio.EdgeFalling, handleFlowEdge)
-		pinSolenoid5.Low()
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
-		}
-		pinFlowSensor5.Unwatch()
-	case 6:
-		pinFlowSensor6.Watch(gpio.EdgeFalling, handleFlowEdge)
-		pinSolenoid6.Low()
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
-		}
-		pinFlowSensor6.Unwatch()
-	case 7:
-		pinFlowSensor7.Watch(gpio.EdgeFalling, handleFlowEdge)
-		pinSolenoid7.Low()
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
-		}
-		pinFlowSensor7.Unwatch()
-	case 8:
-		pinFlowSensor8.Watch(gpio.EdgeFalling, handleFlowEdge)
-		pinSolenoid8.Low()
-		for flowCounter < size {
-			time.Sleep(time.Millisecond * 50)
-		}
-		pinFlowSensor8.Unwatch()
-	default:
-		fmt.Println("Invalid Tap # attempted to open!!")
-	}
 
-	//Close tap once done pouring
-	switch tap {
-	case 1:
-		pinSolenoid1.High()
-	case 2:
-		pinSolenoid2.High()
-	case 3:
-		pinSolenoid3.High()
-	case 4:
-		pinSolenoid4.High()
-	case 5:
-		pinSolenoid5.High()
-	case 6:
-		pinSolenoid6.High()
-	case 7:
-		pinSolenoid7.High()
-	case 8:
-		pinSolenoid8.High()
-	default:
-		fmt.Println("Invalid Tap # attempted to close!!")
-	}
+		//Close tap once done pouring
+		switch tap {
+		case 1:
+			pinSolenoid1.High()
+		case 2:
+			pinSolenoid2.High()
+		case 3:
+			pinSolenoid3.High()
+		case 4:
+			pinSolenoid4.High()
+		case 5:
+			pinSolenoid5.High()
+		case 6:
+			pinSolenoid6.High()
+		case 7:
+			pinSolenoid7.High()
+		case 8:
+			pinSolenoid8.High()
+		default:
+			fmt.Println("Invalid Tap # attempted to close!!")
+		}
 	}
 }
 
