@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	//"time"
 )
 
@@ -19,9 +20,19 @@ const (
 	sizeTwelveOunce  int = 468
 	sizeSixteenOunce int = 624
 
-	//Define number of taps on system
-	numberOfTaps int = 8
+	//Define number of taps on system (number of physical taps -1)
+	//Ex: A 4 tap system would be = 3
+	numberOfTaps int = 7
 )
+
+type Order struct {
+		//User's username
+		user string
+		//Tap(s) to pour on with array value being drink size
+		tap [numberOfTaps+1]int
+		//Size of drink(s) for corresponding tap(s)
+		//drinkSize []int
+	}
 
 var (
 //user string
@@ -129,23 +140,30 @@ func scanCode() string {
 }
 
 func togglePour(customerOrder Order) {
+	//Create a wait group for goroutines
+	var wg sync.WaitGroup
+	wg.Add(numberOfTaps+1)
+	fmt.Println("Created goroutine wait groups!")
 	//Solenoid normal state = closed
-	for i := 0; i < numberOfTaps; i++ {
-		fmt.Printf("Begin measuring flow for user: %s on tap: %d of size: %d", customerOrder.user, i+1, customerOrder.tap[i])
-		go gpio_rpi.Pour(drinkSize, tap)
-		fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d", customerOrder.user, i+1, customerOrder.tap[i])
+	for i := 0; i <= numberOfTaps; i++ {
+		fmt.Printf("Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
+		fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 	}
+	// Wait for all goroutines to be finished
+    	wg.Wait()
+    	fmt.Println("Finished all go routines!")
 }
 
 //Create a new order
-func newOrder(user string, tap []int) *customerOrder {
+func newOrder(user string, tap []int) *Order {
 	fmt.Println("Begin new order")
 	o := Order{user: user}
 	fmt.Printf("Username: %s\n", o.user)
-	for i := 0; i < numberOfTaps; i++ {
+	for i := 0; i <= numberOfTaps; i++ {
 		o.tap[i] = tap[i]
-		i++
-		fmt.Printf("Tap # %d value(drink size) is %d\n", i, o.tap[i])
+		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
+		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
 	}
 	/*for i := 0; i < numberOfTaps; i++ {
 		o.drinkSize[i] = drinksize[i]
@@ -173,14 +191,7 @@ func main() {
 		Processed bool `json:"processed"`
 	}
 
-	type Order struct {
-		//User's username
-		user string
-		//Tap(s) to pour on with array value being drink size
-		tap []int
-		//Size of drink(s) for corresponding tap(s)
-		//drinkSize []int
-	}
+	
 
 	//Scan the Bar/QR Code
 	/*
@@ -193,7 +204,7 @@ func main() {
 	//tap = numberOfTaps
 	//tapSize[tap-1] = sizeSixOunce*/
 	//func newOrder(user string, tap []int, drinkSize []int)
-	var testTapOrder = [numberOfTaps]int{0, sizeSixOunce, 0, 0, 0, 0, sizeTwelveOunce, sizeSixteenOunce}
+	var testTapOrder = []int{0, sizeSixOunce, 0, 0, 0, 0, sizeTwelveOunce, sizeSixteenOunce}
 	testOrder := newOrder(user, testTapOrder)
 
 	//Verify and process the order!
@@ -234,7 +245,7 @@ func main() {
 			//Let user pour the drink!
 			//Call pour!
 			//togglePour(drinkSize[tap-1], tap)
-			togglePour(testOrder)
+			togglePour(*testOrder)
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
 		} else {
 			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
