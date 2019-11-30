@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/warthog618/gpio"
 	"os"
-	"time"
 	"sync"
+	"time"
 
 	//For debugging only
 	"runtime"
@@ -108,14 +108,14 @@ func handleFlowEdge(pin *gpio.Pin) {
 
 func Pour(size int, tap int, wg *sync.WaitGroup) {
 	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
-    	defer wg.Done()
+	defer wg.Done()
 
 	//Reset flow counter for this tap
 	flowCounter = 0
 
 	//Open selected tap and meter flow
 	fmt.Println("Start func Pour of GOID: ", goid())
-	if(size != 0){
+
 	switch tap {
 	case 1:
 		//Enable watcher
@@ -128,6 +128,8 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 		}
 		//Disable flow sensor watcher
 		pinFlowSensor1.Unwatch()
+		//Close solenoid/tap
+		pinSolenoid1.High()
 	case 2:
 		pinFlowSensor2.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid2.Low()
@@ -135,6 +137,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor2.Unwatch()
+		pinSolenoid2.High()
 	case 3:
 		pinFlowSensor3.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid3.Low()
@@ -142,6 +145,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor3.Unwatch()
+		pinSolenoid3.High()
 	case 4:
 		pinFlowSensor4.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid4.Low()
@@ -149,6 +153,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor4.Unwatch()
+		pinSolenoid4.High()
 	case 5:
 		pinFlowSensor5.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid5.Low()
@@ -156,6 +161,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor5.Unwatch()
+		pinSolenoid5.High()
 	case 6:
 		pinFlowSensor6.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid6.Low()
@@ -163,6 +169,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor6.Unwatch()
+		pinSolenoid6.High()
 	case 7:
 		pinFlowSensor7.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid7.Low()
@@ -170,6 +177,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor7.Unwatch()
+		pinSolenoid7.High()
 	case 8:
 		pinFlowSensor8.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid8.Low()
@@ -177,31 +185,9 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 			time.Sleep(time.Millisecond * 50)
 		}
 		pinFlowSensor8.Unwatch()
-	default:
-		fmt.Println("Invalid Tap # attempted to open!!")
-	}
-
-	//Close tap once done pouring
-	switch tap {
-	case 1:
-		pinSolenoid1.High()
-	case 2:
-		pinSolenoid2.High()
-	case 3:
-		pinSolenoid3.High()
-	case 4:
-		pinSolenoid4.High()
-	case 5:
-		pinSolenoid5.High()
-	case 6:
-		pinSolenoid6.High()
-	case 7:
-		pinSolenoid7.High()
-	case 8:
 		pinSolenoid8.High()
 	default:
-		fmt.Println("Invalid Tap # attempted to close!!")
-	}
+		fmt.Println("Invalid Tap #!!")
 	}
 }
 

@@ -26,13 +26,13 @@ const (
 )
 
 type Order struct {
-		//User's username
-		user string
-		//Tap(s) to pour on with array value being drink size
-		tap [numberOfTaps+1]int
-		//Size of drink(s) for corresponding tap(s)
-		//drinkSize []int
-	}
+	//User's username
+	user string
+	//Tap(s) to pour on with array value being drink size
+	tap [numberOfTaps + 1]int
+	//Size of drink(s) for corresponding tap(s)
+	//drinkSize []int
+}
 
 var (
 //user string
@@ -142,17 +142,19 @@ func scanCode() string {
 func togglePour(customerOrder Order) {
 	//Create a wait group for goroutines
 	var wg sync.WaitGroup
-	wg.Add(numberOfTaps+1)
+	wg.Add(numberOfTaps + 1)
 	fmt.Println("Created goroutine wait groups!")
 	//Solenoid normal state = closed
 	for i := 0; i <= numberOfTaps; i++ {
 		fmt.Printf("Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-		go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-		//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		if customerOrder.tap[i] != 0 {
+			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
+			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		}
 	}
 	// Wait for all goroutines to be finished
-    	wg.Wait()
-    	fmt.Println("Finished all go routines!")
+	wg.Wait()
+	fmt.Println("Finished all go routines!")
 }
 
 //Create a new order
@@ -190,8 +192,6 @@ func main() {
 	type processResponse struct {
 		Processed bool `json:"processed"`
 	}
-
-
 
 	//Scan the Bar/QR Code
 	/*
