@@ -32,14 +32,14 @@ var (
 	pinFlowSensor8 *gpio.Pin
 	pinSolenoid8   *gpio.Pin
 
-	flowCounter1    int = 0
-	flowCounter2    int = 0
-	flowCounter3    int = 0
-	flowCounter4    int = 0
-	flowCounter5    int = 0
-	flowCounter6    int = 0
-	flowCounter7    int = 0
-	flowCounter8    int = 0
+	flowCounter1 int = 0
+	flowCounter2 int = 0
+	flowCounter3 int = 0
+	flowCounter4 int = 0
+	flowCounter5 int = 0
+	flowCounter6 int = 0
+	flowCounter7 int = 0
+	flowCounter8 int = 0
 )
 
 func GPIO_INIT() {
@@ -107,7 +107,6 @@ func GPIO_INIT() {
 	pinSolenoid8.Output()
 	pinSolenoid8.High()
 }
-
 
 // Interrupt handler for flow sensor edge pulse
 func handleFlowEdge(pin *gpio.Pin) {
