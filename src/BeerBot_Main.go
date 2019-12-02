@@ -146,7 +146,7 @@ func togglePour(customerOrder Order) {
 	fmt.Println("Created goroutine wait groups!")
 	//Solenoid normal state = closed
 	for i := 0; i <= numberOfTaps; i++ {
-		fmt.Printf("Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		if customerOrder.tap[i] != 0 {
 			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
 			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
