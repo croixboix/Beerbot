@@ -154,7 +154,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 	//var flowCounter int = 0
 
 	//Open selected tap and meter flow
-	fmt.Printf("Start func Pour on tap %d of GOID: %d", tap, goid())
+	fmt.Printf("Start func Pour on tap %d of GOID: %d\n", tap, goid())
 
 	switch tap {
 	case 1:

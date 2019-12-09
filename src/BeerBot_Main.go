@@ -30,8 +30,6 @@ type Order struct {
 	user string
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
-	//Size of drink(s) for corresponding tap(s)
-	//drinkSize []int
 }
 
 var (
@@ -142,13 +140,15 @@ func scanCode() string {
 func togglePour(customerOrder Order) {
 	//Create a wait group for goroutines
 	var wg sync.WaitGroup
-	wg.Add(numberOfTaps + 1)
+	//wg.Add(numberOfTaps + 1)
 	fmt.Println("Created goroutine wait groups!")
 	//Solenoid normal state = closed
 	for i := 0; i <= numberOfTaps; i++ {
-		fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		//fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		if customerOrder.tap[i] != 0 {
+			wg.Add(1)
 			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
+			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		}
 	}
