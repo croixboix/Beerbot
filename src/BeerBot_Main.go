@@ -16,7 +16,7 @@ import (
 
 const (
 	//Constants for drink size integers for flow sensor
-	sizeSixOunce     int = 234
+	sizeSixOunce     int = 100
 	sizeTwelveOunce  int = 468
 	sizeSixteenOunce int = 624
 
