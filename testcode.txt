@@ -1,10 +1,5 @@
 package main
-// NOTE: Make sure you have disabled I2C interface in sudo raspi-config - I
-// think it might be enabled by default which might cause your pin 2 to be
-// changed from input mode to I2C.
-// SEE: https://github.com/stianeikeland/go-rpio/issues/35
-// Add dtoverlay=gpio-no-irq to /boot/config.txt and restart your pi
-//  This disables IRQ which may break some other GPIO libs/drivers
+
 import (
 	"bufio"
 	"encoding/json"
@@ -30,15 +25,12 @@ const (
 	numberOfTaps int = 7
 )
 
-
-
 type Order struct {
 	//User's username
 	user string
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
 }
-
 
 var (
 //user string
@@ -47,7 +39,13 @@ var (
 //tapSize = [numberOfTaps]int{}
 )
 
-
+// TODO:
+// NOTE: Make sure you have disabled I2C interface in sudo raspi-config - I
+// think it might be enabled by default which might cause your pin 2 to be
+// changed from input mode to I2C.
+// SEE: https://github.com/stianeikeland/go-rpio/issues/35
+// Add dtoverlay=gpio-no-irq to /boot/config.txt and restart your pi
+//  This disables IRQ which may break some other GPIO libs/drivers
 
 //Verify that the order exists on the API order list
 func verifyOrder(uname string) []byte {
@@ -183,7 +181,6 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	//Create struct for verify response
 	type verifyResponse struct {
 		ID        int    `json:"id"`
 		Username  string `json:"username"`

@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	//Need to eventually create a struct for all these
+	//Should eventually create a struct for all these
 	pinFlowSensor1 *gpio.Pin
 	pinSolenoid1   *gpio.Pin
 	pinFlowSensor2 *gpio.Pin
@@ -51,6 +51,7 @@ func GPIO_INIT() {
 		os.Exit(1)
 	}
 
+	//Assign pins
 	pinFlowSensor1 = gpio.NewPin(23)
 	pinSolenoid1 = gpio.NewPin(24)
 	pinFlowSensor2 = gpio.NewPin(25)
@@ -70,7 +71,7 @@ func GPIO_INIT() {
 
 	//Configure Flow Sensor GPIO pin for input and PullUp
 	//ALSO TRY pinFlowSensor.PullDown() if having issues!
-	//Need to rewrite this to use structs and a loop to set these values
+	//Should rewrite this to use structs and a loop to set these values
 	pinFlowSensor1.Input()
 	pinFlowSensor1.PullUp()
 	pinFlowSensor2.Input()
@@ -89,7 +90,7 @@ func GPIO_INIT() {
 	pinFlowSensor8.PullUp()
 
 	//Configure solenoid GPIO pin for output and set LOW to start
-	//Need to rewrite this to use structs and a loop to set these values
+	//Should rewrite this to use structs and a loop to set these values
 	pinSolenoid1.Output()
 	pinSolenoid1.High()
 	pinSolenoid2.Output()
