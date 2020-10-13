@@ -27,7 +27,7 @@ const (
 
 	//Define number of taps on system (number of physical taps -1)
 	//Ex: A 4 tap system would be = 3
-	numberOfTaps int = 7
+	numberOfTaps int = 11
 )
 
 
