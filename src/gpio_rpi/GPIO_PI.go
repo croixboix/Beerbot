@@ -31,6 +31,14 @@ var (
 	pinSolenoid7   *gpio.Pin
 	pinFlowSensor8 *gpio.Pin
 	pinSolenoid8   *gpio.Pin
+	pinFlowSensor9 *gpio.Pin
+	pinSolenoid9   *gpio.Pin
+	pinFlowSensor10 *gpio.Pin
+	pinSolenoid10   *gpio.Pin
+	pinFlowSensor11 *gpio.Pin
+	pinSolenoid11   *gpio.Pin
+	pinFlowSensor12 *gpio.Pin
+	pinSolenoid12   *gpio.Pin
 
 	flowCounter1 int = 0
 	flowCounter2 int = 0
@@ -40,6 +48,10 @@ var (
 	flowCounter6 int = 0
 	flowCounter7 int = 0
 	flowCounter8 int = 0
+	flowCounter9 int = 0
+	flowCounter10 int = 0
+	flowCounter11 int = 0
+	flowCounter12 int = 0
 )
 
 func GPIO_INIT() {
@@ -52,22 +64,30 @@ func GPIO_INIT() {
 	}
 
 	//Assign pins
-	pinFlowSensor1 = gpio.NewPin(23)
-	pinSolenoid1 = gpio.NewPin(24)
-	pinFlowSensor2 = gpio.NewPin(25)
-	pinSolenoid2 = gpio.NewPin(8)
-	pinFlowSensor3 = gpio.NewPin(7)
-	pinSolenoid3 = gpio.NewPin(12)
-	pinFlowSensor4 = gpio.NewPin(16)
-	pinSolenoid4 = gpio.NewPin(20)
-	pinFlowSensor5 = gpio.NewPin(21)
-	pinSolenoid5 = gpio.NewPin(9)
-	pinFlowSensor6 = gpio.NewPin(11)
-	pinSolenoid6 = gpio.NewPin(5)
-	pinFlowSensor7 = gpio.NewPin(6)
-	pinSolenoid7 = gpio.NewPin(13)
-	pinFlowSensor8 = gpio.NewPin(19)
-	pinSolenoid8 = gpio.NewPin(26)
+	pinFlowSensor1 = gpio.NewPin(3)
+	pinSolenoid1 = gpio.NewPin(15)
+	pinFlowSensor2 = gpio.NewPin(4)
+	pinSolenoid2 = gpio.NewPin(16)
+	pinFlowSensor3 = gpio.NewPin(5)
+	pinSolenoid3 = gpio.NewPin(17)
+	pinFlowSensor4 = gpio.NewPin(6)
+	pinSolenoid4 = gpio.NewPin(18)
+	pinFlowSensor5 = gpio.NewPin(7)
+	pinSolenoid5 = gpio.NewPin(19)
+	pinFlowSensor6 = gpio.NewPin(8)
+	pinSolenoid6 = gpio.NewPin(20)
+	pinFlowSensor7 = gpio.NewPin(9)
+	pinSolenoid7 = gpio.NewPin(21)
+	pinFlowSensor8 = gpio.NewPin(10)
+	pinSolenoid8 = gpio.NewPin(22)
+	pinFlowSensor9 = gpio.NewPin(11)
+	pinSolenoid9 = gpio.NewPin(23)
+	pinFlowSensor10 = gpio.NewPin(12)
+	pinSolenoid10 = gpio.NewPin(24)
+	pinFlowSensor11 = gpio.NewPin(13)
+	pinSolenoid11 = gpio.NewPin(25)
+	pinFlowSensor12 = gpio.NewPin(14)
+	pinSolenoid12 = gpio.NewPin(26)
 
 	//Configure Flow Sensor GPIO pin for input and PullUp
 	//ALSO TRY pinFlowSensor.PullDown() if having issues!
@@ -88,6 +108,14 @@ func GPIO_INIT() {
 	pinFlowSensor7.PullUp()
 	pinFlowSensor8.Input()
 	pinFlowSensor8.PullUp()
+	pinFlowSensor9.Input()
+	pinFlowSensor9.PullUp()
+	pinFlowSensor10.Input()
+	pinFlowSensor10.PullUp()
+	pinFlowSensor11.Input()
+	pinFlowSensor11.PullUp()
+	pinFlowSensor12.Input()
+	pinFlowSensor12.PullUp()
 
 	//Configure solenoid GPIO pin for output and set LOW to start
 	//Should rewrite this to use structs and a loop to set these values
@@ -107,6 +135,14 @@ func GPIO_INIT() {
 	pinSolenoid7.High()
 	pinSolenoid8.Output()
 	pinSolenoid8.High()
+	pinSolenoid9.Output()
+	pinSolenoid9.High()
+	pinSolenoid10.Output()
+	pinSolenoid10.High()
+	pinSolenoid11.Output()
+	pinSolenoid11.High()
+	pinSolenoid12.Output()
+	pinSolenoid12.High()
 }
 
 // Interrupt handler for flow sensor edge pulse
@@ -138,6 +174,18 @@ func handleFlowEdge(pin *gpio.Pin) {
 	case pinFlowSensor8.Pin():
 		flowCounter8++
 		fmt.Printf("Flow Counter is %d for Go Routine %d on pinFlowSensor %d\n", flowCounter8, goid(), pinFlowSensor8.Pin())
+	case pinFlowSensor9.Pin():
+		flowCounter9++
+		fmt.Printf("Flow Counter is %d for Go Routine %d on pinFlowSensor %d\n", flowCounter9, goid(), pinFlowSensor9.Pin())
+	case pinFlowSensor10.Pin():
+		flowCounter10++
+		fmt.Printf("Flow Counter is %d for Go Routine %d on pinFlowSensor %d\n", flowCounter10, goid(), pinFlowSensor10.Pin())
+	case pinFlowSensor11.Pin():
+		flowCounter11++
+		fmt.Printf("Flow Counter is %d for Go Routine %d on pinFlowSensor %d\n", flowCounter11, goid(), pinFlowSensor11.Pin())
+	case pinFlowSensor12.Pin():
+		flowCounter12++
+		fmt.Printf("Flow Counter is %d for Go Routine %d on pinFlowSensor %d\n", flowCounter12, goid(), pinFlowSensor12.Pin())
 	default:
 		fmt.Println("handleFlowEdge Invalid Tap #!!")
 	}
@@ -236,6 +284,42 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 		}
 		pinFlowSensor8.Unwatch()
 		pinSolenoid8.High()
+	case 9:
+		flowCounter9 = 0
+		pinFlowSensor9.Watch(gpio.EdgeFalling, handleFlowEdge)
+		pinSolenoid9.Low()
+		for flowCounter9 < size {
+			time.Sleep(time.Millisecond * 50)
+		}
+		pinFlowSensor9.Unwatch()
+		pinSolenoid9.High()
+	case 10:
+		flowCounter10 = 0
+		pinFlowSensor10.Watch(gpio.EdgeFalling, handleFlowEdge)
+		pinSolenoid10.Low()
+		for flowCounter10 < size {
+			time.Sleep(time.Millisecond * 50)
+		}
+		pinFlowSensor10.Unwatch()
+		pinSolenoid10.High()
+	case 11:
+		flowCounter11 = 0
+		pinFlowSensor11.Watch(gpio.EdgeFalling, handleFlowEdge)
+		pinSolenoid11.Low()
+		for flowCounter11 < size {
+			time.Sleep(time.Millisecond * 50)
+		}
+		pinFlowSensor11.Unwatch()
+		pinSolenoid11.High()
+	case 12:
+		flowCounter12 = 0
+		pinFlowSensor12.Watch(gpio.EdgeFalling, handleFlowEdge)
+		pinSolenoid12.Low()
+		for flowCounter12 < size {
+			time.Sleep(time.Millisecond * 50)
+			}
+		pinFlowSensor12.Unwatch()
+		pinSolenoid12.High()
 	default:
 		fmt.Println("Invalid Tap #!!")
 	}
