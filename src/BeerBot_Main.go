@@ -216,7 +216,18 @@ func main() {
 	var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
 	testOrder := newOrder(user, testTapOrder)
 
-	togglePour(*testOrder)
+	//This is just a timeout function so that the program will timeout and run gpio.Close() below
+	c1 := make(chan string, 1)
+	go func() {
+        text := togglePour(*testOrder)
+        c1 <- text
+    }()
+	select {
+	   case res := <-c1:
+	       fmt.Println(res)
+	   case <-time.After(20 * time.Second):
+	       fmt.Println("out of time :(")
+	   }
 
 	/* API test code below
 
