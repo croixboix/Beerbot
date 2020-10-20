@@ -213,7 +213,7 @@ func main() {
 	//tap = numberOfTaps
 	//tapSize[tap-1] = sizeSixOunce*/
 	//func newOrder(user string, tap []int, drinkSize []int)
-	var testTapOrder = []int{0, sizeSixOunce, 0, 0, 0, 0, 0, 0}
+	var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
 	testOrder := newOrder(user, testTapOrder)
 
 	togglePour(*testOrder)
