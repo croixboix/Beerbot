@@ -30,9 +30,9 @@ const (
 	sizeSixteenOunce int = 1275
 	/* 	TODO:				Create helper function to calucate # pulses from size (maybe) */
 
-	//Define number of taps on system (number of physical taps -1)
+	//Define number of taps on system (# of physical taps -1)
 	//Ex: A 4 tap system would be = 3
-	numberOfTaps int = 11
+	numberOfTaps int = 7
 	/*	TODO:				Get this info from the API!!! 						*/
 )
 
@@ -216,6 +216,10 @@ func main() {
 	var testTapOrder = []int{0, sizeSixOunce, 0, 0, 0, 0, 0, 0}
 	testOrder := newOrder(user, testTapOrder)
 
+	togglePour(*testOrder)
+
+	/* API test code below
+
 	//Verify and process the order!
 	fmt.Println("Verify Order")
 
@@ -234,7 +238,7 @@ func main() {
 	fmt.Println("updated_at: ", verifyData.UpdatedAt)
 	fmt.Println("url: ", verifyData.URL)
 
-	//if verifyData.Username != "null" {
+	if verifyData.Username != "null" {
 
 		fmt.Println("Process/Delete Order")
 
@@ -250,16 +254,17 @@ func main() {
 		fmt.Println("Process Order Response Dump:")
 		fmt.Println("processed: ", processData.Processed)
 
-		//if processData.Processed == true {
+		if processData.Processed == true {
 			//Let user pour the drink!
 			//Call pour!
 			//togglePour(drinkSize[tap-1], tap)
 			togglePour(*testOrder)
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
-		//} else {
+		} else {
 			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
-		//}
-	//}
+		}
+	}
+	*/
 
 	//Close GPIO/clear GPIO memory at end of program
 	gpio.Close()
