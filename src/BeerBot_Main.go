@@ -8,6 +8,7 @@ package main
 import (
 	"bufio"
 	_ "encoding/json"
+	"time"
 	"fmt"
 	"github.com/warthog618/gpio"
 	gpio_rpi "gpio_rpi"
@@ -16,7 +17,6 @@ import (
 	"os"
 	"strings"
 	"sync"
-	_ "time"
 )
 
 const (
