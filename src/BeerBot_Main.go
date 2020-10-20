@@ -20,14 +20,20 @@ import (
 )
 
 const (
+	// 10,200 Pulses per Gallon
+	// 10,200 Pulses per 128 fluid ounce
+	// Size calculation: # pulses = (size in floz) / 0.0125490196078431372549019607843137254901960784313725490196078431
 	//Constants for drink size integers for flow sensor
-	sizeSixOunce     int = 100
-	sizeTwelveOunce  int = 468
-	sizeSixteenOunce int = 624
+	sizeFourOunce    int = 318
+	sizeSixOunce     int = 478
+	sizeTwelveOunce  int = 956
+	sizeSixteenOunce int = 1275
+	/* 	TODO:				Create helper function to calucate # pulses from size (maybe) */
 
 	//Define number of taps on system (number of physical taps -1)
 	//Ex: A 4 tap system would be = 3
 	numberOfTaps int = 11
+	/*	TODO:				Get this info from the API!!! 						*/
 )
 
 
