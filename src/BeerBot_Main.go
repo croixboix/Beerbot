@@ -22,7 +22,7 @@ import (
 const (
 	// 10,200 Pulses per Gallon
 	// 10,200 Pulses per 128 fluid ounce
-	// Size calculation: # pulses = (size in floz) / 0.0125490196078431372549019607843137254901960784313725490196078431
+	//  # pulses = (size in floz) / 0.0125490196078431372549019607843137254901960784313725490196078431
 	//Constants for drink size integers for flow sensor
 	sizeFourOunce    int = 318
 	sizeSixOunce     int = 478
@@ -234,7 +234,7 @@ func main() {
 	fmt.Println("updated_at: ", verifyData.UpdatedAt)
 	fmt.Println("url: ", verifyData.URL)
 
-	if verifyData.Username != "null" {
+	//if verifyData.Username != "null" {
 
 		fmt.Println("Process/Delete Order")
 
@@ -250,16 +250,16 @@ func main() {
 		fmt.Println("Process Order Response Dump:")
 		fmt.Println("processed: ", processData.Processed)
 
-		if processData.Processed == true {
+		//if processData.Processed == true {
 			//Let user pour the drink!
 			//Call pour!
 			//togglePour(drinkSize[tap-1], tap)
 			togglePour(*testOrder)
 			fmt.Println("ORDER PROCESSED, LET USER POUR")
-		} else {
+		//} else {
 			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
-		}
-	}
+		//}
+	//}
 
 	//Close GPIO/clear GPIO memory at end of program
 	gpio.Close()
