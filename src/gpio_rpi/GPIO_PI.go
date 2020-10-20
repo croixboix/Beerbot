@@ -64,8 +64,9 @@ func GPIO_INIT() {
 	}
 
 	// Can't use pins 2 and 3 because they have built in pull-up resistors
+	// Also can't use pins 0 and 1
 	//Assign pins
-	pinFlowSensor1 = gpio.NewPin(1)
+	pinFlowSensor1 = gpio.NewPin(14)
 	pinSolenoid1 = gpio.NewPin(15)
 	pinFlowSensor2 = gpio.NewPin(4)
 	pinSolenoid2 = gpio.NewPin(16)
@@ -87,7 +88,7 @@ func GPIO_INIT() {
 	pinSolenoid10 = gpio.NewPin(24)
 	pinFlowSensor11 = gpio.NewPin(13)
 	pinSolenoid11 = gpio.NewPin(25)
-	pinFlowSensor12 = gpio.NewPin(14)
+	pinFlowSensor12 = gpio.NewPin(1)
 	pinSolenoid12 = gpio.NewPin(26)
 
 	//Configure Flow Sensor GPIO pin for input and PullUp
