@@ -233,17 +233,8 @@ func main() {
 	var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
 	testOrder := newOrder(user, testTapOrder)
 
+	togglePour(*testOrder)
 
-
-
-
-		     // Run your long running function in it's own goroutine and pass back it's
-		     // response into our channel.
-		     go func() {
-		         togglePour(*testOrder)
-						 text := "togglePour Finished!"
-		         c1 <- text
-		     }()
 
 
 
