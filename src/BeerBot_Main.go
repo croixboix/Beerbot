@@ -146,6 +146,9 @@ func scanCode() string {
 }
 
 func togglePour(customerOrder Order) {
+	//This is just a timeout function in case something gets stuck
+	c1 := make(chan string, 1)
+
 	//Create a wait group for goroutines
 	var wg sync.WaitGroup
 	//wg.Add(numberOfTaps + 1)
@@ -155,9 +158,23 @@ func togglePour(customerOrder Order) {
 		//fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		if customerOrder.tap[i] != 0 {
 			wg.Add(1)
-			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+			// Run your long running function in it's own goroutine and pass back it's
+			// response into our channel.
+			go func() {
+					go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
+					fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+					//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+					text := "togglePour Finished!"
+					c1 <- text
+			}()
+		}
+
+		// Listen on our channel AND a timeout channel - which ever happens first.
+		select {
+		case res := <-c1:
+				fmt.Println(res)
+		case <-time.After(20 * time.Second):
+				fmt.Println("Ran out of time for gpio_rpi.Pour() :(")
 		}
 	}
 	// Wait for all goroutines to be finished
@@ -217,8 +234,7 @@ func main() {
 	testOrder := newOrder(user, testTapOrder)
 
 
-	//This is just a timeout function so that the program will timeout and run gpio.Close() below
-		 	c1 := make(chan string, 1)
+
 
 
 		     // Run your long running function in it's own goroutine and pass back it's
@@ -229,13 +245,7 @@ func main() {
 		         c1 <- text
 		     }()
 
-		     // Listen on our channel AND a timeout channel - which ever happens first.
-		     select {
-		     case res := <-c1:
-		         fmt.Println(res)
-		     case <-time.After(20 * time.Second):
-		         fmt.Println("out of time :(")
-		     }
+
 
 	/* API test code below
 
