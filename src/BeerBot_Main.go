@@ -128,8 +128,8 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	//Initalize websockets
-	initalizeWebsocket()
+	//Initalize websockets/listener
+	//initalizeWebsocket()
 
 	//Create struct for verify response
 	type verifyResponse struct {
