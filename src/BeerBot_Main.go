@@ -166,55 +166,7 @@ func main() {
 		  fmt.Println("out of time :(")
 		}
 
-	/* API test code below
-
-	//Verify and process the order!
-	fmt.Println("Verify Order")
-
-	var verifyResp []byte = verifyOrder(testOrder.user)
-	var verifyData verifyResponse
-
-	err := json.Unmarshal(verifyResp, &verifyData)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-
-	fmt.Println("Verify Order Response Dump:")
-	fmt.Println("id: ", verifyData.ID)
-	fmt.Println("username: ", verifyData.Username)
-	fmt.Println("created_at: ", verifyData.CreatedAt)
-	fmt.Println("updated_at: ", verifyData.UpdatedAt)
-	fmt.Println("url: ", verifyData.URL)
-
-	if verifyData.Username != "null" {
-
-		fmt.Println("Process/Delete Order")
-
-		var processData processResponse
-
-		var processResponse []byte = processOrder(verifyData.Username)
-
-		err := json.Unmarshal(processResponse, &processData)
-		if err != nil {
-			fmt.Println("error:", err)
-		}
-
-		fmt.Println("Process Order Response Dump:")
-		fmt.Println("processed: ", processData.Processed)
-
-		if processData.Processed == true {
-			//Let user pour the drink!
-			//Call pour!
-			//togglePour(drinkSize[tap-1], tap)
-			togglePour(*testOrder)
-			fmt.Println("ORDER PROCESSED, LET USER POUR")
-		} else {
-			fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
-		}
-	}
-	*/
-
-	//Close GPIO/clear GPIO memory at end of program
+	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
 	gpio.Close()
 
 }
@@ -290,3 +242,56 @@ func verifyOrder(uname string) []byte {
 	    }
 	*/
 }
+
+/*
+func main() {
+
+//API test code below
+
+//Verify and process the order!
+fmt.Println("Verify Order")
+
+var verifyResp []byte = verifyOrder(testOrder.user)
+var verifyData verifyResponse
+
+err := json.Unmarshal(verifyResp, &verifyData)
+if err != nil {
+	fmt.Println("error:", err)
+}
+
+fmt.Println("Verify Order Response Dump:")
+fmt.Println("id: ", verifyData.ID)
+fmt.Println("username: ", verifyData.Username)
+fmt.Println("created_at: ", verifyData.CreatedAt)
+fmt.Println("updated_at: ", verifyData.UpdatedAt)
+fmt.Println("url: ", verifyData.URL)
+
+if verifyData.Username != "null" {
+
+	fmt.Println("Process/Delete Order")
+
+	var processData processResponse
+
+	var processResponse []byte = processOrder(verifyData.Username)
+
+	err := json.Unmarshal(processResponse, &processData)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	fmt.Println("Process Order Response Dump:")
+	fmt.Println("processed: ", processData.Processed)
+
+	if processData.Processed == true {
+		//Let user pour the drink!
+		//Call pour!
+		//togglePour(drinkSize[tap-1], tap)
+		togglePour(*testOrder)
+		fmt.Println("ORDER PROCESSED, LET USER POUR")
+	} else {
+		fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
+	}
+}
+}
+
+*/
