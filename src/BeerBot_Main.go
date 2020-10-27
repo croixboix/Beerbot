@@ -55,14 +55,8 @@ var (
 
 
 //Upgrader for websock functionality
-var upgrader = websocket.Upgrader{
-    ReadBufferSize:  1024,
-    WriteBufferSize: 1024,
-}
 
 
-//Receivers order from API
-func receiveOrder(){}
 
 
 
