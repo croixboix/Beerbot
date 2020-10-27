@@ -60,10 +60,10 @@ var upgrader = websocket.Upgrader{
     WriteBufferSize: 1024,
 }
 
-//Initalize stuff needed for main program, mainly websockets
-func initalizeWebsocket(){
 
-}
+//Receivers order from API
+func receiveOrder(){}
+
 
 
 //Test code for reading from USB (STD-IN) QR scanner
