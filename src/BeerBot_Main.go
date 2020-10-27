@@ -135,7 +135,7 @@ func main() {
 	fmt.Println("GPIO Initialized!")
 
 	//Initalize websockets
-	initalizeMain()
+	initalizeWebsocket()
 
 	//Create struct for verify response
 	type verifyResponse struct {
