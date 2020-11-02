@@ -54,30 +54,50 @@ var (
 )
 
 
-//Upgrader for websock functionality
+//This setups up the routes for various routes
+func setupRoutes(){
+	http.HandleFunc("/", homePage)
+	http.HandleFunc("//", wsEndpoint)
+}
 
+func homePage(w http.ResponseWriter, r *http.Request){
+	fmt.Fprintf(w, "Home Page")
+}
 
-
-
-
-//Test code for reading from USB (STD-IN) QR scanner
-func scanCode() string {
-	var userCode string
-
-	scanner := bufio.NewScanner(os.Stdin)
-
-	for scanner.Scan() {
-		fmt.Println("Scanned barcode: ", scanner.Text())
-		userCode = scanner.Text()
-		if scanner.Text() != "" {
-			break
+func reader(conn *websocket.Conn){
+	for{
+		messageType, p, err := conn.ReadMessage()
+		if error != nil{
+			log.Println(err)
+			return
 		}
+		log.Println(string(p))
+
+		if err := conn.WriteMessage(messageType, p); err != nil
 	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+}
+
+func wsEndpoint(w http.ResponseWriter, r *http.Request){
+	//this will ALLOW ANY CONNECTION, need to fix to only allow from trusted source!
+	upgrader.CheckOrigin = func(r *http.Request) bool {
+		return true
 	}
 
-	return userCode
+	//Upgrading this connection to a websocket
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil{
+		log.Println(err)
+	}
+
+	log.Println("Client Successfully Connected")
+
+	//Passing websocket connection to reader
+	reader(ws)
+}
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize: 1024,
+	WriteBufferSize: 1024,
 }
 
 
@@ -103,25 +123,7 @@ func togglePour(customerOrder Order) {
 }
 
 
-//Create a new order
-func newOrder(user string, tap []int) *Order {
-	fmt.Println("Begin new order")
-	o := Order{user: user}
-	fmt.Printf("Username: %s\n", o.user)
-	for i := 0; i <= numberOfTaps; i++ {
-		o.tap[i] = tap[i]
-		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
-		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
-	}
-	/*for i := 0; i < numberOfTaps; i++ {
-		o.drinkSize[i] = drinksize[i]
-		i++
-		fmt.Printf("Drinksize on tap %d value is %d\n", i, o.drinkSize[i])
-	}*/
-	return &o
-}
-
-
+// ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
 
 	//Initialize GPIO pins
@@ -187,6 +189,44 @@ func main() {
 
 
 /*#############################DEPRECATED/FOR REFERENCE ONLY##################*/
+//Test code for reading from USB (STD-IN) QR scanner
+func scanCode() string {
+	var userCode string
+
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for scanner.Scan() {
+		fmt.Println("Scanned barcode: ", scanner.Text())
+		userCode = scanner.Text()
+		if scanner.Text() != "" {
+			break
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
+
+	return userCode
+}
+
+//Create a new order
+func newOrder(user string, tap []int) *Order {
+	fmt.Println("Begin new order")
+	o := Order{user: user}
+	fmt.Printf("Username: %s\n", o.user)
+	for i := 0; i <= numberOfTaps; i++ {
+		o.tap[i] = tap[i]
+		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
+		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
+	}
+	/*for i := 0; i < numberOfTaps; i++ {
+		o.drinkSize[i] = drinksize[i]
+		i++
+		fmt.Printf("Drinksize on tap %d value is %d\n", i, o.drinkSize[i])
+	}*/
+	return &o
+}
+
 // Tells API that order processed and deletes order from API order list
 func processOrder(uname string) []byte {
 	url := "http://96.30.245.134:3000/orders/processed"
