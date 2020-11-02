@@ -54,52 +54,6 @@ var (
 )
 
 
-//This setups up the routes for various routes
-func setupRoutes(){
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("//", wsEndpoint)
-}
-
-func homePage(w http.ResponseWriter, r *http.Request){
-	fmt.Fprintf(w, "Home Page")
-}
-
-func reader(conn *websocket.Conn){
-	for{
-		messageType, p, err := conn.ReadMessage()
-		if error != nil{
-			log.Println(err)
-			return
-		}
-		log.Println(string(p))
-
-		if err := conn.WriteMessage(messageType, p); err != nil
-	}
-}
-
-func wsEndpoint(w http.ResponseWriter, r *http.Request){
-	//this will ALLOW ANY CONNECTION, need to fix to only allow from trusted source!
-	upgrader.CheckOrigin = func(r *http.Request) bool {
-		return true
-	}
-
-	//Upgrading this connection to a websocket
-	ws, err := upgrader.Upgrade(w, r, nil)
-	if err != nil{
-		log.Println(err)
-	}
-
-	log.Println("Client Successfully Connected")
-
-	//Passing websocket connection to reader
-	reader(ws)
-}
-
-var upgrader = websocket.Upgrader{
-	ReadBufferSize: 1024,
-	WriteBufferSize: 1024,
-}
-
 
 //Initiates pour routine (this should be the last thing called, serves order)
 func togglePour(customerOrder Order) {
@@ -182,6 +136,10 @@ func main() {
 	gpio.Close()
 
 }
+
+
+
+
 
 
 
