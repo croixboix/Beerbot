@@ -15,6 +15,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/signal"
+	"log"
 	"strings"
 	"sync"
 	"github.com/sacOO7/gowebsocket"
