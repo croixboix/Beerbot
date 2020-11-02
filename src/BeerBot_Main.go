@@ -84,9 +84,6 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	//Initalize websockets/listener
-	//initalizeWebsocket()
-
 	//Create struct for verify response
 	type verifyResponse struct {
 		ID        int    `json:"id"`
@@ -100,12 +97,11 @@ func main() {
 		Processed bool `json:"processed"`
 	}
 
-	//Scan the Bar/QR Code
-	/*
-		fmt.Println("Scan Barcode Now!")
-		user = scanCode()
-	*/
 
+
+
+
+//############ TEST/DEMO CODE BLOCK ############################################
 	//TEST VALUES HERE~~~~~~~~~~~~~~~
 	var user string = "test"
 	//tap = numberOfTaps
@@ -131,6 +127,11 @@ func main() {
   	case <-time.After(20 * time.Second):
 		  fmt.Println("out of time :(")
 		}
+//############ TEST/DEMO CODE BLOCK ############################################
+
+
+
+
 
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
 	gpio.Close()
