@@ -17,7 +17,6 @@ import (
 	"os"
 	"strings"
 	"sync"
-	_ "github.com/gorilla/websocket"
 )
 
 const (
