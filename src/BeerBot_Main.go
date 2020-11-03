@@ -36,14 +36,6 @@ const (
 )
 
 
-type Order struct {
-	//User's username
-	user string
-	//Tap(s) to pour on with array value being drink size
-	tap [numberOfTaps + 1]int
-}
-
-
 var (
 	//This is how we will set the tap system's ID
 	tapID int = 1
@@ -57,6 +49,14 @@ var (
 	//tap int
 	//tapSize = [numberOfTaps]int{}
 )
+
+
+type Order struct {
+	//User's username
+	user string
+	//Tap(s) to pour on with array value being drink size
+	tap [numberOfTaps + 1]int
+}
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
