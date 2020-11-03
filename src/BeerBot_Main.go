@@ -160,7 +160,7 @@ func main() {
 
 		select {
 			case <-interrupt:
-				log.Println("interrupt")
+				log.Println("Ctrl-c input detected, exiting cleanly")
 				endProgram(socket)
 				return
 			}
