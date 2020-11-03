@@ -15,7 +15,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"os/signal"
+	_ "os/signal"
 	"log"
 	"strings"
 	"sync"
