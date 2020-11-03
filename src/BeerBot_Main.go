@@ -46,6 +46,10 @@ var (
 
 	//Keeps track of whether websocket connection is alive
 	websocketConnectionAlive bool = false
+
+
+	//Testing variables below ONLY
+	testMessage string = "Tap ID and Order submitted!"
 )
 
 
@@ -147,7 +151,6 @@ func main() {
 
 	socket.Connect()
 
-	var testMessage string = "Tap ID and Order submitted!"
   socket.SendText(testMessage)
 
 
