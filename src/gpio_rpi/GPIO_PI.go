@@ -117,14 +117,14 @@ func GPIO_INIT() {
 }
 
 func CloseSolenoids() {
-	pinSolenoid1.Low()
-	pinSolenoid2.Low()
-	pinSolenoid3.Low()
-	pinSolenoid4.Low()
-	pinSolenoid5.Low()
-	pinSolenoid6.Low()
-	pinSolenoid7.Low()
-	pinSolenoid8.Low()
+	pinSolenoid1.High()
+	pinSolenoid2.High()
+	pinSolenoid3.High()
+	pinSolenoid4.High()
+	pinSolenoid5.High()
+	pinSolenoid6.High()
+	pinSolenoid7.High()
+	pinSolenoid8.High()
 }
 
 // Interrupt handler for flow sensor edge pulse
