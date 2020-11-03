@@ -33,10 +33,6 @@ const (
 	sizeSixteenOunce int = 1275
 	/* 	TODO:				Create helper function to calucate # pulses from size (maybe) */
 
-	//Define number of taps on system (# of physical taps -1)
-	//Ex: A 4 tap system would be = 3
-	numberOfTaps int = 7
-	/*	TODO:				Get this info from the API!!! 						*/
 )
 
 
@@ -49,10 +45,17 @@ type Order struct {
 
 
 var (
-//user string
-//drinkSize int
-//tap int
-//tapSize = [numberOfTaps]int{}
+	//This is how we will set the tap system's ID
+	tapID int = 1
+
+	//Define number of taps on system (# of physical taps -1)
+	//Ex: A 4 tap system would be = 3
+	numberOfTaps int = 7
+	/*	TODO:				Get this info from the API CALL!!! 						*/
+
+	//drinkSize int
+	//tap int
+	//tapSize = [numberOfTaps]int{}
 )
 
 
@@ -86,7 +89,9 @@ func main() {
 	fmt.Println("GPIO Initialized!")
 
 	//Websocket Setup/Initialization
+	//Create a channel for the intterupt
 	interrupt := make(chan os.Signal, 1)
+	//Create a signal to notify
 	signal.Notify(interrupt, os.Interrupt)
 
 	socket := gowebsocket.New("ws://echo.websocket.org/")
@@ -104,11 +109,11 @@ func main() {
 	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
 		log.Println("Received message - " + message)
 	}
-
+	/*
 	socket.OnPingReceived = func(data string, socket gowebsocket.Socket) {
 		log.Println("Received ping - " + data)
 	}
-
+	*/
     socket.OnPongReceived = func(data string, socket gowebsocket.Socket) {
 		log.Println("Received pong - " + data)
 	}
@@ -120,7 +125,7 @@ func main() {
 
 	socket.Connect()
 
-  socket.SendText("Thoughtworks guys are awesome !!!!")
+  socket.SendText("Tap ID and Order submitted!")
 
 
 
@@ -173,7 +178,9 @@ func main() {
 	endProgram(socket)
 }
 
+
 func endProgram(socket gowebsocket.Socket){
+	socket.
 	//Close websocket
 	socket.Close()
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
