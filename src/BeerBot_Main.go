@@ -93,6 +93,8 @@ func main() {
 
 	socket.OnConnectError = func(err error, socket gowebsocket.Socket) {
 		log.Fatal("Received connect error - ", err)
+		//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
+		endProgram(socket)
 	}
 
 	socket.OnConnected = func(socket gowebsocket.Socket) {
@@ -167,19 +169,17 @@ func main() {
 //############ TEST/DEMO CODE BLOCK ############################################
 
 
-	for {
-		select {
-		case <-interrupt:
-			log.Println("interrupt")
-			socket.Close()
-			return
-		}
-	}
+	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
+	endProgram(socket)
+}
 
-
+func endProgram(socket gowebsocket.Socket){
+	//Close websocket
+	socket.Close()
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
 	gpio.Close()
-
+	log.Println("Program ended!")
+	os.Exit(1)
 }
 
 
