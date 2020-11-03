@@ -248,7 +248,7 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 	}
 }
 
-func closeSolenoids(){
+func closeSolenoids() {
 	pinSolenoid1.Low()
 	pinSolenoid2.Low()
 	pinSolenoid3.Low()
