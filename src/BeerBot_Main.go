@@ -161,7 +161,7 @@ func main() {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
-  	case <-time.After(20 * time.Second):
+  	case <-time.After(60 * time.Second):
 		  fmt.Println("out of time :(")
 		}
 //############ TEST/DEMO CODE BLOCK ############################################
