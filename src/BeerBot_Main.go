@@ -111,7 +111,6 @@ func main() {
 
 	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
 		log.Println("Received message - " + message)
-		failedPingCounter = 0
 
 		if message == testMessage {
 			//############ TEST/DEMO CODE BLOCK ######################################
@@ -144,13 +143,7 @@ func main() {
 	socket.OnPingReceived = func(data string, socket gowebsocket.Socket) {
 		log.Println("Received ping - " + data)
 		//Check whether connection is alive
-		if err != nil{
-			//If we detected an error with the ping then
-			failedPingCounter++
-			connectionAliveTest(failedPingCounter)
-		} else {
-			connectionAliveTest(failedPingCounter)
-		}
+		connectionAliveTest(failedPingCounter)
 	}
 
 	socket.OnPongReceived = func(data string, socket gowebsocket.Socket) {
