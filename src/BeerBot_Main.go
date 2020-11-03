@@ -78,13 +78,21 @@ func togglePour(customerOrder Order) {
 }
 
 
-//Setup websocket connection
-func websocketSetup() bool{
+// ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
+func main() {
+
+	//Initialize GPIO interfaces
+	gpio_rpi.GPIO_INIT()
+	fmt.Println("GPIO Initialized!")
+
+	//Websocket Setup/Initialization
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt)
+
 	socket := gowebsocket.New("ws://echo.websocket.org/")
 
 	socket.OnConnectError = func(err error, socket gowebsocket.Socket) {
 		log.Fatal("Received connect error - ", err)
-		return false
 	}
 
 	socket.OnConnected = func(socket gowebsocket.Socket) {
@@ -109,21 +117,11 @@ func websocketSetup() bool{
 	}
 
 	socket.Connect()
-	return true
-}
+
+  socket.SendText("Thoughtworks guys are awesome !!!!")
 
 
-// ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
-func main() {
 
-	//Initialize GPIO pins
-	gpio_rpi.GPIO_INIT()
-	fmt.Println("GPIO Initialized!")
-
-	//Setup websocket connection
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt)
-	websocketInitCheck := websocketSetup()
 
 	//Create struct for verify response
 	type verifyResponse struct {
@@ -136,21 +134,6 @@ func main() {
 
 	type processResponse struct {
 		Processed bool `json:"processed"`
-	}
-
-
-
-
-	//Websocket echo test
-  socket.SendText("Thoughtworks guys are awesome !!!!")
-
-	for {
-		select {
-		case <-interrupt:
-			log.Println("interrupt")
-
-			return
-		}
 	}
 
 
@@ -184,9 +167,15 @@ func main() {
 //############ TEST/DEMO CODE BLOCK ############################################
 
 
+	for {
+		select {
+		case <-interrupt:
+			log.Println("interrupt")
+			socket.Close()
+			return
+		}
+	}
 
-	//Close our websocket
-	socket.Close()
 
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
 	gpio.Close()
