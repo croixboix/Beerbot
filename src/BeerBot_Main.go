@@ -46,7 +46,7 @@ var (
 
 	//Keeps track of whether websocket connection is alive
 	websocketConnectionAlive bool = false
-
+	failedPingCounter int = 0
 
 	//Testing variables below ONLY
 	testMessage string = "Tap ID and Order submitted!"
@@ -93,7 +93,8 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	//Websocket Setup/Initialization
+
+//################# Websocket Setup/Initialization #############################
 	socket := gowebsocket.New("ws://echo.websocket.org/")
 
 	socket.OnConnectError = func(err error, socket gowebsocket.Socket) {
@@ -110,18 +111,17 @@ func main() {
 
 	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
 		log.Println("Received message - " + message)
+		failedPingCounter = 0
+
 		if message == testMessage {
-			//############ TEST/DEMO CODE BLOCK ############################################
+			//############ TEST/DEMO CODE BLOCK ######################################
 				//TEST VALUES HERE~~~~~~~~~~~~~~~
 				var user string = "test"
-				//tap = numberOfTaps
-				//tapSize[tap-1] = sizeSixOunce*/
-				//func newOrder(user string, tap []int, drinkSize []int)
 				var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
 				testOrder := newOrder(user, testTapOrder)
 
 
-				//This is just a timeout function so that the program will timeout and run gpio.Close() below
+				//This is just a timeout function so that the program will timeout
 				c1 := make(chan string, 1)
 			  // Run your long running function in it's own goroutine and pass back it's
 				 // response into our channel.
@@ -143,8 +143,18 @@ func main() {
 
 	socket.OnPingReceived = func(data string, socket gowebsocket.Socket) {
 		log.Println("Received ping - " + data)
-		//Flag that the connection is alive
-		connectionAliveTest()
+		//Check whether connection is alive
+		if err != nil{
+			//If we detected an error with the ping then
+			failedPingCounter++
+			connectionAliveTest(failedPingCounter)
+		} else {
+			connectionAliveTest(failedPingCounter)
+		}
+	}
+
+	socket.OnPongReceived = func(data string, socket gowebsocket.Socket) {
+		log.Println("Received pong - " + data)
 	}
 
 	socket.OnDisconnected = func(err error, socket gowebsocket.Socket) {
@@ -157,13 +167,17 @@ func main() {
   socket.SendText(testMessage)
 
 	for websocketConnectionAlive == true{
-
+		//Check for ctrl-c CLI input to end program cleanly
 		select {
 			case <-interrupt:
 				log.Println("Ctrl-c input detected, exiting cleanly")
 				endProgram(socket)
 				return
 			}
+
+			/*
+			TODO: ADD GUI CODE HERE
+			*/
 	}
 
 
@@ -183,8 +197,12 @@ func endProgram(socket gowebsocket.Socket){
 }
 
 
-func connectionAliveTest(){
-	websocketConnectionAlive = true
+func connectionAliveTest(failedPingCounter int){
+	if failedPingCounter >= 20{
+		websocketConnectionAlive = false
+	} else {
+		websocketConnectionAlive = true
+	}
 }
 
 
