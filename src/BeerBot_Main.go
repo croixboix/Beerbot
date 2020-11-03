@@ -88,11 +88,6 @@ func main() {
 	fmt.Println("GPIO Initialized!")
 
 	//Websocket Setup/Initialization
-	//Create a channel for the intterupt
-	interrupt := make(chan os.Signal, 1)
-	//Create a signal to notify
-	signal.Notify(interrupt, os.Interrupt)
-
 	socket := gowebsocket.New("ws://echo.websocket.org/")
 
 	socket.OnConnectError = func(err error, socket gowebsocket.Socket) {
@@ -179,7 +174,6 @@ func main() {
 
 
 func endProgram(socket gowebsocket.Socket){
-	socket.
 	//Close websocket
 	socket.Close()
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
