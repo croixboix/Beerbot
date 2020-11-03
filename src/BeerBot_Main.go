@@ -84,6 +84,7 @@ func websocketSetup() bool{
 
 	socket.OnConnectError = func(err error, socket gowebsocket.Socket) {
 		log.Fatal("Received connect error - ", err)
+		return false
 	}
 
 	socket.OnConnected = func(socket gowebsocket.Socket) {
@@ -108,6 +109,7 @@ func websocketSetup() bool{
 	}
 
 	socket.Connect()
+	return true
 }
 
 
