@@ -164,7 +164,7 @@ func endProgram(socket gowebsocket.Socket){
 }
 
 
-func isConnectionAlive bool(){
+func isConnectionAlive() bool{
 	return true
 }
 
