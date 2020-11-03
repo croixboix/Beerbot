@@ -116,7 +116,7 @@ func GPIO_INIT() {
 
 }
 
-func closeSolenoids() {
+func CloseSolenoids() {
 	pinSolenoid1.Low()
 	pinSolenoid2.Low()
 	pinSolenoid3.Low()
