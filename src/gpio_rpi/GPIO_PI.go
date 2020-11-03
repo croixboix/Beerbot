@@ -248,6 +248,17 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 	}
 }
 
+func closeSolenoids(){
+	pinSolenoid1.Low()
+	pinSolenoid2.Low()
+	pinSolenoid3.Low()
+	pinSolenoid4.Low()
+	pinSolenoid5.Low()
+	pinSolenoid6.Low()
+	pinSolenoid7.Low()
+	pinSolenoid8.Low()
+}
+
 //DEBUGGING PURPOSES ONLY!
 func goid() int {
 	var buf [64]byte

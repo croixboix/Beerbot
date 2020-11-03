@@ -184,6 +184,7 @@ func endProgram(socket gowebsocket.Socket){
 	//Close websocket
 	socket.Close()
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
+	gpio_rpi.closeSolenoids()
 	gpio.Close()
 	log.Println("Program ended cleanly!")
 	os.Exit(1)
@@ -197,6 +198,14 @@ func connectionAliveTest(failedPingCounter int){
 		websocketConnectionAlive = true
 	}
 }
+
+
+
+
+
+
+
+
 
 
 
