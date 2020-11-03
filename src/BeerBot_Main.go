@@ -157,18 +157,14 @@ func main() {
   socket.SendText(testMessage)
 
 	for websocketConnectionAlive == true{
-		for {
+
 		select {
-		case <-interrupt:
-			log.Println("ctrl-c interrupt, exit cleanly!")
-			endProgram(socket)
-			return
-		}
-
+			case <-interrupt:
+				log.Println("interrupt")
+				endProgram(socket)
+				return
+			}
 	}
-
-	}
-
 
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
