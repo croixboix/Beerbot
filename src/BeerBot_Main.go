@@ -56,7 +56,6 @@ var (
 )
 
 
-
 //Initiates pour routine (this should be the last thing called, serves order)
 func togglePour(customerOrder Order) {
 	//Create a wait group for goroutines
@@ -79,31 +78,8 @@ func togglePour(customerOrder Order) {
 }
 
 
-// ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
-func main() {
-
-	//Initialize GPIO pins
-	gpio_rpi.GPIO_INIT()
-	fmt.Println("GPIO Initialized!")
-
-	//Create struct for verify response
-	type verifyResponse struct {
-		ID        int    `json:"id"`
-		Username  string `json:"username"`
-		CreatedAt string `json:"created_at"`
-		UpdatedAt string `json:"updated_at"`
-		URL       string `json:"url"`
-	}
-
-	type processResponse struct {
-		Processed bool `json:"processed"`
-	}
-
-
-	//Websocket echo test
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt)
-
+//Setup websocket connection
+func websocketSetup() bool{
 	socket := gowebsocket.New("ws://echo.websocket.org/")
 
 	socket.OnConnectError = func(err error, socket gowebsocket.Socket) {
@@ -132,14 +108,45 @@ func main() {
 	}
 
 	socket.Connect()
+}
 
+
+// ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
+func main() {
+
+	//Initialize GPIO pins
+	gpio_rpi.GPIO_INIT()
+	fmt.Println("GPIO Initialized!")
+
+	//Setup websocket connection
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt)
+	websocketInitCheck := websocketSetup()
+
+	//Create struct for verify response
+	type verifyResponse struct {
+		ID        int    `json:"id"`
+		Username  string `json:"username"`
+		CreatedAt string `json:"created_at"`
+		UpdatedAt string `json:"updated_at"`
+		URL       string `json:"url"`
+	}
+
+	type processResponse struct {
+		Processed bool `json:"processed"`
+	}
+
+
+
+
+	//Websocket echo test
   socket.SendText("Thoughtworks guys are awesome !!!!")
 
 	for {
 		select {
 		case <-interrupt:
 			log.Println("interrupt")
-			socket.Close()
+
 			return
 		}
 	}
@@ -176,7 +183,8 @@ func main() {
 
 
 
-
+	//Close our websocket
+	socket.Close()
 
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
 	gpio.Close()
