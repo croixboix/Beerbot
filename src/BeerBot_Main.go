@@ -153,7 +153,9 @@ func main() {
 
   socket.SendText(testMessage)
 
-	for{}
+	for websocketConnectionAlive == true{
+		
+	}
 
 
 
