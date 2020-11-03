@@ -33,17 +33,16 @@ const (
 	sizeSixteenOunce int = 1275
 	/* 	TODO:				Create helper function to calucate # pulses from size (maybe) */
 
+	//Define number of taps on system (# of physical taps -1)
+	//Ex: A 4 tap system would be = 3
+	numberOfTaps int = 7
+	/*	TODO:				Get this info from the API CALL!!! 						*/
 )
 
 
 var (
 	//This is how we will set the tap system's ID
 	tapID int = 1
-
-	//Define number of taps on system (# of physical taps -1)
-	//Ex: A 4 tap system would be = 3
-	numberOfTaps int = 7
-	/*	TODO:				Get this info from the API CALL!!! 						*/
 
 	//drinkSize int
 	//tap int
