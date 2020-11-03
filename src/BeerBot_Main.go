@@ -153,6 +153,8 @@ func main() {
 
   socket.SendText(testMessage)
 
+	for{}
+
 
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
