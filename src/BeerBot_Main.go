@@ -106,7 +106,7 @@ func main() {
 	socket.OnConnected = func(socket gowebsocket.Socket) {
 		log.Println("Connected to server");
 		//Flag that the connection is alive
-		connectionAliveTest()
+		connectionAliveTest(failedPingCounter)
 	}
 
 	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
