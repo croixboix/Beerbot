@@ -44,9 +44,8 @@ var (
 	//This is how we will set the tap system's ID
 	tapID int = 1
 
-	//drinkSize int
-	//tap int
-	//tapSize = [numberOfTaps]int{}
+	//Keeps track of whether websocket connection is alive
+	websocketConnectionAlive bool = 0
 )
 
 
@@ -103,13 +102,9 @@ func main() {
 	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
 		log.Println("Received message - " + message)
 	}
-	/*
+
 	socket.OnPingReceived = func(data string, socket gowebsocket.Socket) {
 		log.Println("Received ping - " + data)
-	}
-	*/
-    socket.OnPongReceived = func(data string, socket gowebsocket.Socket) {
-		log.Println("Received pong - " + data)
 	}
 
 	socket.OnDisconnected = func(err error, socket gowebsocket.Socket) {
@@ -121,22 +116,7 @@ func main() {
 
   socket.SendText("Tap ID and Order submitted!")
 
-
-
-
-	//Create struct for verify response
-	type verifyResponse struct {
-		ID        int    `json:"id"`
-		Username  string `json:"username"`
-		CreatedAt string `json:"created_at"`
-		UpdatedAt string `json:"updated_at"`
-		URL       string `json:"url"`
-	}
-
-	type processResponse struct {
-		Processed bool `json:"processed"`
-	}
-
+	for{}
 
 
 //############ TEST/DEMO CODE BLOCK ############################################
@@ -173,6 +153,7 @@ func main() {
 }
 
 
+//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 func endProgram(socket gowebsocket.Socket){
 	//Close websocket
 	socket.Close()
@@ -180,6 +161,11 @@ func endProgram(socket gowebsocket.Socket){
 	gpio.Close()
 	log.Println("Program ended!")
 	os.Exit(1)
+}
+
+
+func isConnectionAlive bool(){
+	return true
 }
 
 
@@ -194,9 +180,24 @@ func endProgram(socket gowebsocket.Socket){
 
 
 
-
-
 /*#############################DEPRECATED/FOR REFERENCE ONLY##################*/
+
+/*
+//Create struct for verify response
+type verifyResponse struct {
+	ID        int    `json:"id"`
+	Username  string `json:"username"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+	URL       string `json:"url"`
+}
+
+type processResponse struct {
+	Processed bool `json:"processed"`
+}
+*/
+
+
 //Test code for reading from USB (STD-IN) QR scanner
 func scanCode() string {
 	var userCode string
