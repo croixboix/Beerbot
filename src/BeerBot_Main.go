@@ -85,6 +85,9 @@ func togglePour(customerOrder Order) {
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
+	//Interrupt to handle command line crtl-c and exit cleanly
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt)
 
 	//Initialize GPIO interfaces
 	gpio_rpi.GPIO_INIT()
@@ -154,7 +157,16 @@ func main() {
   socket.SendText(testMessage)
 
 	for websocketConnectionAlive == true{
-		
+		for {
+		select {
+		case <-interrupt:
+			log.Println("ctrl-c interrupt, exit cleanly!")
+			endProgram(socket)
+			return
+		}
+
+	}
+
 	}
 
 
@@ -170,7 +182,7 @@ func endProgram(socket gowebsocket.Socket){
 	socket.Close()
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
 	gpio.Close()
-	log.Println("Program ended!")
+	log.Println("Program ended cleanly!")
 	os.Exit(1)
 }
 
