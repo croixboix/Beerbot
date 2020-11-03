@@ -42,7 +42,7 @@ const (
 
 var (
 	//This is how we will set the tap system's ID
-	tapID int = 1
+	tapUUID int = 1
 
 	//Keeps track of whether websocket connection is alive
 	websocketConnectionAlive bool = false
