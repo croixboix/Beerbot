@@ -103,7 +103,7 @@ func main() {
 
 	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
 		log.Println("Received message - " + message)
-		if message = testMessage {
+		if message == testMessage {
 			//############ TEST/DEMO CODE BLOCK ############################################
 				//TEST VALUES HERE~~~~~~~~~~~~~~~
 				var user string = "test"
@@ -147,7 +147,7 @@ func main() {
 
 	socket.Connect()
 
-	testMessage string = "Tap ID and Order submitted!"
+	var testMessage string = "Tap ID and Order submitted!"
   socket.SendText(testMessage)
 
 
