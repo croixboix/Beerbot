@@ -45,7 +45,7 @@ var (
 	tapID int = 1
 
 	//Keeps track of whether websocket connection is alive
-	websocketConnectionAlive bool = 0
+	websocketConnectionAlive bool = false
 )
 
 
@@ -97,14 +97,47 @@ func main() {
 
 	socket.OnConnected = func(socket gowebsocket.Socket) {
 		log.Println("Connected to server");
+		//Flag that the connection is alive
+		connectionAliveTest()
 	}
 
 	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
 		log.Println("Received message - " + message)
+		if message = testMessage {
+			//############ TEST/DEMO CODE BLOCK ############################################
+				//TEST VALUES HERE~~~~~~~~~~~~~~~
+				var user string = "test"
+				//tap = numberOfTaps
+				//tapSize[tap-1] = sizeSixOunce*/
+				//func newOrder(user string, tap []int, drinkSize []int)
+				var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
+				testOrder := newOrder(user, testTapOrder)
+
+
+				//This is just a timeout function so that the program will timeout and run gpio.Close() below
+				c1 := make(chan string, 1)
+			  // Run your long running function in it's own goroutine and pass back it's
+				 // response into our channel.
+				go func() {
+					togglePour(*testOrder)
+					text := "togglePour Finished!"
+					c1 <- text
+					}()
+				// Listen on our channel AND a timeout channel - which ever happens first.
+				select {
+					case res := <-c1:
+						fmt.Println(res)
+			  	case <-time.After(60 * time.Second):
+					  fmt.Println("out of time :(")
+					}
+			//############ TEST/DEMO CODE BLOCK ############################################
+		}
 	}
 
 	socket.OnPingReceived = func(data string, socket gowebsocket.Socket) {
 		log.Println("Received ping - " + data)
+		//Flag that the connection is alive
+		connectionAliveTest()
 	}
 
 	socket.OnDisconnected = func(err error, socket gowebsocket.Socket) {
@@ -114,38 +147,9 @@ func main() {
 
 	socket.Connect()
 
-  socket.SendText("Tap ID and Order submitted!")
+	testMessage string = "Tap ID and Order submitted!"
+  socket.SendText(testMessage)
 
-	for{}
-
-
-//############ TEST/DEMO CODE BLOCK ############################################
-	//TEST VALUES HERE~~~~~~~~~~~~~~~
-	var user string = "test"
-	//tap = numberOfTaps
-	//tapSize[tap-1] = sizeSixOunce*/
-	//func newOrder(user string, tap []int, drinkSize []int)
-	var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
-	testOrder := newOrder(user, testTapOrder)
-
-
-	//This is just a timeout function so that the program will timeout and run gpio.Close() below
-	c1 := make(chan string, 1)
-  // Run your long running function in it's own goroutine and pass back it's
-	 // response into our channel.
-	go func() {
-		togglePour(*testOrder)
-		text := "togglePour Finished!"
-		c1 <- text
-		}()
-	// Listen on our channel AND a timeout channel - which ever happens first.
-	select {
-		case res := <-c1:
-			fmt.Println(res)
-  	case <-time.After(60 * time.Second):
-		  fmt.Println("out of time :(")
-		}
-//############ TEST/DEMO CODE BLOCK ############################################
 
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
@@ -164,8 +168,8 @@ func endProgram(socket gowebsocket.Socket){
 }
 
 
-func isConnectionAlive() bool{
-	return true
+func connectionAliveTest(){
+	websocketConnectionAlive = true
 }
 
 
