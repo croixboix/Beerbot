@@ -42,7 +42,8 @@ const (
 
 var (
 	//This is how we will set the tap system's ID
-	tapUUID int = 1
+	tapUUID string = "a"
+	tapToken string = "a"
 
 	//Keeps track of whether websocket connection is alive
 	websocketConnectionAlive bool = false
@@ -136,7 +137,7 @@ func main() {
 			  	case <-time.After(120 * time.Second):
 					  fmt.Println("out of time :(")
 					}
-			//############ TEST/DEMO CODE BLOCK ############################################
+			//############ END TEST/DEMO CODE BLOCK ############################################
 		}
 	}
 
