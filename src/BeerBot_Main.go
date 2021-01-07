@@ -41,7 +41,7 @@ const (
 
 var (
 	//This is how we will set the tap system's ID
-	tapUUID string = "a"
+	tapUUID string = "TestTap"
 	tapToken string = "a"
 
 	//Size of order queue
@@ -57,7 +57,7 @@ var (
 
 
 type Order struct {
-	//User's username
+	//Order's user/customer
 	user string
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
@@ -76,7 +76,7 @@ func togglePour(customerOrder Order) {
 		if customerOrder.tap[i] != 0 {
 			wg.Add(1)
 			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.uuid, i+1, customerOrder.tap[i])
 			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		}
 	}
@@ -106,41 +106,37 @@ func main() {
 				return
 			}
 
-			if orderQueueSize > 1 {
-				//############ TEST/DEMO CODE BLOCK ######################################
-					//TEST VALUES HERE~~~~~~~~~~~~~~~
-					var user string = "test"
-					var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
-					testOrder := newOrder(user, testTapOrder)
+		sleep(1)
+		order := getOrder(tapUUI)
 
+		if orderQueueSize > 1 {
+			//############ TEST/DEMO CODE BLOCK ######################################
+				//Get test order from API
+				testOrder := getOrder(tapUUID)
 
-					//This is just a timeout function so that the program will timeout
-					c1 := make(chan string, 1)
-					// Run your long running function in it's own goroutine and pass back it's
-					 // response into our channel.
-					go func() {
-						togglePour(*testOrder)
-						text := "togglePour Finished!"
-						c1 <- text
-						}()
-					// Listen on our channel AND a timeout channel - which ever happens first.
-					select {
-						case res := <-c1:
-							fmt.Println(res)
-						case <-time.After(120 * time.Second):
-							fmt.Println("out of time :(")
-						}
-				//############ END TEST/DEMO CODE BLOCK ######################################
-			}
+				//This is just a timeout function so that the program will timeout
+				c1 := make(chan string, 1)
+				// Run your long running function in it's own goroutine and pass back it's
+				 // response into our channel.
+				go func() {
+					togglePour(*testOrder)
+					text := "togglePour Finished!"
+					c1 <- text
+					}()
+				// Listen on our channel AND a timeout channel - which ever happens first.
+				select {
+					case res := <-c1:
+						fmt.Println(res)
+					case <-time.After(120 * time.Second):
+						fmt.Println("out of time :(")
+					}
+			//############ END TEST/DEMO CODE BLOCK ######################################
+		}
 
-			/*
-			TODO: ADD GUI CODE HERE
-			*/
 	}
 
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
-	//endProgram(socket)
 	endProgram()
 
 }
@@ -166,11 +162,8 @@ func connectionAliveTest(failedPingCounter int){
 // Tells API that order processed and deletes order from API order list
 func processOrder(uname string) []byte {
 	url := "http://96.30.245.134:3000/orders/processed"
-
 	payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
-
 	req, _ := http.NewRequest("POST", url, payload)
-
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("User-Agent", "PostmanRuntime/7.19.0")
 	req.Header.Add("Accept", "*/*")
@@ -193,65 +186,66 @@ func processOrder(uname string) []byte {
 	return body
 }
 
-//Verify that the order exists on the API order list
-func verifyOrder(uname string) []byte {
-	url := "http://96.30.245.134:3000/orders/verify"
-	payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
-	req, _ := http.NewRequest("POST", url, payload)
+
+//Get orders from the orderqueue
+func getOrders(uuid string) *Order {
+	o := Order{uuid: tapUUID}
+	fmt.Println("Fetch orders")
+	url := "http://96.30.245.134:3000/ordersqueue"
+	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
+	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("User-Agent", "PostmanRuntime/7.19.0")
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("Cache-Control", "no-cache")
+	req.Header.Add("Postman-Token", "aa411b8b-f735-484e-9f7c-2a871763a9dc,7b8a5042-c09d-47b0-a4ea-68ba0a8dda7a")
 	req.Header.Add("Host", "96.30.245.134:3000")
 	req.Header.Add("Accept-Encoding", "gzip, deflate")
 	req.Header.Add("Content-Length", "39")
 	req.Header.Add("Connection", "keep-alive")
 	req.Header.Add("cache-control", "no-cache")
+
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(res)
-	//fmt.Println(string(body))
-	return body
 
-	/*
-	    Order does exist response:
-	    {
-	      "id": 591,
-	      "username": "test",
-	      "created_at": "2019-11-15T16:31:21.321Z",
-	      "updated_at": "2019-11-15T16:31:21.321Z",
-	      "url": "http://96.30.245.134:3000/orders/591.json"
-	    }
-
-	    Order does not exist response:
-	    {
-	  	"id": null,
-	  	"username": null,
-	  	"created_at": null,
-	  	"updated_at": null,
-	  	"url": null
-	    }
-	*/
-}
-
-
-//Create a new order
-func newOrder(user string, tap []int) *Order {
-	fmt.Println("Begin new order")
-	o := Order{user: user}
-	fmt.Printf("Username: %s\n", o.user)
-	for i := 0; i <= numberOfTaps; i++ {
-		o.tap[i] = tap[i]
-		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
-		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
+	if body.user != "null"{
+		o.user = body.user
+		o.tap = body.tap
+		fmt.Printf("Username: %s\n", o.user)
+		for i := 0; i <= numberOfTaps; i++ {
+			//o.tap[i] = tap[i]
+			//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
+			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
+		}
 	}
-	/*for i := 0; i < numberOfTaps; i++ {
-		o.drinkSize[i] = drinksize[i]
-		i++
-		fmt.Printf("Drinksize on tap %d value is %d\n", i, o.drinkSize[i])
-	}*/
+
 	return &o
 }
+
+/*
+		Order does exist response:
+		{
+			"id": 591,
+			"username": "test",
+			"created_at": "2019-11-15T16:31:21.321Z",
+			"updated_at": "2019-11-15T16:31:21.321Z",
+			"url": "http://96.30.245.134:3000/orders/591.json"
+		}
+
+		Order does not exist response:
+		{
+		"id": null,
+		"username": null,
+		"created_at": null,
+		"updated_at": null,
+		"url": null
+		}
+*/
+
+
+
+
 
 
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
@@ -273,7 +267,7 @@ type processResponse struct {
 }
 */
 
-
+/*
 //Test code for reading from USB (STD-IN) QR scanner
 func scanCode() string {
 	var userCode string
@@ -293,7 +287,7 @@ func scanCode() string {
 
 	return userCode
 }
-
+*/
 
 
 /*
