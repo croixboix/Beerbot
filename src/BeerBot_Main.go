@@ -47,8 +47,8 @@ var (
 	//Size of order queue
 	orderQueueSize int = 0
 
-	//Keeps track of whether websocket connection is alive
-	//websocketConnectionAlive bool = false
+	//Keeps track of whether connection is alive
+	webConnectionAlive bool = true
 	failedPingCounter int = 0
 
 	//Testing variables below ONLY
@@ -97,7 +97,7 @@ func main() {
 	fmt.Println("GPIO Initialized!")
 
 	//Main program loop
-	for websocketConnectionAlive == true{
+	for webConnectionAlive == true{
 		//Check for ctrl-c CLI input to end program cleanly
 		select {
 			case <-interrupt:
@@ -156,10 +156,10 @@ func endProgram(){
 
 
 func connectionAliveTest(failedPingCounter int){
-	if failedPingCounter >= 20{
-		websocketConnectionAlive = false
+	if failedPingCounter >= 100{
+		webConnectionAlive = false
 	} else {
-		websocketConnectionAlive = true
+		webConnectionAlive = true
 	}
 }
 
