@@ -6,7 +6,7 @@ package main
 // Add dtoverlay=gpio-no-irq to /boot/config.txt and restart your pi
 //  This disables IRQ which may break some other GPIO libs/drivers
 import (
-	"bufio"
+	_ "bufio"
 	_ "encoding/json"
 	"time"
 	"fmt"
@@ -57,6 +57,8 @@ var (
 
 
 type Order struct {
+	//Tap's UUID
+	uuid string
 	//Order's user/customer
 	user string
 	//Tap(s) to pour on with array value being drink size
@@ -76,7 +78,7 @@ func togglePour(customerOrder Order) {
 		if customerOrder.tap[i] != 0 {
 			wg.Add(1)
 			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.uuid, i+1, customerOrder.tap[i])
+			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		}
 	}
@@ -106,8 +108,8 @@ func main() {
 				return
 			}
 
-		sleep(1)
-		order := getOrder(tapUUI)
+		time.Sleep(1*time.Second)
+		order := getOrder(tapUUID)
 
 		if orderQueueSize > 1 {
 			//############ TEST/DEMO CODE BLOCK ######################################
@@ -188,7 +190,7 @@ func processOrder(uname string) []byte {
 
 
 //Get orders from the orderqueue
-func getOrders(uuid string) *Order {
+func getOrder(uuid string) *Order {
 	o := Order{uuid: tapUUID}
 	fmt.Println("Fetch orders")
 	url := "http://96.30.245.134:3000/ordersqueue"
@@ -210,6 +212,7 @@ func getOrders(uuid string) *Order {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	if body.user != "null"{
+		orderQueueSize++
 		o.user = body.user
 		o.tap = body.tap
 		fmt.Printf("Username: %s\n", o.user)
