@@ -19,7 +19,6 @@ import (
 	"log"
 	"strings"
 	"sync"
-	"github.com/sacOO7/gowebsocket"
 )
 
 const (
@@ -45,12 +44,15 @@ var (
 	tapUUID string = "a"
 	tapToken string = "a"
 
+	//Size of order queue
+	orderQueueSize int = 0
+
 	//Keeps track of whether websocket connection is alive
-	websocketConnectionAlive bool = false
+	//websocketConnectionAlive bool = false
 	failedPingCounter int = 0
 
 	//Testing variables below ONLY
-	testMessage string = "Tap ID and Order submitted!"
+	//testMessage string = "Tap ID and Order submitted!"
 )
 
 
@@ -94,79 +96,41 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-
-//################# Websocket Setup/Initialization #############################
-	socket := gowebsocket.New("ws://echo.websocket.org/")
-
-	socket.OnConnectError = func(err error, socket gowebsocket.Socket) {
-		log.Fatal("Received connect error - ", err)
-		//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
-		endProgram(socket)
-	}
-
-	socket.OnConnected = func(socket gowebsocket.Socket) {
-		log.Println("Connected to server");
-		//Flag that the connection is alive
-		connectionAliveTest(failedPingCounter)
-	}
-
-	socket.OnTextMessage = func(message string, socket gowebsocket.Socket) {
-		log.Println("Received message - " + message)
-
-		if message == testMessage {
-			//############ TEST/DEMO CODE BLOCK ######################################
-				//TEST VALUES HERE~~~~~~~~~~~~~~~
-				var user string = "test"
-				var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
-				testOrder := newOrder(user, testTapOrder)
-
-
-				//This is just a timeout function so that the program will timeout
-				c1 := make(chan string, 1)
-			  // Run your long running function in it's own goroutine and pass back it's
-				 // response into our channel.
-				go func() {
-					togglePour(*testOrder)
-					text := "togglePour Finished!"
-					c1 <- text
-					}()
-				// Listen on our channel AND a timeout channel - which ever happens first.
-				select {
-					case res := <-c1:
-						fmt.Println(res)
-			  	case <-time.After(120 * time.Second):
-					  fmt.Println("out of time :(")
-					}
-			//############ END TEST/DEMO CODE BLOCK ############################################
-		}
-	}
-
-	socket.OnPingReceived = func(data string, socket gowebsocket.Socket) {
-		log.Println("Received ping - " + data)
-		//Check whether connection is alive
-		connectionAliveTest(failedPingCounter)
-	}
-
-	socket.OnPongReceived = func(data string, socket gowebsocket.Socket) {
-		log.Println("Received pong - " + data)
-	}
-
-	socket.OnDisconnected = func(err error, socket gowebsocket.Socket) {
-		log.Println("Disconnected from server ")
-		return
-	}
-
-	socket.Connect()
-
-  socket.SendText(testMessage)
-
+	//Main program loop
 	for websocketConnectionAlive == true{
 		//Check for ctrl-c CLI input to end program cleanly
 		select {
 			case <-interrupt:
 				log.Println("Ctrl-c input detected, exiting cleanly")
-				endProgram(socket)
+				endProgram()
 				return
+			}
+
+			if orderQueueSize > 1 {
+				//############ TEST/DEMO CODE BLOCK ######################################
+					//TEST VALUES HERE~~~~~~~~~~~~~~~
+					var user string = "test"
+					var testTapOrder = []int{sizeSixOunce, 0, 0, 0, 0, 0, 0, 0}
+					testOrder := newOrder(user, testTapOrder)
+
+
+					//This is just a timeout function so that the program will timeout
+					c1 := make(chan string, 1)
+					// Run your long running function in it's own goroutine and pass back it's
+					 // response into our channel.
+					go func() {
+						togglePour(*testOrder)
+						text := "togglePour Finished!"
+						c1 <- text
+						}()
+					// Listen on our channel AND a timeout channel - which ever happens first.
+					select {
+						case res := <-c1:
+							fmt.Println(res)
+						case <-time.After(120 * time.Second):
+							fmt.Println("out of time :(")
+						}
+				//############ END TEST/DEMO CODE BLOCK ######################################
 			}
 
 			/*
@@ -176,14 +140,13 @@ func main() {
 
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
-	endProgram(socket)
+	//endProgram(socket)
+	endProgram()
+
 }
 
-
 //Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
-func endProgram(socket gowebsocket.Socket){
-	//Close websocket
-	socket.Close()
+func endProgram(){
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
 	gpio_rpi.CloseSolenoids()
 	gpio.Close()
@@ -198,82 +161,6 @@ func connectionAliveTest(failedPingCounter int){
 	} else {
 		websocketConnectionAlive = true
 	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*#############################DEPRECATED/FOR REFERENCE ONLY##################*/
-
-/*
-//Create struct for verify response
-type verifyResponse struct {
-	ID        int    `json:"id"`
-	Username  string `json:"username"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
-	URL       string `json:"url"`
-}
-
-type processResponse struct {
-	Processed bool `json:"processed"`
-}
-*/
-
-
-//Test code for reading from USB (STD-IN) QR scanner
-func scanCode() string {
-	var userCode string
-
-	scanner := bufio.NewScanner(os.Stdin)
-
-	for scanner.Scan() {
-		fmt.Println("Scanned barcode: ", scanner.Text())
-		userCode = scanner.Text()
-		if scanner.Text() != "" {
-			break
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "reading standard input:", err)
-	}
-
-	return userCode
-}
-
-//Create a new order
-func newOrder(user string, tap []int) *Order {
-	fmt.Println("Begin new order")
-	o := Order{user: user}
-	fmt.Printf("Username: %s\n", o.user)
-	for i := 0; i <= numberOfTaps; i++ {
-		o.tap[i] = tap[i]
-		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
-		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
-	}
-	/*for i := 0; i < numberOfTaps; i++ {
-		o.drinkSize[i] = drinksize[i]
-		i++
-		fmt.Printf("Drinksize on tap %d value is %d\n", i, o.drinkSize[i])
-	}*/
-	return &o
 }
 
 // Tells API that order processed and deletes order from API order list
@@ -346,6 +233,68 @@ func verifyOrder(uname string) []byte {
 	    }
 	*/
 }
+
+
+//Create a new order
+func newOrder(user string, tap []int) *Order {
+	fmt.Println("Begin new order")
+	o := Order{user: user}
+	fmt.Printf("Username: %s\n", o.user)
+	for i := 0; i <= numberOfTaps; i++ {
+		o.tap[i] = tap[i]
+		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
+		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
+	}
+	/*for i := 0; i < numberOfTaps; i++ {
+		o.drinkSize[i] = drinksize[i]
+		i++
+		fmt.Printf("Drinksize on tap %d value is %d\n", i, o.drinkSize[i])
+	}*/
+	return &o
+}
+
+
+/*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
+
+
+
+/*
+//Create struct for verify response
+type verifyResponse struct {
+	ID        int    `json:"id"`
+	Username  string `json:"username"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+	URL       string `json:"url"`
+}
+
+type processResponse struct {
+	Processed bool `json:"processed"`
+}
+*/
+
+
+//Test code for reading from USB (STD-IN) QR scanner
+func scanCode() string {
+	var userCode string
+
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for scanner.Scan() {
+		fmt.Println("Scanned barcode: ", scanner.Text())
+		userCode = scanner.Text()
+		if scanner.Text() != "" {
+			break
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
+
+	return userCode
+}
+
+
 
 /*
 func main() {
