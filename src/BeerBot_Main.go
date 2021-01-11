@@ -274,8 +274,6 @@ func checkOrders(uuid string){
 	if verifyData.ID != 0{
 		orderQueueSize++
 		}
-	}
-
 }
 
 /*
