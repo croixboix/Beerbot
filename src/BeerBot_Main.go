@@ -60,7 +60,7 @@ type Order struct {
 	//Tap's UUID
 	uuid string
 	//Order's user/customer
-	user string
+	user int
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
 }
