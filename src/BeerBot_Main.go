@@ -6,7 +6,7 @@ package main
 // Add dtoverlay=gpio-no-irq to /boot/config.txt and restart your pi
 //  This disables IRQ which may break some other GPIO libs/drivers
 import (
-	"bufio"
+	_"bufio"
 	"encoding/json"
 	"time"
 	"fmt"
@@ -65,6 +65,18 @@ type Order struct {
 	tap [numberOfTaps + 1]int
 }
 
+type verifyResponse struct {
+	ID        int    `json:"id"`
+	Username  string `json:"username"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+	URL       string `json:"url"`
+}
+
+type processResponse struct {
+	Processed bool `json:"processed"`
+}
+
 
 //Initiates pour routine (this should be the last thing called, serves order)
 func togglePour(customerOrder Order) {
@@ -97,18 +109,6 @@ func main() {
 	//Initialize GPIO interfaces
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
-
-	type verifyResponse struct {
-		ID        int    `json:"id"`
-		Username  string `json:"username"`
-		CreatedAt string `json:"created_at"`
-		UpdatedAt string `json:"updated_at"`
-		URL       string `json:"url"`
-	}
-
-	type processResponse struct {
-		Processed bool `json:"processed"`
-	}
 
 	//Main program loop
 	for webConnectionAlive == true{
