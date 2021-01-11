@@ -6,7 +6,7 @@ package main
 // Add dtoverlay=gpio-no-irq to /boot/config.txt and restart your pi
 //  This disables IRQ which may break some other GPIO libs/drivers
 import (
-	_ "bufio"
+	"bufio"
 	"encoding/json"
 	"time"
 	"fmt"
