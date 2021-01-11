@@ -67,10 +67,10 @@ type Order struct {
 
 type orderResponse struct {
 	userID    int    	`json:"user_id"`
-	price  		decimal `json:"price"`
+	price  		string  `json:"price"`
 	beerID	 	int 		`json:"beer_id"`
 	tapID 		int 		`json:"tap_id"`
-	size      decimal	`json:"oz"`
+	size      string	`json:"oz"`
 	wasPoured bool		`json:"was_poured"`
 	createdAt	string	`json:"created_at"`
 	updatedAt	string	`json:"updated_at"`
