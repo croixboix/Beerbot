@@ -207,7 +207,7 @@ func getOrder(uuid string) *Order {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	var verifyResp []byte = verifyOrder(testOrder.user)
+	var verifyResp []byte = body
 	var verifyData verifyResponse
 
 	err := json.Unmarshal(verifyResp, &verifyData)
