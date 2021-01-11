@@ -121,7 +121,7 @@ func main() {
 			}
 
 		time.Sleep(1*time.Second)
-		order := getOrder(tapUUID)
+		checkOrders(tapUUID)
 
 		if orderQueueSize > 1 {
 			//############ TEST/DEMO CODE BLOCK ######################################
@@ -227,7 +227,7 @@ func getOrder(uuid string) *Order {
 		fmt.Println("error:", err)
 	}
 
-	if verifyData.ID != "null"{
+	if verifyData.ID != 0{
 		orderQueueSize++
 		o.user = verifyData.ID
 		//o.tap = verifyData.tap
@@ -240,6 +240,42 @@ func getOrder(uuid string) *Order {
 	}
 
 	return &o
+}
+
+
+//Check for orders to be served
+func checkOrders(uuid string){
+	fmt.Println("Fetch orders")
+	url := "http://96.30.244.56:3000/orders"
+	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Cache-Control", "no-cache")
+	req.Header.Add("Host", "96.30.244.56:3000")
+	req.Header.Add("Accept-Encoding", "gzip, deflate")
+	req.Header.Add("Content-Length", "39")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	var verifyResp []byte = body
+	var verifyData verifyResponse
+
+	err := json.Unmarshal(verifyResp, &verifyData)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	//Check for orders
+	if verifyData.ID != 0{
+		orderQueueSize++
+		}
+	}
+
 }
 
 /*
