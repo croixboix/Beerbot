@@ -98,6 +98,18 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
+	type verifyResponse struct {
+		ID        int    `json:"id"`
+		Username  string `json:"username"`
+		CreatedAt string `json:"created_at"`
+		UpdatedAt string `json:"updated_at"`
+		URL       string `json:"url"`
+	}
+
+	type processResponse struct {
+		Processed bool `json:"processed"`
+	}
+
 	//Main program loop
 	for webConnectionAlive == true{
 		//Check for ctrl-c CLI input to end program cleanly
