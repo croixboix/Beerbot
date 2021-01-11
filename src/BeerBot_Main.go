@@ -65,12 +65,17 @@ type Order struct {
 	tap [numberOfTaps + 1]int
 }
 
-type verifyResponse struct {
-	ID        int    `json:"id"`
-	Username  string `json:"username"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
-	URL       string `json:"url"`
+type orderResponse struct {
+	userID    int    	`json:"user_id"`
+	price  		decimal `json:"price"`
+	beerID	 	int 		`json:"beer_id"`
+	tapID 		int 		`json:"tap_id"`
+	size      decimal	`json:"oz"`
+	wasPoured bool		`json:"was_poured"`
+	createdAt	string	`json:"created_at"`
+	updatedAt	string	`json:"updated_at"`
+	//t.index ["beer_id"], name: "index_orders_on_beer_id"
+	//t.index ["user_id"], name: "index_orders_on_user_id"
 }
 
 type processResponse struct {
@@ -121,8 +126,11 @@ func main() {
 			}
 
 		time.Sleep(1*time.Second)
+
+		//Check order queue for orders to pull
 		checkOrders(tapUUID)
 
+		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
 			//############ TEST/DEMO CODE BLOCK ######################################
 				//Get test order from API
@@ -220,16 +228,16 @@ func getOrder(uuid string) *Order {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	var verifyResp []byte = body
-	var verifyData verifyResponse
+	var verifyData orderResponse
 
 	err := json.Unmarshal(verifyResp, &verifyData)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
 
-	if verifyData.ID != 0{
+	if verifyData.userID != 0{
 		orderQueueSize++
-		o.user = verifyData.ID
+		o.user = verifyData.userID
 		//o.tap = verifyData.tap
 		fmt.Printf("Username: %s\n", o.user)
 		for i := 0; i <= numberOfTaps; i++ {
@@ -263,7 +271,7 @@ func checkOrders(uuid string){
 	body, _ := ioutil.ReadAll(res.Body)
 
 	var verifyResp []byte = body
-	var verifyData verifyResponse
+	var verifyData orderResponse
 
 	err := json.Unmarshal(verifyResp, &verifyData)
 	if err != nil {
@@ -271,7 +279,7 @@ func checkOrders(uuid string){
 	}
 
 	//Check for orders
-	if verifyData.ID != 0{
+	if verifyData.userID != 0{
 		orderQueueSize++
 		}
 }
