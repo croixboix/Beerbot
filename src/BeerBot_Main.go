@@ -227,10 +227,10 @@ func getOrder(uuid string) *Order {
 		fmt.Println("error:", err)
 	}
 
-	if body.user != "null"{
+	if verifyData.ID != "null"{
 		orderQueueSize++
-		o.user = body.user
-		o.tap = body.tap
+		o.user = verifyData.ID
+		//o.tap = verifyData.tap
 		fmt.Printf("Username: %s\n", o.user)
 		for i := 0; i <= numberOfTaps; i++ {
 			//o.tap[i] = tap[i]
