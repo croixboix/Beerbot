@@ -7,7 +7,7 @@ package main
 //  This disables IRQ which may break some other GPIO libs/drivers
 import (
 	_ "bufio"
-	_ "encoding/json"
+	"encoding/json"
 	"time"
 	"fmt"
 	"github.com/warthog618/gpio"
