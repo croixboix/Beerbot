@@ -66,16 +66,13 @@ type Order struct {
 }
 
 type orderResponse struct {
+	orderID		int			`json:"id"`
 	userID    int    	`json:"user_id"`
-	price  		string  `json:"price"`
-	beerID	 	int 		`json:"beer_id"`
 	tapID 		int 		`json:"tap_id"`
+	beerID	 	int 		`json:"beer_id"`
+	price  		string  `json:"price"`
 	size      string	`json:"oz"`
 	wasPoured bool		`json:"was_poured"`
-	createdAt	string	`json:"created_at"`
-	updatedAt	string	`json:"updated_at"`
-	//t.index ["beer_id"], name: "index_orders_on_beer_id"
-	//t.index ["user_id"], name: "index_orders_on_user_id"
 }
 
 type processResponse struct {
@@ -183,7 +180,21 @@ func connectionAliveTest(failedPingCounter int){
 
 // Tells API that order processed and deletes order from API order list
 func processOrder(uname string) []byte {
-	url := "http://96.30.244.56:3000/orders/processed"
+
+	/*
+	*
+	NEED TO DO A PUT and update attribute: was_poured
+	PUT http://96.30.244.56:3000/api/v1/tap_orders/#
+	{
+	order:
+	{
+    	"id": 1,
+    	"was_poured": true
+    }
+	}
+	*/
+
+	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("POST", url, payload)
 	req.Header.Add("Content-Type", "application/json")
@@ -209,9 +220,18 @@ func processOrder(uname string) []byte {
 
 //Get orders from the orderqueue
 func getOrder(uuid string) *Order {
+
+	/*
+
+	"http://96.30.244.56:3000/api/v1/tap_orders/#"
+	Returns that specific order #'s data
+
+	*/
+
+
 	o := Order{uuid: tapUUID}
 	fmt.Println("Fetch orders")
-	url := "http://96.30.244.56:3000/orders"
+	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
@@ -253,8 +273,15 @@ func getOrder(uuid string) *Order {
 
 //Check for orders to be served
 func checkOrders(uuid string){
+
+	/*
+	http://96.30.244.56:3000/api/v1/tap_orders
+	  Returns an array of currently open orders
+	*/
+
+
 	fmt.Println("Fetch orders")
-	url := "http://96.30.244.56:3000/orders"
+	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
@@ -284,25 +311,7 @@ func checkOrders(uuid string){
 		}
 }
 
-/*
-		Order does exist response:
-		{
-			"id": 591,
-			"username": "test",
-			"created_at": "2019-11-15T16:31:21.321Z",
-			"updated_at": "2019-11-15T16:31:21.321Z",
-			"url": "http://96.30.244.56:3000/orders/591.json"
-		}
 
-		Order does not exist response:
-		{
-		"id": null,
-		"username": null,
-		"created_at": null,
-		"updated_at": null,
-		"url": null
-		}
-*/
 
 
 
