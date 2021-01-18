@@ -64,13 +64,13 @@ type Order struct {
 }
 
 type OrderResponse struct {
-	orderID		int			`json:id`
-	userID    int    	`json:"user_id"`
-	tapID 		int 		`json:"tap_id"`
-	beerID	 	int 		`json:"beer_id"`
-	price  		float32 `json:"price"`
-	wasPoured bool		`json:"was_poured"`
-	size      float32	`json:"oz"`
+	OrderID		int			`json:"id"`
+	UserID    int    	`json:"user_id"`
+	TapID 		int 		`json:"tap_id"`
+	BeerID	 	int 		`json:"beer_id"`
+	Price  		float32 `json:"price"`
+	WasPoured bool		`json:"was_poured"`
+	Size      float32	`json:"oz"`
 }
 
 type ProcessResponse struct {
@@ -170,13 +170,13 @@ func getOrders(uuid string) *Order {
 	}
 
 	fmt.Println("Verify Order Response Dump:")
-	fmt.Println("orderID: ", verifyData.userID)
-	fmt.Println("userID: ", verifyData.userID)
-	fmt.Println("tapID: ", verifyData.tapID)
-	fmt.Println("beerID: ", verifyData.beerID)
-	fmt.Println("price: ", verifyData.price)
-	fmt.Println("size: ", verifyData.size)
-	fmt.Println("wasPoured: ", verifyData.wasPoured)
+	fmt.Println("orderID: ", verifyData.UserID)
+	fmt.Println("userID: ", verifyData.UserID)
+	fmt.Println("tapID: ", verifyData.TapID)
+	fmt.Println("beerID: ", verifyData.BeerID)
+	fmt.Println("price: ", verifyData.Price)
+	fmt.Println("size: ", verifyData.Size)
+	fmt.Println("wasPoured: ", verifyData.WasPoured)
 
 	/*
 	if verifyData.userID != 0{
