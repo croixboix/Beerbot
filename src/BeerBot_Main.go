@@ -38,7 +38,6 @@ const (
 	/*	TODO:				Get this info from the API CALL!!! 						*/
 )
 
-
 var (
 	//This is how we will set the tap system's ID
 	tapUUID string = "TestTap"
@@ -55,7 +54,6 @@ var (
 	//testMessage string = "Tap ID and Order submitted!"
 )
 
-
 type Order struct {
 	//Tap's UUID
 	uuid string
@@ -65,28 +63,18 @@ type Order struct {
 	tap [numberOfTaps + 1]int
 }
 
+type orderResponse struct {
+	orderID		int			`json:"id"`
+	userID    int    	`json:"user_id"`
+	tapID 		int 		`json:"tap_id"`
+	beerID	 	int 		`json:"beer_id"`
+	price  		string  `json:"price"`
+	size      string	`json:"oz"`
+	wasPoured bool		`json:"was_poured"`
+}
 
-
-
-//Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order) {
-	//Create a wait group for goroutines
-	var wg sync.WaitGroup
-	//wg.Add(numberOfTaps + 1)
-	fmt.Println("Created goroutine wait groups!")
-	//Solenoid normal state = closed
-	for i := 0; i <= numberOfTaps; i++ {
-		//fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-		if customerOrder.tap[i] != 0 {
-			wg.Add(1)
-			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-		}
-	}
-	// Wait for all goroutines to be finished
-	wg.Wait()
-	fmt.Println("Finished all go routines!")
+type processResponse struct {
+	Processed bool `json:"processed"`
 }
 
 
@@ -148,32 +136,10 @@ func main() {
 
 }
 
-//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
-func endProgram(){
-	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
-	gpio_rpi.CloseSolenoids()
-	gpio.Close()
-	log.Println("Program ended cleanly!")
-	os.Exit(1)
-}
-
 
 //Get orders from the orderqueue
 func getOrders(uuid string) *Order {
 
-	type orderResponse struct {
-		orderID		int			`json:"id"`
-		userID    int    	`json:"user_id"`
-		tapID 		int 		`json:"tap_id"`
-		beerID	 	int 		`json:"beer_id"`
-		price  		string  `json:"price"`
-		size      string	`json:"oz"`
-		wasPoured bool		`json:"was_poured"`
-	}
-
-	type processResponse struct {
-		Processed bool `json:"processed"`
-	}
 	fmt.Println("getOrders start!")
 
 	o := Order{uuid: tapUUID}
@@ -282,10 +248,36 @@ func connectionAliveTest(failedPingCounter int){
 }
 
 
+//Initiates pour routine (this should be the last thing called, serves order)
+func togglePour(customerOrder Order) {
+	//Create a wait group for goroutines
+	var wg sync.WaitGroup
+	//wg.Add(numberOfTaps + 1)
+	fmt.Println("Created goroutine wait groups!")
+	//Solenoid normal state = closed
+	for i := 0; i <= numberOfTaps; i++ {
+		//fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		if customerOrder.tap[i] != 0 {
+			wg.Add(1)
+			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
+			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		}
+	}
+	// Wait for all goroutines to be finished
+	wg.Wait()
+	fmt.Println("Finished all go routines!")
+}
 
 
-
-
+//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
+func endProgram(){
+	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
+	gpio_rpi.CloseSolenoids()
+	gpio.Close()
+	log.Println("Program ended cleanly!")
+	os.Exit(1)
+}
 
 
 
