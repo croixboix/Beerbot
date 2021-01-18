@@ -104,7 +104,7 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		userOrders := getOrders(tapUUID)
+		userOrders[] := getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
@@ -143,7 +143,7 @@ func main() {
 func getOrders(uuid string) *Order {
 	o := Order{uuid: tapUUID}
 
-	url := "http://96.30.244.56:3000/api/v1/tap_orders/1"
+	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
@@ -158,7 +158,10 @@ func getOrders(uuid string) *Order {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	//fmt.Println("body: ", string(body))
+	fmt.Println("body: ", string(body))
+
+
+
 
 	var verifyResp []byte = body
 	var verifyData OrderResponse
