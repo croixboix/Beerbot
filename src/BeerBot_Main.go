@@ -148,7 +148,7 @@ func main() {
 
 //Get orders from the orderqueue
 func getOrders(uuid string) *[]Order {
-	var o []Order := Order{uuid: tapUUID}
+	var o []Order
 
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	req, _ := http.NewRequest("GET", url, nil)
