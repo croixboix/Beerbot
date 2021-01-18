@@ -120,11 +120,7 @@ func main() {
 	//Main program loop
 	for webConnectionAlive == true{
 
-
-		fmt.Println("Before time.sleep 1 sec")
 		time.Sleep(1*time.Second)
-
-		fmt.Println("before getOrders")
 
 		//Check order queue for orders to pull
 		testOrder := getOrders(tapUUID)
@@ -242,6 +238,9 @@ func getOrders(uuid string) *Order {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
+	fmt.Println(res)
+	fmt.Println(string(body))
+
 	var verifyResp []byte = body
 	var verifyData orderResponse
 
@@ -250,9 +249,6 @@ func getOrders(uuid string) *Order {
 		fmt.Println("error:", err)
 	}
 
-
-	fmt.Println("verifyResp: ", verifyResp)
-	fmt.Println("verifyData: ", verifyData)
 
 	if verifyData.userID != 0{
 		orderQueueSize++
