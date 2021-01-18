@@ -170,7 +170,7 @@ func getOrders(uuid string) *Order {
 	fmt.Println("verifyData: ", verifyData)
 	//fmt.Println("userID: ", verifyData.UserID)
 
-	if verifyData.userID != 0{
+	if verifyData.UserID != 0{
 		orderQueueSize++
 		o.user = verifyData.UserID
 		//o.tap = verifyData.tap
