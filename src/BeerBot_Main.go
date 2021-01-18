@@ -180,7 +180,7 @@ func getOrders(uuid string) *Order {
 		pulses, errPulseConversion := (strconv.Atoi(verifyData.Size))
 		fmt.Println("pulses: ", pulses)
 		if errPulseConversion != nil {
-    	fmt.Println("size to pulse conversion error", err)
+    	fmt.Println("size to pulse conversion error", errPulseConversion)
    	}
 		o.tap[verifyData.TapID] = pulses
 		fmt.Printf("Tap # %d value(drink size) is \n", o.tap[verifyData.TapID])
