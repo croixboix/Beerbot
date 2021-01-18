@@ -182,12 +182,11 @@ func getOrders(uuid string) *Order {
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", err)
    	}
-
 		o.tap[verifyData.TapID] = pulses
 		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
 		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
-
-
+		
+	}
 
 	fmt.Println("o: ", o)
 
