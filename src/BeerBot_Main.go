@@ -175,9 +175,9 @@ func getOrders(uuid string) *Order {
 		orderQueueSize++
 		o.user = verifyData.UserID
 		fmt.Println("Order Username: ", o.user)
-		fmt.Println("verifyData.Size: ", verifyData.Size)
+
 		//# pulses = (size in floz) / 0.012549
-		pulses, errPulseConversion := (strconv.Atoi(verifyData.Size))
+		pulses, errPulseConversion := (strconv.ParseFloat(verifyData.Size,32))
 		fmt.Println("pulses: ", pulses)
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", errPulseConversion)
