@@ -109,6 +109,7 @@ func main() {
 	signal.Notify(interrupt, os.Interrupt)
 	go func() {
         <-c
+				fmt.Println("ctrl-c interrupt, exit cleanly!")
         endProgram()
         os.Exit(1)
     }()
