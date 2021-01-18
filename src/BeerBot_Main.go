@@ -167,6 +167,7 @@ func getOrders(uuid string) *Order {
 	var verifyData orderResponse
 
 	fmt.Println("verifyResp: ", string(verifyResp))
+	fmt.Println("verifyData: ", verifyData)
 
 	err := json.Unmarshal(verifyResp, &verifyData)
 	if err != nil {
