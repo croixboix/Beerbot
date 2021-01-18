@@ -145,7 +145,6 @@ func getOrders(uuid string) *Order {
 	o := Order{uuid: tapUUID}
 
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
-	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
@@ -164,10 +163,10 @@ func getOrders(uuid string) *Order {
 
 
 
-	var verifyResp []byte = body
-	var verifyData OrderResponse
+	var verifyResp []byte := body
+	var verifyData []OrderResponse
 
-	err := json.Unmarshal(verifyResp, &verifyData)
+	err := json.Unmarshal([]byte(verifyResp), &verifyData)
 	if err != nil {
 		fmt.Println("unmarshal error:", err)
 	}
