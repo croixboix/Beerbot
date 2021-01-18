@@ -125,13 +125,13 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		getOrders(tapUUID)
+		testOrder := getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
 			//############ TEST/DEMO CODE BLOCK ######################################
 				//Get test order from API
-				testOrder := getOrder(tapUUID)
+
 
 				//This is just a timeout function so that the program will timeout
 				c1 := make(chan string, 1)
@@ -219,7 +219,7 @@ func processOrder(uname string) []byte {
 
 
 //Get orders from the orderqueue
-func getOrder(uuid string) *Order {
+func getOrders(uuid string) *Order {
 
 
 	o := Order{uuid: tapUUID}
