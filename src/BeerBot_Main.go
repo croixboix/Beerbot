@@ -122,7 +122,10 @@ func main() {
 				return
 			}
 
+		fmt.Println("Before time.sleep 1 sec")
 		time.Sleep(1*time.Second)
+
+		fmt.Println("before getOrders")
 
 		//Check order queue for orders to pull
 		testOrder := getOrders(tapUUID)
@@ -220,10 +223,10 @@ func processOrder(uname string) []byte {
 
 //Get orders from the orderqueue
 func getOrders(uuid string) *Order {
-
+	fmt.Println("getOrders start!")
 
 	o := Order{uuid: tapUUID}
-	fmt.Println("Fetch orders")
+
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
@@ -249,8 +252,8 @@ func getOrders(uuid string) *Order {
 	}
 
 
-	fmt.Printf("verifyResp: ", verifyResp)
-	fmt.Printf("verifyData: ", verifyData)
+	fmt.Println("verifyResp: ", verifyResp)
+	fmt.Println("verifyData: ", verifyData)
 
 	if verifyData.userID != 0{
 		orderQueueSize++
@@ -264,7 +267,7 @@ func getOrders(uuid string) *Order {
 		}
 	}
 
-	fmt.Printf("o: ", o)
+	fmt.Println("o: ", o)
 
 	return &o
 }
