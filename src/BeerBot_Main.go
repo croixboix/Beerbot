@@ -111,7 +111,6 @@ func main() {
         <-interrupt
 				fmt.Println("ctrl-c interrupt, exit cleanly!")
         endProgram()
-        os.Exit(1)
     }()
 
 	//Initialize GPIO interfaces
@@ -227,7 +226,7 @@ func getOrders(uuid string) *Order {
 
 	o := Order{uuid: tapUUID}
 
-	url := "http://96.30.244.56:3000/api/v1/tap_orders"
+	url := "http://96.30.244.56:3000/api/v1/tap_orders/1"
 	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
