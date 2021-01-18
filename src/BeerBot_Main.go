@@ -54,6 +54,8 @@ var (
 
 	//Testing variables below ONLY
 	//testMessage string = "Tap ID and Order submitted!"
+
+	userOrders []Order
 )
 
 type Order struct {
@@ -105,7 +107,7 @@ func main() {
 
 		//Check order queue for orders to pull
 		userOrders := getOrders(tapUUID)
-		//var userOrders []Order = getOrders(tapUUID)
+		var userOrders []Order = getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
@@ -143,6 +145,7 @@ func main() {
 //Get orders from the orderqueue
 func getOrders(uuid string) *Order {
 	o := Order{uuid: tapUUID}
+var userOrders []Order = getOrders(tapUUID)
 
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	req, _ := http.NewRequest("GET", url, nil)
@@ -160,9 +163,6 @@ func getOrders(uuid string) *Order {
 	//fmt.Println(res)
 	fmt.Println("body: ", string(body))
 
-
-
-
 	var verifyResp []byte = body
 	var verifyData []OrderResponse
 
@@ -174,6 +174,7 @@ func getOrders(uuid string) *Order {
 	fmt.Println("Verify Order Response Dump:")
 	fmt.Println("verifyData: ", verifyData)
 	//fmt.Println("userID: ", verifyData.UserID)
+
 
 /*
 	//If data isn't empty then import data into local order struct
