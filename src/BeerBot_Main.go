@@ -286,45 +286,6 @@ func endProgram(){
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
 
 
-//Check for orders to be served
-func checkOrders(uuid string){
-
-	/*
-	http://96.30.244.56:3000/api/v1/tap_orders
-	  Returns an array of currently open orders
-	*/
-
-
-	fmt.Println("Fetch orders")
-	url := "http://96.30.244.56:3000/api/v1/tap_orders"
-	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "*/*")
-	req.Header.Add("Cache-Control", "no-cache")
-	req.Header.Add("Host", "96.30.244.56:3000")
-	req.Header.Add("Accept-Encoding", "gzip, deflate")
-	req.Header.Add("Content-Length", "39")
-	req.Header.Add("Connection", "keep-alive")
-	req.Header.Add("cache-control", "no-cache")
-
-	res, _ := http.DefaultClient.Do(req)
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	var verifyResp []byte = body
-	var verifyData orderResponse
-
-	err := json.Unmarshal(verifyResp, &verifyData)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-
-	//Check for orders
-	if verifyData.userID != 0{
-		orderQueueSize++
-		}
-}
 
 
 /*
