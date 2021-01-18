@@ -105,7 +105,8 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		userOrders := getOrders(tapUUID)
+		var userOrders []Order
+		userOrders = getOrders(tapUUID)
 
 		fmt.Println("len(userOrders): ", len(userOrders))
 		for i := 0; i <= len(userOrders); i++ {
