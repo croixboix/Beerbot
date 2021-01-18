@@ -238,7 +238,7 @@ func getOrders(uuid string) *Order {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	fmt.Println(res)
+	//fmt.Println(res)
 	fmt.Println(string(body))
 
 	var verifyResp []byte = body
