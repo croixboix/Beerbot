@@ -107,6 +107,11 @@ func main() {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
+	go func() {
+        <-c
+        endProgram()
+        os.Exit(1)
+    }()
 
 	//Initialize GPIO interfaces
 	gpio_rpi.GPIO_INIT()
@@ -114,13 +119,7 @@ func main() {
 
 	//Main program loop
 	for webConnectionAlive == true{
-		//Check for ctrl-c CLI input to end program cleanly
-		select {
-			case <-interrupt:
-				log.Println("Ctrl-c input detected, exiting cleanly")
-				endProgram()
-				return
-			}
+
 
 		fmt.Println("Before time.sleep 1 sec")
 		time.Sleep(1*time.Second)
