@@ -175,18 +175,19 @@ func getOrders(uuid string) *Order {
 		orderQueueSize++
 		o.user = verifyData.UserID
 		//o.tap = verifyData.tap
-		fmt.Printf("Order Username: %s\n", o.user)
-		for i := 0; i <= numberOfTaps; i++ {
-			//# pulses = (size in floz) / 0.012549
-			pulses, errPulseConversion := strconv.Atoi(verifyData.Size)
-			if errPulseConversion != nil {
-      	fmt.Println("size to pulse conversion error", err)
-   		}
-			o.tap[verifyData.TapID] = pulses
-			//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
-			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
-		}
-	}
+		fmt.Printf("Order Username: \n", o.user)
+
+		//# pulses = (size in floz) / 0.012549
+		pulses, errPulseConversion := strconv.Atoi(verifyData.Size)
+		if errPulseConversion != nil {
+    	fmt.Println("size to pulse conversion error", err)
+   	}
+
+		o.tap[verifyData.TapID] = pulses
+		//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
+		fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
+
+
 
 	fmt.Println("o: ", o)
 
