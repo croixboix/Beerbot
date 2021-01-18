@@ -215,7 +215,7 @@ func processOrder(orderID int) bool {
 	*/
 
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
-	payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + orderID + "\"\n\t}\n}")
+	// SEE THIS CODE!! payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("POST", url, payload)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
