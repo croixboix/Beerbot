@@ -64,13 +64,13 @@ type Order struct {
 }
 
 type orderResponse struct {
-	orderID		int			`json:"id"`
-	userID    int    	`json:"user_id"`
-	tapID 		int 		`json:"tap_id"`
-	beerID	 	int 		`json:"beer_id"`
+	orderID		string			`json:"id"`
+	userID    string    	`json:"user_id"`
+	tapID 		string 		`json:"tap_id"`
+	beerID	 	string 		`json:"beer_id"`
 	price  		string  `json:"price"`
+	wasPoured string		`json:"was_poured"`
 	size      string	`json:"oz"`
-	wasPoured bool		`json:"was_poured"`
 }
 
 type processResponse struct {
