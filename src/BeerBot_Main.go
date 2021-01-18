@@ -69,9 +69,9 @@ type orderResponse struct {
 	userID    int    	`json:"user_id"`
 	tapID 		int 		`json:"tap_id"`
 	beerID	 	int 		`json:"beer_id"`
-	price  		float	  `json:"price"`
+	price  		float32 `json:"price"`
 	wasPoured bool		`json:"was_poured"`
-	size      float		`json:"oz"`
+	size      float32	`json:"oz"`
 }
 
 type processResponse struct {
