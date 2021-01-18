@@ -55,7 +55,6 @@ var (
 	//Testing variables below ONLY
 	//testMessage string = "Tap ID and Order submitted!"
 
-	userOrders []Order
 )
 
 type Order struct {
@@ -106,8 +105,7 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		//userOrders := getOrders(tapUUID)
-		userOrders = getOrders(tapUUID)
+		userOrders := getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
