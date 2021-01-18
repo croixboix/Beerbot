@@ -180,7 +180,7 @@ func getOrders(uuid string) *Order {
 	fmt.Println("size: ", verifyData.size)
 	fmt.Println("wasPoured: ", verifyData.wasPoured)
 
-
+	/*
 	if verifyData.userID != 0{
 		orderQueueSize++
 		o.user = verifyData.userID
@@ -192,7 +192,7 @@ func getOrders(uuid string) *Order {
 			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
 		}
 	}
-
+	*/
 	fmt.Println("o: ", o)
 
 	return &o
