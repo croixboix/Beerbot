@@ -163,7 +163,7 @@ func getOrders(uuid string) *Order {
 
 
 
-	var verifyResp []byte := body
+	var verifyResp []byte = body
 	var verifyData []OrderResponse
 
 	err := json.Unmarshal([]byte(verifyResp), &verifyData)
