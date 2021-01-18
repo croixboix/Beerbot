@@ -174,16 +174,16 @@ func getOrders(uuid string) *Order {
 	if verifyData.UserID != 0{
 		orderQueueSize++
 		o.user = verifyData.UserID
-		//o.tap = verifyData.tap
 		fmt.Printf("Order Username: \n", o.user)
 
 		//# pulses = (size in floz) / 0.012549
-		pulses, errPulseConversion := strconv.Atoi(verifyData.Size)
+		pulses, errPulseConversion := (strconv.Atoi(verifyData.Size))
+		fmt.Println("pulses: ", pulses)
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", err)
    	}
 		o.tap[verifyData.TapID] = pulses
-		fmt.Printf("Tap # %d value(drink size) is %d\n", o.tap[verifyData.TapID])
+		fmt.Printf("Tap # %d value(drink size) is \n", o.tap[verifyData.TapID])
 
 	}
 
