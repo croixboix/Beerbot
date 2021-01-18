@@ -180,11 +180,12 @@ func getOrders(uuid string) *Order {
 		fmt.Println("Order Username: ", o.user)
 
 		//# pulses = (size in floz) / 0.012549
-		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,32)/0.012549
+		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,32)
 		fmt.Println("pulses: ", pulses)
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", errPulseConversion)
    	}
+		pulses = pulses/0.012549
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
 	}
