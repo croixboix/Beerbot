@@ -11,7 +11,6 @@ import (
 	"time"
 	"fmt"
 	"github.com/warthog618/gpio"
-	"github.com/shopspring/decimal"
 	gpio_rpi "gpio_rpi"
 	"io/ioutil"
 	"net/http"
@@ -69,9 +68,9 @@ type orderResponse struct {
 	userID    int    	`json:"user_id"`
 	tapID 		int 		`json:"tap_id"`
 	beerID	 	int 		`json:"beer_id"`
-	price  		Decimal `json:"price"`
+	price  		float	  `json:"price"`
 	wasPoured bool		`json:"was_poured"`
-	size      Decimal	`json:"oz"`
+	size      float		`json:"oz"`
 }
 
 type processResponse struct {
