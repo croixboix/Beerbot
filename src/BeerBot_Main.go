@@ -64,7 +64,7 @@ type Order struct {
 }
 
 type OrderResponse struct {
-	orderID		int			`json:"id"`
+	orderID		int			`json:id`
 	userID    int    	`json:"user_id"`
 	tapID 		int 		`json:"tap_id"`
 	beerID	 	int 		`json:"beer_id"`
