@@ -107,7 +107,7 @@ func main() {
 
 		//Check order queue for orders to pull
 		//userOrders := getOrders(tapUUID)
-		userOrders []Order = getOrders(tapUUID)
+		userOrders = getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
