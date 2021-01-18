@@ -107,6 +107,12 @@ func main() {
 		//Check order queue for orders to pull
 		userOrders := getOrders(tapUUID)
 
+		fmt.Println("len(userOrders): ", len(userOrders))
+		for i := 0; i <= len(userOrders); i++ {
+			fmt.Println("Order array index: %d is: %s ", i, userOrders[i])
+		}
+
+		/*
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
 
@@ -117,7 +123,7 @@ func main() {
 				// Run your long running function in it's own goroutine and pass back it's
 				 // response into our channel.
 				go func() {
-					togglePour(*userOrders[1])
+					togglePour(*userOrders)
 					text := "togglePour Finished!"
 					c1 <- text
 					}()
@@ -130,7 +136,7 @@ func main() {
 					}
 			//############ END POUR/FULLFILL ORDER BLOCK ######################################
 		}
-
+*/
 	}
 
 
@@ -142,8 +148,7 @@ func main() {
 
 //Get orders from the orderqueue
 func getOrders(uuid string) *[]Order {
-	o := Order{uuid: tapUUID}
-var userOrders []Order = getOrders(tapUUID)
+	var o []Order := Order{uuid: tapUUID}
 
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	req, _ := http.NewRequest("GET", url, nil)
