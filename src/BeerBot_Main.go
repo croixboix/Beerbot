@@ -115,6 +115,7 @@ func main() {
 	//Main program loop
 	for webConnectionAlive == true{
 		//Check for ctrl-c CLI input to end program cleanly
+		fmt.Println("Before interrupt select")
 		select {
 			case <-interrupt:
 				log.Println("Ctrl-c input detected, exiting cleanly")
