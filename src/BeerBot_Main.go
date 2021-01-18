@@ -161,36 +161,29 @@ func getOrders(uuid string) *Order {
 	var verifyResp []byte = body
 	var verifyData OrderResponse
 
-	fmt.Println("verifyResp: ", string(verifyResp))
-	fmt.Println("verifyData: ", verifyData)
-
 	err := json.Unmarshal(body, &verifyData)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
 
 	fmt.Println("Verify Order Response Dump:")
-	fmt.Println("orderID: ", verifyData.UserID)
-	fmt.Println("userID: ", verifyData.UserID)
-	fmt.Println("tapID: ", verifyData.TapID)
-	fmt.Println("beerID: ", verifyData.BeerID)
-	fmt.Println("price: ", verifyData.Price)
-	fmt.Println("size: ", verifyData.Size)
-	fmt.Println("wasPoured: ", verifyData.WasPoured)
+	fmt.Println("verifyData: ", verifyData)
+	//fmt.Println("userID: ", verifyData.UserID)
 
-	/*
 	if verifyData.userID != 0{
 		orderQueueSize++
-		o.user = verifyData.userID
+		o.user = verifyData.UserID
 		//o.tap = verifyData.tap
-		fmt.Printf("Username: %s\n", o.user)
+		fmt.Printf("Order Username: %s\n", o.user)
 		for i := 0; i <= numberOfTaps; i++ {
-			//o.tap[i] = tap[i]
+			//# pulses = (size in floz) / 0.012549
+			pulses := strconv.Atoi(verifyData.Size)
+			o.tap[verifyData.TapID] = pulses
 			//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
 			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
 		}
 	}
-	*/
+
 	fmt.Println("o: ", o)
 
 	return &o
