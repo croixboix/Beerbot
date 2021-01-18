@@ -175,6 +175,7 @@ func getOrders(uuid string) *Order {
 	fmt.Println("verifyData: ", verifyData)
 	//fmt.Println("userID: ", verifyData.UserID)
 
+/*
 	//If data isn't empty then import data into local order struct
 	if verifyData.UserID != 0 && verifyData.WasPoured == false{
 		//Tells main program there is an order to pour
@@ -194,6 +195,7 @@ func getOrders(uuid string) *Order {
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
 	}
+*/
 
 	fmt.Println("o: ", o)
 
