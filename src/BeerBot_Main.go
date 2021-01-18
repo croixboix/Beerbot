@@ -61,6 +61,7 @@ type Order struct {
 	uuid string
 	//Order's user/customer
 	user int
+	orderID int
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
 }
@@ -107,10 +108,9 @@ func main() {
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
-			//############ TEST/DEMO CODE BLOCK ######################################
-				//Get test order from API
 
 
+				//############ POUR/FULLFILL ORDER BLOCK #####################################
 				//This is just a timeout function so that the program will timeout
 				c1 := make(chan string, 1)
 				// Run your long running function in it's own goroutine and pass back it's
@@ -127,7 +127,7 @@ func main() {
 					case <-time.After(120 * time.Second):
 						fmt.Println("out of time :(")
 					}
-			//############ END TEST/DEMO CODE BLOCK ######################################
+			//############ END POUR/FULLFILL ORDER BLOCK ######################################
 		}
 
 	}
@@ -177,6 +177,7 @@ func getOrders(uuid string) *Order {
 		//Tells main program there is an order to pour
 		orderQueueSize++
 		o.user = verifyData.UserID
+		o.orderID = verifyData.OrderID
 		//fmt.Println("Order Username: ", o.user)
 
 		//# pulses = (size in floz) / 0.012549
@@ -198,7 +199,7 @@ func getOrders(uuid string) *Order {
 
 
 // Tells API that order processed and deletes order from API order list
-func processOrder(uname string) []byte {
+func processOrder(int orderID) bool {
 
 	/*
 	*
@@ -233,7 +234,8 @@ func processOrder(uname string) []byte {
 	//fmt.Println(res)
 	//fmt.Println(string(body))
 
-	return body
+
+	return false
 }
 
 
@@ -258,7 +260,7 @@ func togglePour(customerOrder Order) {
 		if customerOrder.tap[i] != 0 {
 			wg.Add(1)
 			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-			fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+			fmt.Printf("(Go Routines)Begin measuring flow for user: %d on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
 		}
 	}
