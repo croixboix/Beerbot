@@ -108,7 +108,7 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 	go func() {
-        <-c
+        <-interrupt
 				fmt.Println("ctrl-c interrupt, exit cleanly!")
         endProgram()
         os.Exit(1)
