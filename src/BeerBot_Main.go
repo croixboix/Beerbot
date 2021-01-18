@@ -108,7 +108,7 @@ func main() {
 		var userOrders *[]Order
 		userOrders = getOrders(tapUUID)
 
-		fmt.Println("len(userOrders): ", len(userOrders))
+		fmt.Println("len(userOrders): ", len(&userOrders))
 		for i := 0; i <= len(userOrders); i++ {
 			fmt.Println("Order array index: %d is: %s ", i, userOrders[i])
 		}
