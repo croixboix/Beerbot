@@ -221,13 +221,6 @@ func processOrder(uname string) []byte {
 //Get orders from the orderqueue
 func getOrder(uuid string) *Order {
 
-	/*
-
-	"http://96.30.244.56:3000/api/v1/tap_orders/#"
-	Returns that specific order #'s data
-
-	*/
-
 
 	o := Order{uuid: tapUUID}
 	fmt.Println("Fetch orders")
@@ -271,6 +264,18 @@ func getOrder(uuid string) *Order {
 }
 
 
+
+
+
+
+
+
+
+
+
+/*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
+
+
 //Check for orders to be served
 func checkOrders(uuid string){
 
@@ -310,16 +315,6 @@ func checkOrders(uuid string){
 		orderQueueSize++
 		}
 }
-
-
-
-
-
-
-
-
-/*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
-
 
 
 /*
