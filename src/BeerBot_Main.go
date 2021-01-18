@@ -123,7 +123,7 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		testOrder := getOrders(tapUUID)
+		userOrders := getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
@@ -136,7 +136,7 @@ func main() {
 				// Run your long running function in it's own goroutine and pass back it's
 				 // response into our channel.
 				go func() {
-					togglePour(*testOrder)
+					togglePour(*userOrders)
 					text := "togglePour Finished!"
 					c1 <- text
 					}()
@@ -168,13 +168,66 @@ func endProgram(){
 }
 
 
-func connectionAliveTest(failedPingCounter int){
-	if failedPingCounter >= 100{
-		webConnectionAlive = false
-	} else {
-		webConnectionAlive = true
+//Get orders from the orderqueue
+func getOrders(uuid string) *Order {
+	fmt.Println("getOrders start!")
+
+	o := Order{uuid: tapUUID}
+
+	url := "http://96.30.244.56:3000/api/v1/tap_orders/1"
+	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Cache-Control", "no-cache")
+	req.Header.Add("Host", "96.30.244.56:3000")
+	req.Header.Add("Accept-Encoding", "gzip, deflate")
+	req.Header.Add("Content-Length", "39")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	//fmt.Println(res)
+	fmt.Println("body: ", string(body))
+
+	var verifyResp []byte = body
+	var verifyData orderResponse
+
+	err := json.Unmarshal(verifyResp, &verifyData)
+	if err != nil {
+		fmt.Println("error:", err)
 	}
+
+	fmt.Println("Verify Order Response Dump:")
+	fmt.Println("orderID: ", verifyData.userID)
+	fmt.Println("userID: ", verifyData.userID)
+	fmt.Println("tapID: ", verifyData.tapID)
+	fmt.Println("beerID: ", verifyData.beerID)
+	fmt.Println("price: ", verifyData.price)
+	fmt.Println("size: ", verifyData.size)
+	fmt.Println("wasPoured: ", verifyData.wasPoured)
+
+
+	if verifyData.userID != 0{
+		orderQueueSize++
+		o.user = verifyData.userID
+		//o.tap = verifyData.tap
+		fmt.Printf("Username: %s\n", o.user)
+		for i := 0; i <= numberOfTaps; i++ {
+			//o.tap[i] = tap[i]
+			//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
+			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
+		}
+	}
+
+	fmt.Println("o: ", o)
+
+	return &o
 }
+
 
 // Tells API that order processed and deletes order from API order list
 func processOrder(uname string) []byte {
@@ -216,55 +269,12 @@ func processOrder(uname string) []byte {
 }
 
 
-//Get orders from the orderqueue
-func getOrders(uuid string) *Order {
-	fmt.Println("getOrders start!")
-
-	o := Order{uuid: tapUUID}
-
-	url := "http://96.30.244.56:3000/api/v1/tap_orders/1"
-	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "*/*")
-	req.Header.Add("Cache-Control", "no-cache")
-	req.Header.Add("Host", "96.30.244.56:3000")
-	req.Header.Add("Accept-Encoding", "gzip, deflate")
-	req.Header.Add("Content-Length", "39")
-	req.Header.Add("Connection", "keep-alive")
-	req.Header.Add("cache-control", "no-cache")
-
-	res, _ := http.DefaultClient.Do(req)
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	//fmt.Println(res)
-	fmt.Println(string(body))
-
-	var verifyResp []byte = body
-	var verifyData orderResponse
-
-	err := json.Unmarshal(verifyResp, &verifyData)
-	if err != nil {
-		fmt.Println("error:", err)
+func connectionAliveTest(failedPingCounter int){
+	if failedPingCounter >= 100{
+		webConnectionAlive = false
+	} else {
+		webConnectionAlive = true
 	}
-
-
-	if verifyData.userID != 0{
-		orderQueueSize++
-		o.user = verifyData.userID
-		//o.tap = verifyData.tap
-		fmt.Printf("Username: %s\n", o.user)
-		for i := 0; i <= numberOfTaps; i++ {
-			//o.tap[i] = tap[i]
-			//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
-			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
-		}
-	}
-
-	fmt.Println("o: ", o)
-
-	return &o
 }
 
 
