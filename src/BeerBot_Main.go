@@ -199,7 +199,7 @@ func getOrders(uuid string) *Order {
 
 
 // Tells API that order processed and deletes order from API order list
-func processOrder(int orderID) bool {
+func processOrder(orderID int) bool {
 
 	/*
 	*
