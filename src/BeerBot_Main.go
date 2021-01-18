@@ -178,7 +178,7 @@ func getOrders(uuid string) *Order {
 		fmt.Printf("Order Username: %s\n", o.user)
 		for i := 0; i <= numberOfTaps; i++ {
 			//# pulses = (size in floz) / 0.012549
-			pulses, err := strconv.Atoi(verifyData.Size)
+			pulses, errPulseConversion := strconv.Atoi(verifyData.Size)
 			o.tap[verifyData.TapID] = pulses
 			//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
 			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
