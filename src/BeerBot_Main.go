@@ -117,7 +117,7 @@ func main() {
 				// Run your long running function in it's own goroutine and pass back it's
 				 // response into our channel.
 				go func() {
-					togglePour(*userOrders)
+					togglePour(*userOrders[1])
 					text := "togglePour Finished!"
 					c1 <- text
 					}()
