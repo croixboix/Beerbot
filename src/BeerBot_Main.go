@@ -63,7 +63,7 @@ type Order struct {
 	tap [numberOfTaps + 1]int
 }
 
-type orderResponse struct {
+type OrderResponse struct {
 	orderID		int			`json:"id"`
 	userID    int    	`json:"user_id"`
 	tapID 		int 		`json:"tap_id"`
@@ -73,7 +73,7 @@ type orderResponse struct {
 	size      float32	`json:"oz"`
 }
 
-type processResponse struct {
+type ProcessResponse struct {
 	Processed bool `json:"processed"`
 }
 
@@ -159,7 +159,7 @@ func getOrders(uuid string) *Order {
 	fmt.Println("body: ", string(body))
 
 	var verifyResp []byte = body
-	var verifyData orderResponse
+	var verifyData OrderResponse
 
 	fmt.Println("verifyResp: ", string(verifyResp))
 	fmt.Println("verifyData: ", verifyData)
