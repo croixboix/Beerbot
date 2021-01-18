@@ -179,7 +179,7 @@ func getOrders(uuid string) *Order {
 		for i := 0; i <= numberOfTaps; i++ {
 			//# pulses = (size in floz) / 0.012549
 			pulses, errPulseConversion := strconv.Atoi(verifyData.Size)
-			if err != nil {
+			if errPulseConversion != nil {
       	fmt.Println("size to pulse conversion error", err)
    		}
 			o.tap[verifyData.TapID] = pulses
