@@ -164,7 +164,7 @@ func getOrders(uuid string) *Order {
 
 	err := json.Unmarshal(body, &verifyData)
 	if err != nil {
-		fmt.Println("error:", err)
+		fmt.Println("unmarshal error:", err)
 	}
 
 	fmt.Println("Verify Order Response Dump:")
@@ -179,6 +179,9 @@ func getOrders(uuid string) *Order {
 		for i := 0; i <= numberOfTaps; i++ {
 			//# pulses = (size in floz) / 0.012549
 			pulses, errPulseConversion := strconv.Atoi(verifyData.Size)
+			if err != nil {
+      	fmt.Println("size to pulse conversion error", err)
+   		}
 			o.tap[verifyData.TapID] = pulses
 			//fmt.Printf("numberOfTaps = %d | i = %d | tap[i] = %d | o.tap[i] = %d\n", numberOfTaps, i, tap[i], o.tap[i])
 			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
