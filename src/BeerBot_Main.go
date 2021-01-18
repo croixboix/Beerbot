@@ -248,6 +248,10 @@ func getOrders(uuid string) *Order {
 		fmt.Println("error:", err)
 	}
 
+
+	fmt.Printf("verifyResp: ", verifyResp)
+	fmt.Printf("verifyData: ", verifyData)
+
 	if verifyData.userID != 0{
 		orderQueueSize++
 		o.user = verifyData.userID
@@ -259,6 +263,8 @@ func getOrders(uuid string) *Order {
 			fmt.Printf("Tap # %d value(drink size) is %d\n", i+1, o.tap[i])
 		}
 	}
+
+	fmt.Printf("o: ", o)
 
 	return &o
 }
