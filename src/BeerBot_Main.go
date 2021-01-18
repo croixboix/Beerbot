@@ -27,12 +27,8 @@ const (
 	// 10,200 Pulses per Gallon
 	// 10,200 Pulses per 128 fluid ounce
 	//  # pulses = (size in floz) / 0.0125490196078431372549019607843137254901960784313725490196078431
-	//Constants for drink size integers for flow sensor
-	sizeFourOunce    int = 318
-	sizeSixOunce     int = 478
-	sizeTwelveOunce  int = 956
-	sizeSixteenOunce int = 1275
-	/* 	TODO:				Create helper function to calucate # pulses from size (maybe) */
+
+
 
 	//Define number of taps on system (# of physical taps -1)
 	//Ex: A 4 tap system would be = 3
@@ -105,15 +101,9 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		var userOrders *[]Order
-		userOrders = getOrders(tapUUID)
+		userOrders := getOrders(tapUUID)
+		//var userOrders []Order = getOrders(tapUUID)
 
-		fmt.Println("len(userOrders): ", len(*userOrders))
-		for i := 0; i <= len(*userOrders); i++ {
-			fmt.Println("Order array index: %d is: %s ", i, *userOrders[i])
-		}
-
-		/*
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
 
@@ -137,21 +127,23 @@ func main() {
 					}
 			//############ END POUR/FULLFILL ORDER BLOCK ######################################
 		}
-*/
+
 	}
 
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 	endProgram()
 
+
 }
 
 
 //Get orders from the orderqueue
-func getOrders(uuid string) *[]Order {
-	var o []Order
+func getOrders(uuid string) *Order {
+	o := Order{uuid: tapUUID}
 
-	url := "http://96.30.244.56:3000/api/v1/tap_orders"
+	url := "http://96.30.244.56:3000/api/v1/tap_orders/1"
+	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
@@ -167,10 +159,13 @@ func getOrders(uuid string) *[]Order {
 	//fmt.Println(res)
 	fmt.Println("body: ", string(body))
 
-	var verifyResp []byte = body
-	var verifyData []OrderResponse
 
-	err := json.Unmarshal([]byte(verifyResp), &verifyData)
+
+
+	var verifyResp []byte = body
+	var verifyData OrderResponse
+
+	err := json.Unmarshal(verifyResp, &verifyData)
 	if err != nil {
 		fmt.Println("unmarshal error:", err)
 	}
@@ -179,8 +174,6 @@ func getOrders(uuid string) *[]Order {
 	fmt.Println("verifyData: ", verifyData)
 	//fmt.Println("userID: ", verifyData.UserID)
 
-
-/*
 	//If data isn't empty then import data into local order struct
 	if verifyData.UserID != 0 && verifyData.WasPoured == false{
 		//Tells main program there is an order to pour
@@ -200,12 +193,12 @@ func getOrders(uuid string) *[]Order {
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
 	}
-*/
 
 	fmt.Println("o: ", o)
 
 	return &o
 }
+
 
 
 // Tells API that order processed and deletes order from API order list
