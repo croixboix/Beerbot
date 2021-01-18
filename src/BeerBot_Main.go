@@ -104,7 +104,8 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		var userOrders []Order = getOrders(tapUUID)
+		userOrders := getOrders(tapUUID)
+		//var userOrders []Order = getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
