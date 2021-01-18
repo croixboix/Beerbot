@@ -158,7 +158,7 @@ func getOrders(uuid string) *Order {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	fmt.Println("body: ", string(body))
+	//fmt.Println("body: ", string(body))
 
 	var verifyResp []byte = body
 	var verifyData OrderResponse
@@ -177,15 +177,16 @@ func getOrders(uuid string) *Order {
 		//Tells main program there is an order to pour
 		orderQueueSize++
 		o.user = verifyData.UserID
-		fmt.Println("Order Username: ", o.user)
+		//fmt.Println("Order Username: ", o.user)
 
 		//# pulses = (size in floz) / 0.012549
+		//Calculate the number of pulses for the local order struct
 		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,32)
-		fmt.Println("pulses: ", pulses)
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", errPulseConversion)
    	}
 		pulses = pulses/0.012549
+		//Round our float and store it away in local order struct
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
 	}
