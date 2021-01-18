@@ -65,19 +65,7 @@ type Order struct {
 	tap [numberOfTaps + 1]int
 }
 
-type orderResponse struct {
-	orderID		int			`json:"id"`
-	userID    int    	`json:"user_id"`
-	tapID 		int 		`json:"tap_id"`
-	beerID	 	int 		`json:"beer_id"`
-	price  		string  `json:"price"`
-	size      string	`json:"oz"`
-	wasPoured bool		`json:"was_poured"`
-}
 
-type processResponse struct {
-	Processed bool `json:"processed"`
-}
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
@@ -112,6 +100,20 @@ func main() {
 				fmt.Println("ctrl-c interrupt, exit cleanly!")
         endProgram()
     }()
+
+		type orderResponse struct {
+			orderID		int			`json:"id"`
+			userID    int    	`json:"user_id"`
+			tapID 		int 		`json:"tap_id"`
+			beerID	 	int 		`json:"beer_id"`
+			price  		string  `json:"price"`
+			size      string	`json:"oz"`
+			wasPoured bool		`json:"was_poured"`
+		}
+
+		type processResponse struct {
+			Processed bool `json:"processed"`
+		}
 
 	//Initialize GPIO interfaces
 	gpio_rpi.GPIO_INIT()
