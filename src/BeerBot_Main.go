@@ -46,7 +46,6 @@ var (
 
 	//Keeps track of whether connection is alive
 	webConnectionAlive bool = true
-	failedPingCounter int = 0
 
 	//Testing variables below ONLY
 	//testMessage string = "Tap ID and Order submitted!"
@@ -106,7 +105,7 @@ func main() {
 
 		//Check order queue for orders to pull
 		orderIdToServe := checkOrders(tapUUID)
-		fmt.Println("orderIDs Array: ", orderIdToServe)
+		fmt.Println("Order IDs to serve Array: ", orderIdToServe)
 
 		//If there are orders to serve then let us fullfill them
 		if len(orderIdToServe) > 1 {
@@ -134,12 +133,6 @@ func main() {
 						}
 				//############ END POUR/FULLFILL ORDER BLOCK ######################################
 				}
-
-
-
-
-
-
 			/*
 			*
 			ADD CODE TO PROCESS ORDERS HERE
@@ -192,8 +185,6 @@ func getOrders(uuid string, orderID int) *Order {
 
 	//If data isn't empty then import data into local order struct
 	if verifyData.UserID != 0 && verifyData.WasPoured == false{
-		//Tells main program there is an order to pour
-		orderQueueSize++
 		o.user = verifyData.UserID
 		o.orderID = verifyData.OrderID
 		//fmt.Println("Order Username: ", o.user)
