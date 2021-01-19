@@ -242,7 +242,7 @@ func checkOrders(uuid string) []int{
 	fmt.Println("Verify Order Response Dump:")
 	fmt.Println("verifyData: ", verifyData)
 
-
+	fmt.Println("Length of verifyData: ", len(verifyData))
 	//Check for orders
 	if verifyData[1].OrderID != 0 && verifyData[1].WasPoured == false{
 		//Tells main program there is an order to pour
