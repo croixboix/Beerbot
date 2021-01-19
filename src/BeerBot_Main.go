@@ -299,7 +299,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup) {
 }
 
 
-
+/*
  OLD MULTI-THREADED POUR FUNCTION
 //Initiates pour routine (this should be the last thing called, serves order)
 func togglePour(customerOrder Order) {
@@ -321,9 +321,9 @@ func togglePour(customerOrder Order) {
 	wg.Wait()
 	fmt.Println("Finished all go routines!")
 }
+*/
 
-
-//DEBUGGING PURPOSES ONLY!
+//DEBUGGING PURPOSES ONLY! // USE goid() to return thread id
 func goid() int {
 	var buf [64]byte
 	n := runtime.Stack(buf[:], false)
