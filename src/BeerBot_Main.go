@@ -132,6 +132,10 @@ func main() {
 							fmt.Println("out of time :(")
 						}
 				//############ END POUR/FULLFILL ORDER BLOCK ######################################
+
+				if processOrder(tapUUID, orderIdToServe[i]) == true{
+					
+				}
 				}
 			/*
 			*
@@ -169,7 +173,7 @@ func getOrders(uuid string, orderID int) *Order {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	fmt.Println("body: ", string(body))
+	fmt.Println("getOrders body: ", string(body))
 
 	var verifyResp []byte = body
 	var verifyData OrderResponse
@@ -275,11 +279,10 @@ func processOrder(uuid string, orderID int) bool {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	//fmt.Println(res)
-	fmt.Println(string(body))
+	fmt.Println("Process Order res: ", res)
+	fmt.Println("Process Order body: ", string(body))
 
-
-	return false
+	return true
 }
 
 
