@@ -164,11 +164,11 @@ func handleFlowEdge(pin *gpio.Pin) {
 
 
 //Returns true when pour is done
-func Pour(size int, tap int, wg *sync.WaitGroup) {
+func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 	//Reset flow counter for this tap
 	//var flowCounter int = 0
 
-	defer wg.Done()
+	defer wg1.Done()
 
 	//Open selected tap and meter flow
 	fmt.Printf("Start func Pour on tap %d of size: %d\n", tap, size)
