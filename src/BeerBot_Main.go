@@ -211,7 +211,6 @@ func checkOrders(uuid string) []int{
 	var orderIDs []int
 	fmt.Println("Fetch order ids to fullfill")
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
-	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
@@ -250,24 +249,18 @@ func checkOrders(uuid string) []int{
 
 
 // Tells API that order processed and deletes order from API order list
-func processOrder(uname string) bool {
+func processOrder(uuid string, orderID int) bool {
+	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
 
-	/*
-	*
-	NEED TO DO A PUT and update attribute: was_poured
-	PUT http://96.30.244.56:3000/api/v1/tap_orders/#
-	{
-	order:
-	{
-    	"id": 1,
-    	"was_poured": true
-    }
+	orderResp = CheckResponse{"id":orderId,"was_poured":true}
+	var processData CheckResponse
+
+	payload, err := json.marshal(orderResp, &processData)
+	if err != nil {
+		fmt.Println("marshal error:", err)
 	}
-	*/
-
-	url := "http://96.30.244.56:3000/api/v1/tap_orders"
-	payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
-	req, _ := http.NewRequest("POST", url, payload)
+	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
+	req, _ := http.NewRequest("PUT", url, payload)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("Cache-Control", "no-cache")
