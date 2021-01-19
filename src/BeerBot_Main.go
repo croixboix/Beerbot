@@ -161,7 +161,7 @@ func main() {
 func getOrders(uuid string, orderID int) *Order {
 	o := Order{uuid: tapUUID}
 
-	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+orderID
+	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
 
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
