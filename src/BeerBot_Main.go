@@ -242,13 +242,14 @@ func checkOrders(uuid string) []int{
 	fmt.Println("Verify Order Response Dump:")
 	fmt.Println("verifyData: ", verifyData)
 
-	fmt.Println("Length of verifyData: ", len(verifyData))
-	//Check for orders
-	if verifyData[1].OrderID != 0 && verifyData[1].WasPoured == false{
-		//Tells main program there is an order to pour
-		orderQueueSize++
+	for i := 0; i <= len(verifyData); i++ {
+		//Check for orders
+		if verifyData[i].OrderID != 0 && verifyData[i].WasPoured == false{
+			//Tells main program there is an order to pour
+			orderIDs[i] = verifyData[i].OrderID
+		}
 	}
-
+	fmt.Println("orderIDs Array: ", orderIDs)
 	return orderIDs
 }
 
@@ -291,15 +292,6 @@ func processOrder(uname string) bool {
 
 
 	return false
-}
-
-
-func connectionAliveTest(failedPingCounter int){
-	if failedPingCounter >= 100{
-		webConnectionAlive = false
-	} else {
-		webConnectionAlive = true
-	}
 }
 
 
