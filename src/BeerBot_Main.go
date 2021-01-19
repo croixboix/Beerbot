@@ -132,7 +132,7 @@ func main() {
 							fmt.Println("out of time :(")
 							tempClearOrder := Order{uuid: tapUUID}
 							//Clear pour process
-							togglePour(*tempClearOrder)
+							togglePour(tempClearOrder)
 						}
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 
