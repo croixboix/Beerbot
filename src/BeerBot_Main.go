@@ -130,6 +130,9 @@ func main() {
 							fmt.Println(res)
 						case <-time.After(120 * time.Second):
 							fmt.Println("out of time :(")
+							tempClearOrder := Order{uuid: tapUUID}
+							//Clear pour process
+							togglePour(*tempClearOrder)
 						}
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 
@@ -142,10 +145,8 @@ func main() {
 
 	}
 
-
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 	endProgram()
-
 
 }
 
