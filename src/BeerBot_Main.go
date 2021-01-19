@@ -134,7 +134,7 @@ func main() {
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
-							orderIdToServe = append(orderIdToServe[:i])
+							orderIdToServe = append(orderIdToServe[:i], s[i+1]...)
 							fmt.Println("Order IDs to server after processOrder update: ", orderIdToServe)
 					}
 				}
@@ -201,10 +201,11 @@ func getOrders(uuid string, orderID int) *Order {
 
 	}
 
-	fmt.Println("o: ", o)
+	fmt.Println("getOrders o: ", o)
 
 	return &o
 }
+
 
 //Check for orders to be served, returns array of ordersId to be served
 func checkOrders(uuid string) []int{
