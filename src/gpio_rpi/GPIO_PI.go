@@ -5,7 +5,7 @@ import (
 	"github.com/warthog618/gpio"
 	"os"
 	"time"
-
+	"sync"
 	//For debugging only
 
 )
@@ -164,9 +164,11 @@ func handleFlowEdge(pin *gpio.Pin) {
 
 
 //Returns true when pour is done
-func Pour(size int, tap int) bool{
+func Pour(size int, tap int, wg *sync.WaitGroup) {
 	//Reset flow counter for this tap
 	//var flowCounter int = 0
+
+	defer wg.Done()
 
 	//Open selected tap and meter flow
 	fmt.Printf("Start func Pour on tap %d of size: %d\n", tap, size)
@@ -187,7 +189,6 @@ func Pour(size int, tap int) bool{
 		pinFlowSensor1.Unwatch()
 		//Close solenoid/tap
 		pinSolenoid1.High()
-		return true
 	case 2:
 		flowCounter2 = 0
 		pinFlowSensor2.Watch(gpio.EdgeFalling, handleFlowEdge)
@@ -197,7 +198,6 @@ func Pour(size int, tap int) bool{
 		}
 		pinFlowSensor2.Unwatch()
 		pinSolenoid2.High()
-		return true
 	case 3:
 		flowCounter3 = 0
 		pinFlowSensor3.Watch(gpio.EdgeFalling, handleFlowEdge)
@@ -207,7 +207,6 @@ func Pour(size int, tap int) bool{
 		}
 		pinFlowSensor3.Unwatch()
 		pinSolenoid3.High()
-		return true
 	case 4:
 		flowCounter4 = 0
 		pinFlowSensor4.Watch(gpio.EdgeFalling, handleFlowEdge)
@@ -217,7 +216,6 @@ func Pour(size int, tap int) bool{
 		}
 		pinFlowSensor4.Unwatch()
 		pinSolenoid4.High()
-		return true
 	case 5:
 		flowCounter5 = 0
 		pinFlowSensor5.Watch(gpio.EdgeFalling, handleFlowEdge)
@@ -227,7 +225,6 @@ func Pour(size int, tap int) bool{
 		}
 		pinFlowSensor5.Unwatch()
 		pinSolenoid5.High()
-		return true
 	case 6:
 		flowCounter6 = 0
 		pinFlowSensor6.Watch(gpio.EdgeFalling, handleFlowEdge)
@@ -237,7 +234,6 @@ func Pour(size int, tap int) bool{
 		}
 		pinFlowSensor6.Unwatch()
 		pinSolenoid6.High()
-		return true
 	case 7:
 		flowCounter7 = 0
 		pinFlowSensor7.Watch(gpio.EdgeFalling, handleFlowEdge)
@@ -247,7 +243,6 @@ func Pour(size int, tap int) bool{
 		}
 		pinFlowSensor7.Unwatch()
 		pinSolenoid7.High()
-		return true
 	case 8:
 		flowCounter8 = 0
 		pinFlowSensor8.Watch(gpio.EdgeFalling, handleFlowEdge)
@@ -257,9 +252,7 @@ func Pour(size int, tap int) bool{
 		}
 		pinFlowSensor8.Unwatch()
 		pinSolenoid8.High()
-		return true
 	default:
 		fmt.Println("Invalid Tap #!!")
-		return false
 	}
 }
