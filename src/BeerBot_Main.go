@@ -273,7 +273,7 @@ func processOrder(uuid string, orderID int) bool {
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	//body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println("Process Order res: ", res)
 	//fmt.Println("Process Order body: ", string(body))
