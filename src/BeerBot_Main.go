@@ -50,7 +50,6 @@ var (
 
 	//Testing variables below ONLY
 	//testMessage string = "Tap ID and Order submitted!"
-
 )
 
 type Order struct {
@@ -71,6 +70,11 @@ type OrderResponse struct {
 	Price  		string  `json:"price"`
 	WasPoured bool		`json:"was_poured"`
 	Size      string	`json:"oz"`
+}
+
+type CheckResponse struct {
+	OrderID		int			`json:"id"`
+	WasPoured bool		`json:"was_poured"`
 }
 
 type ProcessResponse struct {
@@ -101,12 +105,13 @@ func main() {
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		userOrders := getOrders(tapUUID)
+		orderIdToServe := checkOrders(tapUUID)
 		//var userOrders []Order = getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
 		if orderQueueSize > 1 {
-
+				//Get user orders
+				userOrders := getOrders(tapUUID)
 
 				//############ POUR/FULLFILL ORDER BLOCK #####################################
 				//This is just a timeout function so that the program will timeout
@@ -126,6 +131,12 @@ func main() {
 						fmt.Println("out of time :(")
 					}
 			//############ END POUR/FULLFILL ORDER BLOCK ######################################
+
+			/*
+			*
+			ADD CODE TO PROCESS ORDERS HERE
+			*
+			*/
 		}
 
 	}
@@ -199,6 +210,44 @@ func getOrders(uuid string) *Order {
 	return &o
 }
 
+//Check for orders to be served, returns array of ordersId to be served
+func checkOrders(uuid string) []int{
+	var orderIDs []int
+	fmt.Println("Fetch orders")
+	url := "http://96.30.244.56:3000/api/v1/tap_orders"
+	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Host", "96.30.244.56:3000")
+	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	//fmt.Println(res)
+	fmt.Println("body: ", string(body))
+
+	var verifyResp []byte = body
+	var verifyData []CheckResponse
+
+	err := json.Unmarshal([]byte(verifyResp), &verifyData)
+	if err != nil {
+		fmt.Println("unmarshal error:", err)
+	}
+
+	fmt.Println("Verify Order Response Dump:")
+	fmt.Println("verifyData: ", verifyData)
+
+
+	//Check for orders
+	if verifyData.OrderID != 0 && verifyData.WasPoured == false{
+		//Tells main program there is an order to pour
+		orderQueueSize++
+}
 
 
 // Tells API that order processed and deletes order from API order list
