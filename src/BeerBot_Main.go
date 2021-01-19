@@ -106,31 +106,39 @@ func main() {
 
 		//Check order queue for orders to pull
 		orderIdToServe := checkOrders(tapUUID)
-		//var userOrders []Order = getOrders(tapUUID)
+		fmt.Println("orderIDs Array: ", orderIdToServe)
 
 		//If there are orders to serve then let us fullfill them
 		if len(orderIdToServe) > 1 {
-				//Get user orders
-				userOrders := getOrders(tapUUID)
 
-				//############ POUR/FULLFILL ORDER BLOCK #####################################
-				//This is just a timeout function so that the program will timeout
-				c1 := make(chan string, 1)
-				// Run your long running function in it's own goroutine and pass back it's
-				 // response into our channel.
-				go func() {
-					togglePour(*userOrders)
-					text := "togglePour Finished!"
-					c1 <- text
-					}()
-				// Listen on our channel AND a timeout channel - which ever happens first.
-				select {
-					case res := <-c1:
-						fmt.Println(res)
-					case <-time.After(120 * time.Second):
-						fmt.Println("out of time :(")
-					}
-			//############ END POUR/FULLFILL ORDER BLOCK ######################################
+				for i := 0; i < len(orderIdToServe); i++ {
+					//Get user orders
+					userOrders := getOrders(tapUUID, orderIdToServe[i])
+
+					//############ POUR/FULLFILL ORDER BLOCK #####################################
+					//This is just a timeout function so that the program will timeout
+					c1 := make(chan string, 1)
+					// Run your long running function in it's own goroutine and pass back it's
+					 // response into our channel.
+					go func() {
+						togglePour(*userOrders)
+						text := "togglePour Finished!"
+						c1 <- text
+						}()
+					// Listen on our channel AND a timeout channel - which ever happens first.
+					select {
+						case res := <-c1:
+							fmt.Println(res)
+						case <-time.After(120 * time.Second):
+							fmt.Println("out of time :(")
+						}
+				//############ END POUR/FULLFILL ORDER BLOCK ######################################
+				}
+
+
+
+
+
 
 			/*
 			*
@@ -150,11 +158,11 @@ func main() {
 
 
 //Get orders from the orderqueue
-func getOrders(uuid string) *Order {
+func getOrders(uuid string, orderID int) *Order {
 	o := Order{uuid: tapUUID}
 
-	url := "http://96.30.244.56:3000/api/v1/tap_orders/1"
-	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
+	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+orderID
+
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
@@ -169,9 +177,6 @@ func getOrders(uuid string) *Order {
 
 	//fmt.Println(res)
 	fmt.Println("body: ", string(body))
-
-
-
 
 	var verifyResp []byte = body
 	var verifyData OrderResponse
@@ -213,7 +218,7 @@ func getOrders(uuid string) *Order {
 //Check for orders to be served, returns array of ordersId to be served
 func checkOrders(uuid string) []int{
 	var orderIDs []int
-	fmt.Println("Fetch orders")
+	fmt.Println("Fetch order ids to fullfill")
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
 	req, _ := http.NewRequest("GET", url, nil)
@@ -229,7 +234,7 @@ func checkOrders(uuid string) []int{
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	fmt.Println("body: ", string(body))
+	//fmt.Println("body: ", string(body))
 
 	var verifyResp []byte = body
 	var verifyData []CheckResponse
@@ -239,8 +244,8 @@ func checkOrders(uuid string) []int{
 		fmt.Println("unmarshal error:", err)
 	}
 
-	fmt.Println("Verify Order Response Dump:")
-	fmt.Println("verifyData: ", verifyData)
+	//fmt.Println("Verify Order Response Dump:")
+	//fmt.Println("verifyData: ", verifyData)
 
 	for i := 0; i < len(verifyData); i++ {
 		//Check for orders
@@ -249,7 +254,6 @@ func checkOrders(uuid string) []int{
 			orderIDs = append(orderIDs, verifyData[i].OrderID)
 		}
 	}
-	fmt.Println("orderIDs Array: ", orderIDs)
 	return orderIDs
 }
 
