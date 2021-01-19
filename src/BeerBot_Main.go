@@ -112,6 +112,7 @@ func main() {
 			fmt.Println("Created goroutine wait groups!")
 
 				for i := 0; i < len(orderIdToServe); i++ {
+					wg.Add(1)
 					//############ POUR/FULLFILL ORDER BLOCK #####################################
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
@@ -120,7 +121,6 @@ func main() {
 					// Run your long running function in it's own goroutine and pass back it's
 					 // response into our channel.
 					go func() {
-						wg.Add(1)
 						togglePour(*userOrders, &wg)
 						text := "togglePour Finished!"
 						c1 <- text
@@ -134,15 +134,15 @@ func main() {
 							//close solenoids still open
 							gpio_rpi.CloseSolenoids()
 						}
-						// Wait for all goroutines to be finished
-						wg.Wait()
-						fmt.Println("Finished all go routines!")
 						if processOrder(tapUUID, orderIdToServe[i]) == true{
 								orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 								fmt.Println("Order IDs to server after processOrder update: ", orderIdToServe)
 						}
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 				}
+				// Wait for all goroutines to be finished
+				wg.Wait()
+				fmt.Println("Finished all go routines!")
 		}
 	}
 
