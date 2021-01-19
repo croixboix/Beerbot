@@ -247,6 +247,7 @@ func checkOrders(uuid string) []int{
 	if verifyData.OrderID != 0 && verifyData.WasPoured == false{
 		//Tells main program there is an order to pour
 		orderQueueSize++
+	}
 }
 
 
