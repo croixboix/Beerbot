@@ -300,7 +300,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 	//Solenoid normal state = closed
 	for i := 0; i <= numberOfTaps; i++ {
 		if customerOrder.tap[i] != 0 {
-			gpio_rpi.Pour(customerOrder.tap[i], i+1)
+			go gpio_rpi.Pour(customerOrder.tap[i], i+1)
 		}
 	}
 
