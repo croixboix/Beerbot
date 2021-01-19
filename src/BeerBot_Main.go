@@ -123,7 +123,7 @@ func main() {
 					 // response into our channel.
 					go func() {
 						wg.Add(1)
-						togglePour(*userOrders, &wg)
+						go togglePour(*userOrders, &wg)
 						text := "togglePour Finished!"
 						c1 <- text
 						}()
@@ -292,22 +292,16 @@ func processOrder(uuid string, orderID int) bool {
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, wg *sync.WaitGroup) bool{
+func togglePour(customerOrder Order, wg *sync.WaitGroup){
 	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
 	defer wg.Done()
 
-	//We need a way to wait to return until the order is done
-	pourDone := false
 
 	//Solenoid normal state = closed
 	for i := 0; i <= numberOfTaps; i++ {
 		if customerOrder.tap[i] != 0 {
-			pourDone = go gpio_rpi.Pour(customerOrder.tap[i], i+1)
+			gpio_rpi.Pour(customerOrder.tap[i], i+1)
 		}
-	}
-
-	for pourDone == true {
-		return true
 	}
 
 
