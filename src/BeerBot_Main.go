@@ -134,15 +134,15 @@ func main() {
 							//close solenoids still open
 							gpio_rpi.CloseSolenoids()
 						}
+						// Wait for all goroutines to be finished
+						wg.Wait()
+						fmt.Println("Finished all go routines!")
 						if processOrder(tapUUID, orderIdToServe[i]) == true{
 								orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 								fmt.Println("Order IDs to server after processOrder update: ", orderIdToServe)
 						}
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 				}
-				// Wait for all goroutines to be finished
-				wg.Wait()
-				fmt.Println("Finished all go routines!")
 		}
 	}
 
