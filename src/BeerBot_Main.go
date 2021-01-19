@@ -21,6 +21,8 @@ import (
 	"strconv"
 	"math"
 	"bytes"
+	"runetime"
+	"strings"
 )
 
 const (
