@@ -76,10 +76,6 @@ type CheckResponse struct {
 	WasPoured bool		`json:"was_poured"`
 }
 
-type ProcessResponse struct {
-	Processed bool `json:"processed"`
-}
-
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
@@ -109,18 +105,21 @@ func main() {
 
 		//If there are orders to serve then let us fullfill them
 		if len(orderIdToServe) >= 1 {
+			//Create a wait group for goroutines
+			var wg sync.WaitGroup
+			fmt.Println("Created goroutine wait groups!")
 
 				for i := 0; i < len(orderIdToServe); i++ {
+					//############ POUR/FULLFILL ORDER BLOCK #####################################
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
-
-					//############ POUR/FULLFILL ORDER BLOCK #####################################
 					//This is just a timeout function so that the program will timeout
 					c1 := make(chan string, 1)
 					// Run your long running function in it's own goroutine and pass back it's
 					 // response into our channel.
 					go func() {
-						togglePour(*userOrders)
+						wg.Add(1)
+						togglePour(*userOrders, &wg)
 						text := "togglePour Finished!"
 						c1 <- text
 						}()
@@ -133,15 +132,16 @@ func main() {
 							//close solenoids still open
 							gpio_rpi.CloseSolenoids()
 						}
+						if processOrder(tapUUID, orderIdToServe[i]) == true{
+								orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+								fmt.Println("Order IDs to server after processOrder update: ", orderIdToServe)
+						}
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
-
-					if processOrder(tapUUID, orderIdToServe[i]) == true{
-							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-							fmt.Println("Order IDs to server after processOrder update: ", orderIdToServe)
-					}
 				}
+				// Wait for all goroutines to be finished
+				wg.Wait()
+				fmt.Println("Finished all go routines!")
 		}
-
 	}
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
@@ -276,13 +276,31 @@ func processOrder(uuid string, orderID int) bool {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	fmt.Println("Process Order res: ", res)
-	fmt.Println("Process Order body: ", string(body))
+	//fmt.Println("Process Order res: ", res)
+	//fmt.Println("Process Order body: ", string(body))
+
+	// TODO ADD RETURN LOGIC TO CONFIRM WHETHER ORDER UPDATE/PROCESS WAS SUCCESSFUL
 
 	return true
 }
 
 
+//Initiates pour routine (this should be the last thing called, serves order)
+func togglePour(customerOrder Order, wg *sync.WaitGroup) {
+	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
+	defer wg.Done()
+
+	//Solenoid normal state = closed
+	for i := 0; i <= numberOfTaps; i++ {
+		if customerOrder.tap[i] != 0 {
+			go gpio_rpi.Pour(customerOrder.tap[i], i+1)
+		}
+	}
+}
+
+
+
+ OLD MULTI-THREADED POUR FUNCTION
 //Initiates pour routine (this should be the last thing called, serves order)
 func togglePour(customerOrder Order) {
 	//Create a wait group for goroutines
@@ -302,6 +320,19 @@ func togglePour(customerOrder Order) {
 	// Wait for all goroutines to be finished
 	wg.Wait()
 	fmt.Println("Finished all go routines!")
+}
+
+
+//DEBUGGING PURPOSES ONLY!
+func goid() int {
+	var buf [64]byte
+	n := runtime.Stack(buf[:], false)
+	idField := strings.Fields(strings.TrimPrefix(string(buf[:n]), "goroutine "))[0]
+	id, err := strconv.Atoi(idField)
+	if err != nil {
+		panic(fmt.Sprintf("cannot get goroutine id: %v", err))
+	}
+	return id
 }
 
 

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/warthog618/gpio"
 	"os"
-	"sync"
 	"time"
 
 	//For debugging only
@@ -165,10 +164,7 @@ func handleFlowEdge(pin *gpio.Pin) {
 	//fmt.Printf("Flow Counter is %d for Go Routine %d \n", flowCounter, goid())
 }
 
-func Pour(size int, tap int, wg *sync.WaitGroup) {
-	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
-	defer wg.Done()
-
+func Pour(size int, tap int) {
 	//Reset flow counter for this tap
 	//var flowCounter int = 0
 
@@ -257,17 +253,4 @@ func Pour(size int, tap int, wg *sync.WaitGroup) {
 	default:
 		fmt.Println("Invalid Tap #!!")
 	}
-}
-
-
-//DEBUGGING PURPOSES ONLY!
-func goid() int {
-	var buf [64]byte
-	n := runtime.Stack(buf[:], false)
-	idField := strings.Fields(strings.TrimPrefix(string(buf[:n]), "goroutine "))[0]
-	id, err := strconv.Atoi(idField)
-	if err != nil {
-		panic(fmt.Sprintf("cannot get goroutine id: %v", err))
-	}
-	return id
 }
