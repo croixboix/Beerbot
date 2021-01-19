@@ -264,7 +264,7 @@ func processOrder(uuid string, orderID int) bool {
 	}
 	fmt.Println("Process Order payload: ", payload)
 	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
-	req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("PUT", url, payload)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("Cache-Control", "no-cache")
