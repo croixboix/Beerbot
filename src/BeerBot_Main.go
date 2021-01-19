@@ -131,17 +131,13 @@ func main() {
 						case <-time.After(120 * time.Second):
 							fmt.Println("out of time :(")
 						}
-				//############ END POUR/FULLFILL ORDER BLOCK ######################################
+					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 
-				if processOrder(tapUUID, orderIdToServe[i]) == true{
-
+					if processOrder(tapUUID, orderIdToServe[i]) == true{
+							orderIdToServe = append(orderIdToServe[:i])
+							fmt.Println("Order IDs to server after processOrder update: ", orderIdToServe)
+					}
 				}
-				}
-			/*
-			*
-			ADD CODE TO PROCESS ORDERS HERE
-			*
-			*/
 		}
 
 	}
@@ -263,8 +259,7 @@ func processOrder(uuid string, orderID int) bool {
 	if err != nil {
 		fmt.Println("marshal error:", err)
 	}
-	fmt.Println("Process Order payload: ", payload)
-	//payload := strings.NewReader("{\n\t\"order\": {\n\t\t\"username\": \"" + uname + "\"\n\t}\n}")
+
 	req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(payload))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
@@ -280,8 +275,8 @@ func processOrder(uuid string, orderID int) bool {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	fmt.Println("Process Order res: ", res)
-	fmt.Println("Process Order body: ", string(body))
+	//fmt.Println("Process Order res: ", res)
+	//fmt.Println("Process Order body: ", string(body))
 
 	return true
 }
