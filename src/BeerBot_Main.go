@@ -117,12 +117,12 @@ func main() {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
-					wg.Add(1)
 					//This is just a timeout function so that the program will timeout
 					c1 := make(chan string, 1)
 					// Run your long running function in it's own goroutine and pass back it's
 					 // response into our channel.
 					go func() {
+						wg.Add(1)
 						go togglePour(*userOrders, &wg)
 						text := "togglePour Finished!"
 						c1 <- text
@@ -300,6 +300,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 	//Solenoid normal state = closed
 	for i := 0; i <= numberOfTaps; i++ {
 		if customerOrder.tap[i] != 0 {
+			wg1.Add(1)
 			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
 		}
 	}
