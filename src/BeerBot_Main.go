@@ -256,9 +256,9 @@ func processOrder(uuid string, orderID int) bool {
 	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
 
 	orderResp := CheckResponse{OrderID:orderID,WasPoured:true}
-	var processData CheckResponse
+	//var processData CheckResponse
 
-	payload, err := json.Marshal(orderResp, &processData)
+	payload, err := json.Marshal(orderResp)
 	if err != nil {
 		fmt.Println("marshal error:", err)
 	}
