@@ -118,29 +118,14 @@ func main() {
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
 					wg.Add(1)
-					//This is just a timeout function so that the program will timeout
-					c1 := make(chan string, 1)
-					// Run your long running function in it's own goroutine and pass back it's
-					 // response into our channel.
-					go func() {
-						go togglePour(*userOrders, &wg)
-						text := "togglePour Finished!"
-						c1 <- text
-						}()
-					// Listen on our channel AND a timeout channel - which ever happens first.
-					select {
-						case res := <-c1:
-							fmt.Println(res)
-						case <-time.After(60 * time.Second):
-							fmt.Println("out of time :(")
-							//close solenoids still open
-							gpio_rpi.CloseSolenoids()
-						}
+					go togglePour(*userOrders, &wg)
+					text := "togglePour Finished!"
+					c1 <- text
 
-						//Call to process order
-						if processOrder(tapUUID, orderIdToServe[i]) == true{
-								orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-						}
+					//Call to process order
+					if processOrder(tapUUID, orderIdToServe[i]) == true{
+							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+					}
 
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 				}
@@ -296,15 +281,34 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
 	defer wg.Done()
 
-	var wg1 sync.WaitGroup
-	//Solenoid normal state = closed
-	for i := 0; i <= numberOfTaps; i++ {
-		if customerOrder.tap[i] != 0 {
-			wg1.Add(1)
-			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
+
+	//This is just a timeout function so that the program will timeout
+	c1 := make(chan string, 1)
+	// Run your long running function in it's own goroutine and pass back it's
+	// response into our channel.
+
+	go func() {
+		var wg1 sync.WaitGroup
+		//Solenoid normal state = closed
+		for i := 0; i <= numberOfTaps; i++ {
+			if customerOrder.tap[i] != 0 {
+				wg1.Add(1)
+				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
+			}
 		}
+		wg1.Wait()
+		text := "Pour Finished!"
+		c1 <- text
+	}()
+	// Listen on our channel AND a timeout channel - which ever happens first.
+	select {
+		case res := <-c1:
+			fmt.Println(res)
+		case <-time.After(60 * time.Second):
+			fmt.Println("out of time :(")
 	}
-	wg1.Wait()
+
+
 
 }
 
