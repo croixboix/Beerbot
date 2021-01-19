@@ -244,10 +244,12 @@ func checkOrders(uuid string) []int{
 
 
 	//Check for orders
-	if verifyData.OrderID != 0 && verifyData.WasPoured == false{
+	if verifyData[1].OrderID != 0 && verifyData[1].WasPoured == false{
 		//Tells main program there is an order to pour
 		orderQueueSize++
 	}
+
+	return orderIDs
 }
 
 
