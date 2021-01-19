@@ -303,7 +303,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
 		}
 	}
-	wg.Wait()
+	wg1.Wait()
 
 }
 
