@@ -119,19 +119,18 @@ func main() {
 
 					wg.Add(1)
 					go togglePour(*userOrders, &wg)
-					text := "togglePour Finished!"
-					c1 <- text
 
 					//Call to process order
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
 							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+							fmt.Println("Processed order")
 					}
 
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 				}
 				// Wait for all goroutines to be finished
 				wg.Wait()
-				fmt.Println("Finished all go routines!")
+				fmt.Println("Finished all togglePours!")
 		}
 	}
 
