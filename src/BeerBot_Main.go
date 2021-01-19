@@ -109,7 +109,7 @@ func main() {
 		//var userOrders []Order = getOrders(tapUUID)
 
 		//If there are orders to serve then let us fullfill them
-		if orderQueueSize > 1 {
+		if len(orderIdToServe) > 1 {
 				//Get user orders
 				userOrders := getOrders(tapUUID)
 
