@@ -246,7 +246,7 @@ func checkOrders(uuid string) []int{
 		//Check for orders
 		if verifyData[i].OrderID != 0 && verifyData[i].WasPoured == false{
 			//Tells main program there is an order to pour
-			orderIDs[i] = verifyData[i].OrderID
+			orderIDs = append(orderIDs, verifyData[i].OrderID)
 		}
 	}
 	fmt.Println("orderIDs Array: ", orderIDs)
