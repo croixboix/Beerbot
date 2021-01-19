@@ -112,15 +112,17 @@ func main() {
 			fmt.Println("Created goroutine wait groups!")
 
 				for i := 0; i < len(orderIdToServe); i++ {
-					wg.Add(1)
+
 					//############ POUR/FULLFILL ORDER BLOCK #####################################
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
+
 					//This is just a timeout function so that the program will timeout
 					c1 := make(chan string, 1)
 					// Run your long running function in it's own goroutine and pass back it's
 					 // response into our channel.
 					go func() {
+						wg.Add(1)
 						togglePour(*userOrders, &wg)
 						text := "togglePour Finished!"
 						c1 <- text
@@ -134,10 +136,12 @@ func main() {
 							//close solenoids still open
 							gpio_rpi.CloseSolenoids()
 						}
+
+						//Call to process order
 						if processOrder(tapUUID, orderIdToServe[i]) == true{
 								orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-								fmt.Println("Order IDs to server after processOrder update: ", orderIdToServe)
 						}
+
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 				}
 				// Wait for all goroutines to be finished
@@ -288,16 +292,25 @@ func processOrder(uuid string, orderID int) bool {
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, wg *sync.WaitGroup) {
+func togglePour(customerOrder Order, wg *sync.WaitGroup) bool{
 	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
 	defer wg.Done()
+
+	//We need a way to wait to return until the order is done
+	pourDone := false
 
 	//Solenoid normal state = closed
 	for i := 0; i <= numberOfTaps; i++ {
 		if customerOrder.tap[i] != 0 {
-			go gpio_rpi.Pour(customerOrder.tap[i], i+1)
+			pourDone = go gpio_rpi.Pour(customerOrder.tap[i], i+1)
 		}
 	}
+
+	for pourDone == true {
+		return true
+	}
+
+
 }
 
 
