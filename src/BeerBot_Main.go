@@ -17,7 +17,6 @@ import (
 	"os"
 	"os/signal"
 	"log"
-	"strings"
 	"sync"
 	"strconv"
 	"math"
@@ -259,7 +258,7 @@ func processOrder(uuid string, orderID int) bool {
 	orderResp := CheckResponse{OrderID:orderID,WasPoured:true}
 	var processData CheckResponse
 
-	payload, err := json.marshal(orderResp, &processData)
+	payload, err := json.Marshal(orderResp, &processData)
 	if err != nil {
 		fmt.Println("marshal error:", err)
 	}
