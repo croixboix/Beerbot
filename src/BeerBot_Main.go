@@ -130,9 +130,8 @@ func main() {
 							fmt.Println(res)
 						case <-time.After(120 * time.Second):
 							fmt.Println("out of time :(")
-							tempClearOrder := Order{uuid: tapUUID}
-							//Clear pour process
-							togglePour(tempClearOrder)
+							//close solenoids still open
+							gpio_rpi.CloseSolenoids()
 						}
 					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 
