@@ -108,7 +108,7 @@ func main() {
 		fmt.Println("Order IDs to serve Array: ", orderIdToServe)
 
 		//If there are orders to serve then let us fullfill them
-		if len(orderIdToServe) > 1 {
+		if len(orderIdToServe) >= 1 {
 
 				for i := 0; i < len(orderIdToServe); i++ {
 					//Get user orders
