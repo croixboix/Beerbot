@@ -258,7 +258,7 @@ func processOrder(uuid string, orderID int) bool {
 	orderResp := CheckResponse{OrderID:orderID,WasPoured:true}
 	//var processData CheckResponse
 
-	payload, err := json.Marshal(orderResp)
+	payload, err := json.Marshal(strings.NewReader(orderResp))
 	if err != nil {
 		fmt.Println("marshal error:", err)
 	}
