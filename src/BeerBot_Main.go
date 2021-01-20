@@ -97,7 +97,7 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	// #### GUI TEST CODE ##############################################################
+	// #### GUI TEST CODE ############################################################
 	a:= app.New() //New app
 
   //Labels
@@ -128,10 +128,6 @@ func main() {
       ),//end firstVBox
       widget.NewVBox(
         orderID, userID, tapID, beerID, price, size, poured, //possibly make this a progress bar
-        widget.NewButton("Refresh", func() {
-          fmt.Println("Refreshed")
-          orderID.SetText(strconv.Itoa(42069))
-        }),
       ),//end second Vbox
     ),//end Hbox
   ) //adding label widget to window
@@ -157,6 +153,7 @@ func main() {
 				for i := 0; i < len(orderIdToServe); i++ {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
+					refreshGUI(*userOrders)
 
 					go togglePour(*userOrders)
 
@@ -176,6 +173,11 @@ func main() {
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 	endProgram()
+
+}
+
+
+func refreshGUI(customerOrder Order, ) {
 
 }
 
