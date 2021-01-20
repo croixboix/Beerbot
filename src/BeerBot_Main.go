@@ -123,6 +123,8 @@ func main() {
 				wg.Wait()
 				fmt.Println("Finished all togglePours!")
 
+
+				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
 				for i := 0; i < len(orderIdToServe); i++ {
 					//Call to process order
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
@@ -306,7 +308,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
-		case <-time.After(60 * time.Second):
+		case <-time.After(30 * time.Second):
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(solenoidToClose)
 
