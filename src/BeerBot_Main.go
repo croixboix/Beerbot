@@ -262,21 +262,23 @@ func processOrder(uuid string, orderID int) bool {
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
-
-	//if res.Status =
 	fmt.Println("Process Order res: ", res.Status)
+	if res.Status = "204 No Content"{
+	 return true
+ 	} else {
+		return false
+	}
+
 	//fmt.Println("Process Order body: ", string(body))
 
 	// TODO ADD RETURN LOGIC TO CONFIRM WHETHER ORDER UPDATE/PROCESS WAS SUCCESSFUL
 
-	return true
+
 }
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
 func togglePour(customerOrder Order) {
-
-
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
 	// Run your long running function in it's own goroutine and pass back it's
@@ -306,7 +308,6 @@ func togglePour(customerOrder Order) {
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(solenoidToClose)
-
 	}
 }
 
