@@ -129,6 +129,7 @@ func main() {
 							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 							fmt.Println("Processed order")
 						}
+						time.Sleep(time.Millisecond * 50)
 				}
 		}
 	}
