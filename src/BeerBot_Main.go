@@ -96,8 +96,7 @@ func main() {
 
 	//Main program loop
 	for webConnectionAlive == true{
-		//Create a wait group for goroutines
-		var wg sync.WaitGroup
+
 		//fmt.Println("Created togglePour goroutine wait groups!")
 
 		time.Sleep(1*time.Second)
@@ -110,20 +109,16 @@ func main() {
 		if len(orderIdToServe) >= 1 {
 
 				for i := 0; i < len(orderIdToServe); i++ {
-
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
-					wg.Add(1)
-					go togglePour(*userOrders, &wg)
+					go togglePour(*userOrders)
 
 				}
-				// Wait for all goroutines to be finished
-				wg.Wait()
-				fmt.Println("Finished all togglePours!")
 
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
+				// Mark the orders we just fullfilled/poured as poured on the orders API
 				for i := len(orderIdToServe) - 1; i >= 0; i-- {
 					//Call to process order
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
@@ -279,9 +274,8 @@ func processOrder(uuid string, orderID int) bool {
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, wg *sync.WaitGroup) {
-	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
-	defer wg.Done()
+func togglePour(customerOrder Order) {
+
 
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
@@ -309,7 +303,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
-		case <-time.After(30 * time.Second):
+		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(solenoidToClose)
 
