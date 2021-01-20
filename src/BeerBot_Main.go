@@ -102,40 +102,18 @@ func main() {
 
 
 	// GUI initalization
-	a := app.New() //New app
+	myApp := app.New() // New app
 	//initGUI(a)
 
-	//Labels
-  // orderID := strconv.Itoa(0)
-  orderL  := widget.NewLabel("Order ID: ")
-  userL   := widget.NewLabel("User ID: ")
-  tapL    := widget.NewLabel("Tap ID: ")
-  beerL   := widget.NewLabel("Beer ID: ")
-  priceL  := widget.NewLabel("Price: ")
-  sizeL   := widget.NewLabel("Size: ")
-  pouredL := widget.NewLabel("Poured: ")
-  orderID := widget.NewLabel("N/A")
-  userID  := widget.NewLabel("N/A")
-  tapID   := widget.NewLabel("N/A")
-  beerID  := widget.NewLabel("N/A")
-  price   := widget.NewLabel("N/A")
-  size    := widget.NewLabel("N/A")
-  poured  := widget.NewLabel("N/A")
+	myWindow := myApp.NewWindow("Grid Layout")
 
-	w := a.NewWindow("Hello") //new window/Window title
-  w.SetContent(
-    widget.NewHBox(
-      widget.NewVBox(
-        orderL, userL, tapL, beerL, priceL, sizeL, pouredL,
-      ),//end firstVBox
-      widget.NewVBox(
-        orderID, userID, tapID, beerID, price, size, poured, //possibly make this a progress bar
-      ),//end second Vbox
-    ),//end Hbox
-  ) //adding label widget to window
-
-  w.Resize(fyne.NewSize(400,220))
-  w.Show()
+	text1 := canvas.NewText("1", color.Black)
+	text2 := canvas.NewText("2", color.Black)
+	text3 := canvas.NewText("3", color.Black)
+	grid := fyne.NewContainerWithLayout(layout.NewGridLayout(2),
+		text1, text2, text3)
+	myWindow.SetContent(grid)
+	myWindow.Show()
 
 
 
@@ -159,12 +137,6 @@ func main() {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 					//refreshGUI(*userOrders)
-
-
-					fmt.Println("Refreshed")
-					orderID.SetText(strconv.Itoa(userOrders.orderID))
-
-
 
 					go togglePour(*userOrders)
 
