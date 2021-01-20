@@ -123,7 +123,7 @@ func main() {
 				fmt.Println("Finished all togglePours!")
 
 				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				k := len(orderIdToServe))
+				k := len(orderIdToServe)
 				for j := 0; j < k; j++ {
 					fmt.Println("forloop j: ", j)
 					//Call to process order
