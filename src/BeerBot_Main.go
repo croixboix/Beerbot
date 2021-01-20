@@ -124,7 +124,6 @@ func main() {
 
 				fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				k := len(orderIdToServe)
 				for i, rcount, rlen := 0, 0, len(orderIdToServe); i < rlen; i++ {
 					j := i - rcount
 					//Call to process order
