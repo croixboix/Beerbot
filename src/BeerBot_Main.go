@@ -112,12 +112,13 @@ func main() {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
-					togglePour(*userOrders)
+					go togglePour(*userOrders)
 
 				}
 
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
+				// Mark the orders we just fullfilled/poured as poured on the orders API
 				for i := len(orderIdToServe) - 1; i >= 0; i-- {
 					//Call to process order
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
@@ -290,7 +291,7 @@ func togglePour(customerOrder Order) {
 		for i := 0; i <= numberOfTaps; i++ {
 			if customerOrder.tap[i] != 0 {
 				wg1.Add(1)
-				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
+				gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
 				solenoidToClose = i+1
 			}
 		}
