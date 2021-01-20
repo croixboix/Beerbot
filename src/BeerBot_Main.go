@@ -153,7 +153,7 @@ func main() {
 }
 
 
-func initGUI(a fyne.App){
+func initGUI(a fyne.App) *{
 	//Labels
   // orderID := strconv.Itoa(0)
   orderL  := widget.NewLabel("Order ID: ")
@@ -170,7 +170,7 @@ func initGUI(a fyne.App){
   price   := widget.NewLabel("N/A")
   size    := widget.NewLabel("N/A")
   poured  := widget.NewLabel("N/A")
-	
+
 	w := a.NewWindow("Hello") //new window/Window title
   w.SetContent(
     widget.NewHBox(
@@ -185,10 +185,12 @@ func initGUI(a fyne.App){
 
   w.Resize(fyne.NewSize(400,220))
   w.Show()
+
+	return
 }
 
 
-func refreshGUI(customerOrder Order, orderID fyne.App) {
+func refreshGUI(customerOrder Order, orderID fyne.Widget) {
 		fmt.Println("Refreshed")
 		orderID.SetText(customerOrder.orderID)
 }
