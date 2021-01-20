@@ -98,7 +98,7 @@ func main() {
 	for webConnectionAlive == true{
 		//Create a wait group for goroutines
 		var wg sync.WaitGroup
-		fmt.Println("Created togglePour goroutine wait groups!")
+		//fmt.Println("Created togglePour goroutine wait groups!")
 
 		time.Sleep(1*time.Second)
 
@@ -112,23 +112,22 @@ func main() {
 
 				for i := 0; i < len(orderIdToServe); i++ {
 					wg.Add(1)
-					//############ POUR/FULLFILL ORDER BLOCK #####################################
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
 					go togglePour(*userOrders, &wg)
 
-					//Call to process order
-					if processOrder(tapUUID, orderIdToServe[i]) == true{
-							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-							fmt.Println("Processed order")
-					}
-
-					//############ END POUR/FULLFILL ORDER BLOCK ######################################
 				}
 				// Wait for all goroutines to be finished
 				wg.Wait()
 				fmt.Println("Finished all togglePours!")
+				for i := 0; i < len(orderIdToServe); i++ {
+					//Call to process order
+					if processOrder(tapUUID, orderIdToServe[i]) == true{
+							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+							fmt.Println("Processed order")
+				}
+			}
 		}
 	}
 
