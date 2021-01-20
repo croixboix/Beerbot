@@ -117,9 +117,7 @@ func main() {
 					go togglePour(*userOrders)
 
 				}
-				// Wait for all goroutines to be finished
-				wg.Wait()
-				fmt.Println("Finished all togglePours!")
+				
 
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
@@ -279,7 +277,7 @@ func processOrder(uuid string, orderID int) bool {
 
 //Initiates pour routine (this should be the last thing called, serves order)
 func togglePour(customerOrder Order) {
-	
+
 
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
