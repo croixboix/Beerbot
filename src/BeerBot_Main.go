@@ -119,10 +119,6 @@ func main() {
 					go togglePour(*userOrders, &wg)
 
 				}
-				// Wait for all goroutines to be finished
-				wg.Wait()
-				fmt.Println("Finished all togglePours!")
-
 
 				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
 				for i := 0; i < len(orderIdToServe); i++ {
@@ -133,6 +129,12 @@ func main() {
 						}
 						fmt.Println("forloop i: ", i)
 				}
+				// Wait for all goroutines to be finished
+				wg.Wait()
+				fmt.Println("Finished all togglePours!")
+
+
+
 		}
 	}
 
@@ -268,6 +270,8 @@ func processOrder(uuid string, orderID int) bool {
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
+
+	//if res.Status =
 	fmt.Println("Process Order res: ", res.Status)
 	//fmt.Println("Process Order body: ", string(body))
 
