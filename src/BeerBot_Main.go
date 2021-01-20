@@ -263,7 +263,7 @@ func processOrder(uuid string, orderID int) bool {
 	//body, _ := ioutil.ReadAll(res.Body)
 
 	fmt.Println("Process Order res: ", res.Status)
-	if res.Status = "204 No Content"{
+	if res.Status == "204 No Content" {
 	 return true
  	} else {
 		return false
