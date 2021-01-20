@@ -162,7 +162,7 @@ func main() {
 
 
 					fmt.Println("Refreshed")
-					orderID.SetText(userOrders.orderID)
+					orderID.SetText(strconv.Itoa(userOrders.orderID))
 
 
 
