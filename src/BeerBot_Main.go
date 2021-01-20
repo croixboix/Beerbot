@@ -112,12 +112,11 @@ func main() {
 			fmt.Println("Created goroutine wait groups!")
 
 				for i := 0; i < len(orderIdToServe); i++ {
-
+					wg.Add(1)
 					//############ POUR/FULLFILL ORDER BLOCK #####################################
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
-					wg.Add(1)
 					go togglePour(*userOrders, &wg)
 
 					//Call to process order
@@ -293,6 +292,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 			if customerOrder.tap[i] != 0 {
 				wg1.Add(1)
 				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
+				solenoidToClose := i
 			}
 		}
 		wg1.Wait()
@@ -305,6 +305,8 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 			fmt.Println(res)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
+			closeSolenoids(solenoidToClose)
+
 	}
 
 
@@ -352,7 +354,7 @@ func goid() int {
 //Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 func endProgram(){
 	//Close GPIO/clear GPIO memory at end of program ( IMPORTANT THIS HAPPENS )
-	gpio_rpi.CloseSolenoids()
+	gpio_rpi.CloseSolenoids(0)
 	gpio.Close()
 	log.Println("Program ended cleanly!")
 	os.Exit(1)

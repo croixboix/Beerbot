@@ -113,15 +113,35 @@ func GPIO_INIT() {
 
 }
 
-func CloseSolenoids() {
-	pinSolenoid1.High()
-	pinSolenoid2.High()
-	pinSolenoid3.High()
-	pinSolenoid4.High()
-	pinSolenoid5.High()
-	pinSolenoid6.High()
-	pinSolenoid7.High()
-	pinSolenoid8.High()
+func CloseSolenoids(tap int) {
+	switch tap {
+	case 1:
+		pinSolenoid1.High()
+	case 2:
+		pinSolenoid2.High()
+	case 3:
+		pinSolenoid3.High()
+	case 4:
+		pinSolenoid4.High()
+	case 5:
+		pinSolenoid5.High()
+	case 6:
+		pinSolenoid6.High()
+	case 7:
+		pinSolenoid7.High()
+	case 8:
+		pinSolenoid8.High()
+	default:
+		pinSolenoid1.High()
+		pinSolenoid2.High()
+		pinSolenoid3.High()
+		pinSolenoid4.High()
+		pinSolenoid5.High()
+		pinSolenoid6.High()
+		pinSolenoid7.High()
+		pinSolenoid8.High()
+		fmt.Println("CLOSE ALL SOLENOIDS")
+	}
 }
 
 // Interrupt handler for flow sensor edge pulse
