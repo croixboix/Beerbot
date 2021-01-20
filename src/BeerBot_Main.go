@@ -120,12 +120,11 @@ func main() {
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
 				// Mark the orders we just fullfilled/poured as poured on the orders API
 				for i := len(orderIdToServe) - 1; i >= 0; i-- {
-					//Call to process order
+					// Call to process order
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
 							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 						}
 				}
-
 		}
 	}
 
