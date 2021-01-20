@@ -104,7 +104,7 @@ func main() {
 
 		//Check order queue for orders to pull
 		orderIdToServe := checkOrders(tapUUID)
-		fmt.Println("Order IDs to serve Array: ", orderIdToServe)
+		fmt.Println("Order IDs to serve: ", orderIdToServe)
 
 		//If there are orders to serve then let us fullfill them
 		if len(orderIdToServe) >= 1 {
