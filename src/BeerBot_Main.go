@@ -23,6 +23,9 @@ import (
 	"bytes"
 	"runtime"
 	"strings"
+	"fyne.io/fyne"
+  "fyne.io/fyne/app"
+  "fyne.io/fyne/widget"
 )
 
 const (
@@ -93,6 +96,49 @@ func main() {
 	//Initialize GPIO interfaces
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
+
+	// #### GUI TEST CODE ##############################################################
+	a:= app.New() //New app
+
+  //Labels
+  // orderID := strconv.Itoa(0)
+  orderL  := widget.NewLabel("Order ID: ")
+  userL   := widget.NewLabel("User ID: ")
+  tapL    := widget.NewLabel("Tap ID: ")
+  beerL   := widget.NewLabel("Beer ID: ")
+  priceL  := widget.NewLabel("Price: ")
+  sizeL   := widget.NewLabel("Size: ")
+  pouredL := widget.NewLabel("Poured: ")
+  orderID := widget.NewLabel("N/A")
+  userID  := widget.NewLabel("N/A")
+  tapID   := widget.NewLabel("N/A")
+  beerID  := widget.NewLabel("N/A")
+  price   := widget.NewLabel("N/A")
+  size    := widget.NewLabel("N/A")
+  poured  := widget.NewLabel("N/A")
+
+  //Button
+
+
+  w := a.NewWindow("Hello") //new window/Window title
+  w.SetContent(
+    widget.NewHBox(
+      widget.NewVBox(
+        orderL, userL, tapL, beerL, priceL, sizeL, pouredL,
+      ),//end firstVBox
+      widget.NewVBox(
+        orderID, userID, tapID, beerID, price, size, poured, //possibly make this a progress bar
+        widget.NewButton("Refresh", func() {
+          fmt.Println("Refreshed")
+          orderID.SetText(strconv.Itoa(42069))
+        }),
+      ),//end second Vbox
+    ),//end Hbox
+  ) //adding label widget to window
+
+  w.Resize(fyne.NewSize(400,220))
+  w.ShowAndRun()
+	// ######## END GUI TEST CODE ####################################################
 
 	//Main program loop
 	for webConnectionAlive == true{
