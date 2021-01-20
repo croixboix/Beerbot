@@ -134,6 +134,7 @@ func main() {
 					fmt.Println("Processed order")
 				}
 		}
+
 	}
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
