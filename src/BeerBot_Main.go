@@ -123,7 +123,6 @@ func main() {
 					//Call to process order
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
 							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-							fmt.Println("Processed order")
 						}
 				}
 
@@ -261,19 +260,16 @@ func processOrder(uuid string, orderID int) bool {
 
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println("Process Order res: ", res.Status)
-	if res.Status == "204 No Content" {
-	 return true
- 	} else {
-		return false
-	}
-
 	//fmt.Println("Process Order body: ", string(body))
 
-	// TODO ADD RETURN LOGIC TO CONFIRM WHETHER ORDER UPDATE/PROCESS WAS SUCCESSFUL
-
-
+	//fmt.Println("Process Order res: ", res.Status)
+	if res.Status == "204 No Content" {
+		fmt.Println("Processed orderID: ", orderID)
+	 	return true
+ 	} else {
+		fmt.Println("FAILED processing orderID: ", orderID)
+		return false
+	}
 }
 
 
