@@ -135,7 +135,7 @@ func main() {
   ) //adding label widget to window
 
   w.Resize(fyne.NewSize(400,220))
-  w.Show()
+  w.ShowAndRun()
 
 
 
