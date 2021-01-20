@@ -27,6 +27,7 @@ import (
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/canvas"
 	"fyne.io/fyne/layout"
+	"image/color"
 )
 
 const (
