@@ -123,15 +123,15 @@ func main() {
 				fmt.Println("Finished all togglePours!")
 
 				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				for i := 0; i < len(orderIdToServe); i++ {
+				for j := 0; i < len(orderIdToServe); i++ {
 					fmt.Println("forloop i: ", i)
 					//Call to process order
 					if processOrder(tapUUID, orderIdToServe[i]) == true{
 							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 							fmt.Println("Processed order")
 						}
-
 				}
+
 		}
 	}
 
