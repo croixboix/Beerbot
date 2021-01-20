@@ -109,15 +109,12 @@ func main() {
 		if len(orderIdToServe) >= 1 {
 
 				for i := 0; i < len(orderIdToServe); i++ {
-
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
-
 
 					go togglePour(*userOrders)
 
 				}
-				
 
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
@@ -305,7 +302,7 @@ func togglePour(customerOrder Order) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
-		case <-time.After(30 * time.Second):
+		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(solenoidToClose)
 
