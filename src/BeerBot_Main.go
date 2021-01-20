@@ -295,7 +295,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 			if customerOrder.tap[i] != 0 {
 				wg1.Add(1)
 				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
-				solenoidToClose = i
+				solenoidToClose = i+1
 			}
 		}
 		wg1.Wait()
@@ -311,9 +311,6 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 			gpio_rpi.CloseSolenoids(solenoidToClose)
 
 	}
-
-
-
 }
 
 
