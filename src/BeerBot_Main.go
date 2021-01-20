@@ -90,14 +90,15 @@ func main() {
         endProgram()
     }()
 
-
-
 	//Initialize GPIO interfaces
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
 	//Main program loop
 	for webConnectionAlive == true{
+		//Create a wait group for goroutines
+		var wg sync.WaitGroup
+		fmt.Println("Created togglePour goroutine wait groups!")
 
 		time.Sleep(1*time.Second)
 
@@ -107,9 +108,7 @@ func main() {
 
 		//If there are orders to serve then let us fullfill them
 		if len(orderIdToServe) >= 1 {
-			//Create a wait group for goroutines
-			var wg sync.WaitGroup
-			fmt.Println("Created goroutine wait groups!")
+
 
 				for i := 0; i < len(orderIdToServe); i++ {
 					wg.Add(1)
@@ -275,10 +274,9 @@ func processOrder(uuid string, orderID int) bool {
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, wg *sync.WaitGroup){
+func togglePour(customerOrder Order, wg *sync.WaitGroup) {
 	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
 	defer wg.Done()
-
 
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
