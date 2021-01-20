@@ -124,11 +124,10 @@ func main() {
 
 				fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				for i, rcount, rlen := 0, 0, len(orderIdToServe); i < rlen; i++ {
-					j := i - rcount
+				for i := len(orderIdToServe) - 1; i >= 0; i-- {
 					//Call to process order
 					if processOrder(tapUUID, orderIdToServe[j]) == true{
-							orderIdToServe = append(orderIdToServe[:j], orderIdToServe[j+1:]...)
+							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 							fmt.Println("Processed order")
 						}
 				}
