@@ -153,28 +153,28 @@ func handleFlowEdge(pin *gpio.Pin) {
 	switch pin.Pin() {
 	case pinFlowSensor1.Pin():
 		flowCounter1++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter1, pinFlowSensor1.Pin())
+		fmt.Printf("Flow Counter is %d on tap 1 for pinFlowSensor %d\n", flowCounter1, pinFlowSensor1.Pin())
 	case pinFlowSensor2.Pin():
 		flowCounter2++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter2, pinFlowSensor2.Pin())
+		fmt.Printf("Flow Counter is %d on tap 2 for pinFlowSensor %d\n", flowCounter2, pinFlowSensor2.Pin())
 	case pinFlowSensor3.Pin():
 		flowCounter3++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter3, pinFlowSensor3.Pin())
+		fmt.Printf("Flow Counter is %d on tap 3 for pinFlowSensor %d\n", flowCounter3, pinFlowSensor3.Pin())
 	case pinFlowSensor4.Pin():
 		flowCounter4++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter4, pinFlowSensor4.Pin())
+		fmt.Printf("Flow Counter is %d on tap 4 for pinFlowSensor %d\n", flowCounter4, pinFlowSensor4.Pin())
 	case pinFlowSensor5.Pin():
 		flowCounter5++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter5, pinFlowSensor5.Pin())
+		fmt.Printf("Flow Counter is %d on tap 5 for pinFlowSensor %d\n", flowCounter5, pinFlowSensor5.Pin())
 	case pinFlowSensor6.Pin():
 		flowCounter6++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter6, pinFlowSensor6.Pin())
+		fmt.Printf("Flow Counter is %d on tap 6 for pinFlowSensor %d\n", flowCounter6, pinFlowSensor6.Pin())
 	case pinFlowSensor7.Pin():
 		flowCounter7++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter7, pinFlowSensor7.Pin())
+		fmt.Printf("Flow Counter is %d on tap 7 for pinFlowSensor %d\n", flowCounter7, pinFlowSensor7.Pin())
 	case pinFlowSensor8.Pin():
 		flowCounter8++
-		fmt.Printf("Flow Counter is %d on pinFlowSensor %d\n", flowCounter8, pinFlowSensor8.Pin())
+		fmt.Printf("Flow Counter is %d on tap 8 for pinFlowSensor %d\n", flowCounter8, pinFlowSensor8.Pin())
 	default:
 		fmt.Println("handleFlowEdge Invalid Tap #!!")
 	}
