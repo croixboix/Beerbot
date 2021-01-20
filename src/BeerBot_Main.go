@@ -99,27 +99,12 @@ func main() {
 
 	// GUI initalization
 	a:= app.New() //New app
-
+	initGUI(a)
 
 	// #### GUI TEST CODE ############################################################
 
 
-  //Labels
-  // orderID := strconv.Itoa(0)
-  orderL  := widget.NewLabel("Order ID: ")
-  userL   := widget.NewLabel("User ID: ")
-  tapL    := widget.NewLabel("Tap ID: ")
-  beerL   := widget.NewLabel("Beer ID: ")
-  priceL  := widget.NewLabel("Price: ")
-  sizeL   := widget.NewLabel("Size: ")
-  pouredL := widget.NewLabel("Poured: ")
-  orderID := widget.NewLabel("N/A")
-  userID  := widget.NewLabel("N/A")
-  tapID   := widget.NewLabel("N/A")
-  beerID  := widget.NewLabel("N/A")
-  price   := widget.NewLabel("N/A")
-  size    := widget.NewLabel("N/A")
-  poured  := widget.NewLabel("N/A")
+
 
   //Button
 
@@ -144,7 +129,7 @@ func main() {
 				for i := 0; i < len(orderIdToServe); i++ {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
-					refreshGUI(*userOrders)
+					refreshGUI(*userOrders, a)
 
 					go togglePour(*userOrders)
 
@@ -169,6 +154,23 @@ func main() {
 
 
 func initGUI(a fyne.App){
+	//Labels
+  // orderID := strconv.Itoa(0)
+  orderL  := widget.NewLabel("Order ID: ")
+  userL   := widget.NewLabel("User ID: ")
+  tapL    := widget.NewLabel("Tap ID: ")
+  beerL   := widget.NewLabel("Beer ID: ")
+  priceL  := widget.NewLabel("Price: ")
+  sizeL   := widget.NewLabel("Size: ")
+  pouredL := widget.NewLabel("Poured: ")
+  orderID := widget.NewLabel("N/A")
+  userID  := widget.NewLabel("N/A")
+  tapID   := widget.NewLabel("N/A")
+  beerID  := widget.NewLabel("N/A")
+  price   := widget.NewLabel("N/A")
+  size    := widget.NewLabel("N/A")
+  poured  := widget.NewLabel("N/A")
+	
 	w := a.NewWindow("Hello") //new window/Window title
   w.SetContent(
     widget.NewHBox(
