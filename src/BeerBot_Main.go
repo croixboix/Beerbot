@@ -62,6 +62,7 @@ type Order struct {
 	//Order's user/customer
 	user int
 	orderID int
+	tapID int
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
 }
@@ -97,63 +98,13 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
+
+
+
 	// GUI initalization
-	a:= app.New() //New app
-	initGUI(a)
+	a := app.New() //New app
+	//initGUI(a)
 
-	// #### GUI TEST CODE ############################################################
-
-
-
-
-  //Button
-
-
-
-	// ######## END GUI TEST CODE ####################################################
-
-	//Main program loop
-	for webConnectionAlive == true{
-
-		//fmt.Println("Created togglePour goroutine wait groups!")
-
-		time.Sleep(1*time.Second)
-
-		//Check order queue for orders to pull
-		orderIdToServe := checkOrders(tapUUID)
-		fmt.Println("Order IDs to serve: ", orderIdToServe)
-
-		//If there are orders to serve then let us fullfill them
-		if len(orderIdToServe) >= 1 {
-
-				for i := 0; i < len(orderIdToServe); i++ {
-					//Get user orders
-					userOrders := getOrders(tapUUID, orderIdToServe[i])
-					refreshGUI(*userOrders, a)
-
-					go togglePour(*userOrders)
-
-				}
-
-				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
-				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				// Mark the orders we just fullfilled/poured as poured on the orders API
-				for i := len(orderIdToServe) - 1; i >= 0; i-- {
-					// Call to process order
-					if processOrder(tapUUID, orderIdToServe[i]) == true{
-							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-						}
-				}
-		}
-	}
-
-	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
-	endProgram()
-
-}
-
-
-func initGUI(a fyne.App) *{
 	//Labels
   // orderID := strconv.Itoa(0)
   orderL  := widget.NewLabel("Order ID: ")
@@ -186,15 +137,98 @@ func initGUI(a fyne.App) *{
   w.Resize(fyne.NewSize(400,220))
   w.Show()
 
-	return
+
+
+
+
+	//Main program loop
+	for webConnectionAlive == true{
+
+		//fmt.Println("Created togglePour goroutine wait groups!")
+
+		time.Sleep(1*time.Second)
+
+		//Check order queue for orders to pull
+		orderIdToServe := checkOrders(tapUUID)
+		fmt.Println("Order IDs to serve: ", orderIdToServe)
+
+		//If there are orders to serve then let us fullfill them
+		if len(orderIdToServe) >= 1 {
+
+				for i := 0; i < len(orderIdToServe); i++ {
+					//Get user orders
+					userOrders := getOrders(tapUUID, orderIdToServe[i])
+					//refreshGUI(*userOrders)
+
+
+					fmt.Println("Refreshed")
+					orderID.SetText(customerOrder.orderID)
+
+
+
+					go togglePour(*userOrders)
+
+				}
+
+				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
+				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
+				// Mark the orders we just fullfilled/poured as poured on the orders API
+				for i := len(orderIdToServe) - 1; i >= 0; i-- {
+					// Call to process order
+					if processOrder(tapUUID, orderIdToServe[i]) == true{
+							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+						}
+				}
+		}
+	}
+
+	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
+	endProgram()
+
+}
+
+/*
+func initGUI(a fyne.App) {
+	//Labels
+  // orderID := strconv.Itoa(0)
+  orderL  := widget.NewLabel("Order ID: ")
+  userL   := widget.NewLabel("User ID: ")
+  tapL    := widget.NewLabel("Tap ID: ")
+  beerL   := widget.NewLabel("Beer ID: ")
+  priceL  := widget.NewLabel("Price: ")
+  sizeL   := widget.NewLabel("Size: ")
+  pouredL := widget.NewLabel("Poured: ")
+  orderID := widget.NewLabel("N/A")
+  userID  := widget.NewLabel("N/A")
+  tapID   := widget.NewLabel("N/A")
+  beerID  := widget.NewLabel("N/A")
+  price   := widget.NewLabel("N/A")
+  size    := widget.NewLabel("N/A")
+  poured  := widget.NewLabel("N/A")
+
+	w := a.NewWindow("Hello") //new window/Window title
+  w.SetContent(
+    widget.NewHBox(
+      widget.NewVBox(
+        orderL, userL, tapL, beerL, priceL, sizeL, pouredL,
+      ),//end firstVBox
+      widget.NewVBox(
+        orderID, userID, tapID, beerID, price, size, poured, //possibly make this a progress bar
+      ),//end second Vbox
+    ),//end Hbox
+  ) //adding label widget to window
+
+  w.Resize(fyne.NewSize(400,220))
+  w.Show()
+
+	return w
 }
 
 
-func refreshGUI(customerOrder Order, orderID fyne.Widget) {
-		fmt.Println("Refreshed")
-		orderID.SetText(customerOrder.orderID)
-}
+func refreshGUI(customerOrder Order) {
 
+}
+*/
 
 //Get orders from the orderqueue
 func getOrders(uuid string, orderID int) *Order {
