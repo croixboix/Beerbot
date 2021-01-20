@@ -162,7 +162,7 @@ func main() {
 
 
 					fmt.Println("Refreshed")
-					orderID.SetText(customerOrder.orderID)
+					orderID.SetText(userOrders.orderID)
 
 
 
