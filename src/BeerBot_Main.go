@@ -122,6 +122,7 @@ func main() {
 				wg.Wait()
 				fmt.Println("Finished all togglePours!")
 
+				fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
 				k := len(orderIdToServe)
 				for j := 0; j < k; j++ {
