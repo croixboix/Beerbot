@@ -97,8 +97,12 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	// #### GUI TEST CODE ############################################################
+	// GUI initalization
 	a:= app.New() //New app
+
+
+	// #### GUI TEST CODE ############################################################
+
 
   //Labels
   // orderID := strconv.Itoa(0)
@@ -120,20 +124,7 @@ func main() {
   //Button
 
 
-  w := a.NewWindow("Hello") //new window/Window title
-  w.SetContent(
-    widget.NewHBox(
-      widget.NewVBox(
-        orderL, userL, tapL, beerL, priceL, sizeL, pouredL,
-      ),//end firstVBox
-      widget.NewVBox(
-        orderID, userID, tapID, beerID, price, size, poured, //possibly make this a progress bar
-      ),//end second Vbox
-    ),//end Hbox
-  ) //adding label widget to window
 
-  w.Resize(fyne.NewSize(400,220))
-  w.ShowAndRun()
 	// ######## END GUI TEST CODE ####################################################
 
 	//Main program loop
@@ -177,7 +168,25 @@ func main() {
 }
 
 
-func refreshGUI(customerOrder Order, orderID fyne.Label) {
+func initGUI(a fyne.App){
+	w := a.NewWindow("Hello") //new window/Window title
+  w.SetContent(
+    widget.NewHBox(
+      widget.NewVBox(
+        orderL, userL, tapL, beerL, priceL, sizeL, pouredL,
+      ),//end firstVBox
+      widget.NewVBox(
+        orderID, userID, tapID, beerID, price, size, poured, //possibly make this a progress bar
+      ),//end second Vbox
+    ),//end Hbox
+  ) //adding label widget to window
+
+  w.Resize(fyne.NewSize(400,220))
+  w.Show()
+}
+
+
+func refreshGUI(customerOrder Order, orderID fyne.App) {
 		fmt.Println("Refreshed")
 		orderID.SetText(customerOrder.orderID)
 }
