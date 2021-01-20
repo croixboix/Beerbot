@@ -96,8 +96,7 @@ func main() {
 
 	//Main program loop
 	for webConnectionAlive == true{
-		//Create a wait group for goroutines
-		var wg sync.WaitGroup
+
 		//fmt.Println("Created togglePour goroutine wait groups!")
 
 		time.Sleep(1*time.Second)
@@ -114,27 +113,25 @@ func main() {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
-					wg.Add(1)
-					go togglePour(*userOrders, &wg)
+
+					go togglePour(*userOrders)
 
 				}
+				// Wait for all goroutines to be finished
+				wg.Wait()
+				fmt.Println("Finished all togglePours!")
 
-
-		}
-		// Wait for all goroutines to be finished
-		wg.Wait()
-		fmt.Println("Finished all togglePours!")
-
-		fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
-		fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-		for i := len(orderIdToServe) - 1; i >= 0; i-- {
-			//Call to process order
-			if processOrder(tapUUID, orderIdToServe[i]) == true{
-					orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-					fmt.Println("Processed order")
+				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
+				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
+				for i := len(orderIdToServe) - 1; i >= 0; i-- {
+					//Call to process order
+					if processOrder(tapUUID, orderIdToServe[i]) == true{
+							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+							fmt.Println("Processed order")
+						}
 				}
-		}
 
+		}
 	}
 
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
@@ -281,9 +278,8 @@ func processOrder(uuid string, orderID int) bool {
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, wg *sync.WaitGroup) {
-	// Call Done() using defer as it's be easiest way to guarantee it's called at every exit
-	defer wg.Done()
+func togglePour(customerOrder Order) {
+	
 
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
