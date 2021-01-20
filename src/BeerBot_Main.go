@@ -109,6 +109,15 @@ func main() {
 		//If there are orders to serve then let us fullfill them
 		if len(orderIdToServe) >= 1 {
 
+			fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
+			for i := 0; i < len(orderIdToServe); i++ {
+				//Call to process order
+				if processOrder(tapUUID, orderIdToServe[i]) == true{
+						orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+						fmt.Println("Processed order")
+					}
+					fmt.Println("forloop i: ", i)
+			}
 
 				for i := 0; i < len(orderIdToServe); i++ {
 
@@ -120,15 +129,7 @@ func main() {
 
 				}
 
-				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				for i := 0; i < len(orderIdToServe); i++ {
-					//Call to process order
-					if processOrder(tapUUID, orderIdToServe[i]) == true{
-							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-							fmt.Println("Processed order")
-						}
-						fmt.Println("forloop i: ", i)
-				}
+
 				// Wait for all goroutines to be finished
 				wg.Wait()
 				fmt.Println("Finished all togglePours!")
