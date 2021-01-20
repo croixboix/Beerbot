@@ -111,11 +111,10 @@ func main() {
 
 
 				for i := 0; i < len(orderIdToServe); i++ {
-
+					wg.Add(1)
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
-					wg.Add(1)
 					go togglePour(*userOrders, &wg)
 
 					//Call to process order
