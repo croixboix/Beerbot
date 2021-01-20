@@ -112,7 +112,7 @@ func main() {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
-					go togglePour(*userOrders)
+					togglePour(*userOrders)
 
 				}
 
