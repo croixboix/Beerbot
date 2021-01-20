@@ -177,7 +177,7 @@ func main() {
 }
 
 
-func refreshGUI(customerOrder Order, orderID Label) {
+func refreshGUI(customerOrder Order, orderID fyne.Label) {
 		fmt.Println("Refreshed")
 		orderID.SetText(customerOrder.orderID)
 }
