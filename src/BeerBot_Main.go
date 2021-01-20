@@ -118,20 +118,21 @@ func main() {
 					go togglePour(*userOrders, &wg)
 
 				}
-				// Wait for all goroutines to be finished
-				wg.Wait()
-				fmt.Println("Finished all togglePours!")
 
-				fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
-				fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				for i := len(orderIdToServe) - 1; i >= 0; i-- {
-					//Call to process order
-					if processOrder(tapUUID, orderIdToServe[i]) == true{
-							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-							fmt.Println("Processed order")
-						}
+
+		}
+		// Wait for all goroutines to be finished
+		wg.Wait()
+		fmt.Println("Finished all togglePours!")
+
+		fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
+		fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
+		for i := len(orderIdToServe) - 1; i >= 0; i-- {
+			//Call to process order
+			if processOrder(tapUUID, orderIdToServe[i]) == true{
+					orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+					fmt.Println("Processed order")
 				}
-
 		}
 	}
 
