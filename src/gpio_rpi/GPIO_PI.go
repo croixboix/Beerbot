@@ -115,6 +115,16 @@ func GPIO_INIT() {
 
 func CloseSolenoids(tap int) {
 	switch tap {
+	case 0:
+		pinSolenoid1.High()
+		pinSolenoid2.High()
+		pinSolenoid3.High()
+		pinSolenoid4.High()
+		pinSolenoid5.High()
+		pinSolenoid6.High()
+		pinSolenoid7.High()
+		pinSolenoid8.High()
+		fmt.Println("CLOSE ALL SOLENOIDS")
 	case 1:
 		pinSolenoid1.High()
 	case 2:
@@ -132,15 +142,7 @@ func CloseSolenoids(tap int) {
 	case 8:
 		pinSolenoid8.High()
 	default:
-		pinSolenoid1.High()
-		pinSolenoid2.High()
-		pinSolenoid3.High()
-		pinSolenoid4.High()
-		pinSolenoid5.High()
-		pinSolenoid6.High()
-		pinSolenoid7.High()
-		pinSolenoid8.High()
-		fmt.Println("CLOSE ALL SOLENOIDS")
+		fmt.Println("Invalid Tap # To Close!!")
 	}
 }
 

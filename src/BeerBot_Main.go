@@ -285,8 +285,11 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 	// Run your long running function in it's own goroutine and pass back it's
 	// response into our channel.
 
+	solenoidToClose := 9
+
 	go func() {
 		var wg1 sync.WaitGroup
+
 		//Solenoid normal state = closed
 		for i := 0; i <= numberOfTaps; i++ {
 			if customerOrder.tap[i] != 0 {
@@ -305,7 +308,7 @@ func togglePour(customerOrder Order, wg *sync.WaitGroup){
 			fmt.Println(res)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
-			closeSolenoids(solenoidToClose)
+			gpio_rpi.CloseSolenoids(solenoidToClose)
 
 	}
 
