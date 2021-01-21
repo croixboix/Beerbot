@@ -116,6 +116,7 @@ func main() {
 		text1, text2, text3)
 	myWindow.SetContent(grid)
 	myWindow.Show()
+	myApp.Run()
 
 
 
