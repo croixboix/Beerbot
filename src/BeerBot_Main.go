@@ -74,6 +74,11 @@ type OrderResponse struct {
 	Size      string	`json:"oz"`
 }
 
+type CheckResponse struct {
+	OrderID		int			`json:"id"`
+	WasPoured bool		`json:"was_poured"`
+}
+
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
@@ -90,7 +95,6 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	//GUI
 
 	//Main program loop
 	for webConnectionAlive == true{
