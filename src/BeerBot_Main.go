@@ -115,8 +115,7 @@ func main() {
 	grid := fyne.NewContainerWithLayout(layout.NewGridLayout(2),
 		text1, text2, text3)
 	myWindow.SetContent(grid)
-	myWindow.Show()
-	myApp.Run()
+	go myWindow.ShowAndRun()
 
 
 
