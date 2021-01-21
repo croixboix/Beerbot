@@ -23,11 +23,6 @@ import (
 	"bytes"
 	"runtime"
 	"strings"
-	"fyne.io/fyne"
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/canvas"
-	"fyne.io/fyne/layout"
-	"image/color"
 )
 
 const (
@@ -95,14 +90,7 @@ func main() {
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-
-
-
 	//GUI
-
-
-
-
 
 	//Main program loop
 	for webConnectionAlive == true{
