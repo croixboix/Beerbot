@@ -25,10 +25,7 @@ import (
 	"strings"
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
-	"fyne.io/fyne/canvas"
-	"fyne.io/fyne/theme"
-	"image/color"
-
+	"fyne.io/fyne/widget"
 )
 
 const (
@@ -85,30 +82,168 @@ type CheckResponse struct {
 	WasPoured bool		`json:"was_poured"`
 }
 
+type orderLabels struct {
+	orderIDL *widget.Label
+	userIDL *widget.Label
+	tapIDL *widget.Label
+	beerIDL *widget.Label
+	priceL *widget.Label
+	sizeL *widget.Label
+	pouredL *widget.Label
+}
+
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
 
 
+	a := app.New()
+	w := a.NewWindow("Canvas")
+	myCanvas := w.Canvas()
 
-	myApp := app.New()
-	myWindow := myApp.NewWindow("Canvas")
-	myCanvas := myWindow.Canvas()
 
-	text := canvas.NewText("Text", color.White)
-	text.TextStyle.Bold = true
-	myCanvas.SetContent(text)
-	go runProgram(myCanvas)
+	oL1 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-"),
+										 pouredL:widget.NewLabel("-")}
+  oL2 := orderLabels{orderIDL: widget.NewLabel("-"),
+ 										 userIDL:widget.NewLabel("-"),
+ 										 tapIDL:widget.NewLabel("-"),
+ 										 beerIDL:widget.NewLabel("-"),
+ 										 priceL:widget.NewLabel("-"),
+ 										 sizeL:widget.NewLabel("-"),
+ 										 pouredL:widget.NewLabel("-")}
+  oL3 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+									   tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-"),
+										 pouredL:widget.NewLabel("-")}
+  oL4 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-"),
+										 pouredL:widget.NewLabel("-")}
+  oL5 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-"),
+										 pouredL:widget.NewLabel("-")}
+  oL6 := orderLabels{orderIDL: widget.NewLabel("-"),
+ 										userIDL:widget.NewLabel("-"),
+ 										tapIDL:widget.NewLabel("-"),
+ 										beerIDL:widget.NewLabel("-"),
+ 										priceL:widget.NewLabel("-"),
+ 										sizeL:widget.NewLabel("-"),
+ 										pouredL:widget.NewLabel("-")}
+	oL7 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-"),
+										 pouredL:widget.NewLabel("-")}
+	oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-"),
+										 pouredL:widget.NewLabel("-")}
 
-	myWindow.Resize(fyne.NewSize(100, 100))
-	myWindow.ShowAndRun()
+	orderL  := widget.NewLabel("Order ID: ")
+  userL   := widget.NewLabel("User ID: ")
+  tapL    := widget.NewLabel("Tap ID: ")
+  beerL   := widget.NewLabel("Beer ID: ")
+  priceL  := widget.NewLabel("Price: ")
+  sizeL   := widget.NewLabel("Size: ")
+  pouredL := widget.NewLabel("Poured: ")
+
+//Box frenzy
+	myCanvas.SetContent(
+    widget.NewHBox(
+      widget.NewVBox(
+        orderL, userL, tapL, beerL, priceL, sizeL, pouredL,),//end Heading VBox
+      widget.NewVBox(
+        oL1.orderIDL, oL1.userIDL, oL1.tapIDL, oL1.beerIDL,
+				oL1.priceL, oL1.sizeL, oL1.pouredL,),//end user1 Vbox
+			widget.NewVBox(
+        oL2.orderIDL, oL2.userIDL, oL2.tapIDL, oL2.beerIDL,
+				oL2.priceL, oL2.sizeL, oL2.pouredL,),//end user2 Vbox
+			widget.NewVBox(
+        oL3.orderIDL, oL3.userIDL, oL3.tapIDL, oL3.beerIDL,
+				oL3.priceL, oL3.sizeL, oL3.pouredL,),//end user3 Vbox
+			widget.NewVBox(
+        oL4.orderIDL, oL4.userIDL, oL4.tapIDL, oL4.beerIDL,
+				oL4.priceL, oL4.sizeL, oL4.pouredL,),//end user4 Vbox
+			widget.NewVBox(
+				oL5.orderIDL, oL5.userIDL, oL5.tapIDL, oL5.beerIDL,
+				oL5.priceL, oL5.sizeL, oL5.pouredL,),//end user5 Vbox
+			widget.NewVBox(
+				oL6.orderIDL, oL6.userIDL, oL6.tapIDL, oL6.beerIDL,
+				oL6.priceL, oL6.sizeL, oL6.pouredL,),//end user6 Vbox
+			widget.NewVBox(
+				oL7.orderIDL, oL7.userIDL, oL7.tapIDL, oL7.beerIDL,
+				oL7.priceL, oL7.sizeL, oL7.pouredL,),//end user7 Vbox
+			widget.NewVBox(
+				oL8.orderIDL, oL8.userIDL, oL8.tapIDL, oL8.beerIDL,
+				oL8.priceL, oL8.sizeL, oL8.pouredL,),//end user8 Vbox
+    ),//end Hbox
+  ) //adding label widget to window
+
+	// top := canvas.NewText("Orders", color.White)
+	// left :=
+	// widget.NewVBox(orderL, userL, tapL, beerL, priceL, sizeL, pouredL,)//end Heading VBox
+	//
+	//
+	// middle := widget.NewHBox(
+	// 			      widget.NewVBox(
+	// 			        oL1.orderIDL, oL1.userIDL, oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL, oL1.pouredL,),//end user1 Vbox
+	// 						widget.NewVBox(
+	// 			        oL2.orderIDL, oL2.userIDL, oL2.tapIDL, oL2.beerIDL,
+	// 							oL2.priceL, oL2.sizeL, oL2.pouredL,),//end user2 Vbox
+	// 						widget.NewVBox(
+	// 			        oL3.orderIDL, oL3.userIDL, oL3.tapIDL, oL3.beerIDL,
+	// 							oL3.priceL, oL3.sizeL, oL3.pouredL,),//end user3 Vbox
+	// 						widget.NewVBox(
+	// 			        oL4.orderIDL, oL4.userIDL, oL4.tapIDL, oL4.beerIDL,
+	// 							oL4.priceL, oL4.sizeL, oL4.pouredL,),//end user4 Vbox
+	// 						widget.NewVBox(
+	// 							oL5.orderIDL, oL5.userIDL, oL5.tapIDL, oL5.beerIDL,
+	// 							oL5.priceL, oL5.sizeL, oL5.pouredL,),//end user5 Vbox
+	// 						widget.NewVBox(
+	// 							oL6.orderIDL, oL6.userIDL, oL6.tapIDL, oL6.beerIDL,
+	// 							oL6.priceL, oL6.sizeL, oL6.pouredL,),//end user6 Vbox
+	// 						widget.NewVBox(
+	// 							oL7.orderIDL, oL7.userIDL, oL7.tapIDL, oL7.beerIDL,
+	// 							oL7.priceL, oL7.sizeL, oL7.pouredL,),//end user7 Vbox
+	// 						widget.NewVBox(
+	// 							oL8.orderIDL, oL8.userIDL, oL8.tapIDL, oL8.beerIDL,
+	// 							oL8.priceL, oL8.sizeL, oL8.pouredL,),//end user8 Vbox
+	// 	)
+	// // canvas.NewText("User orders", color.White)
+	// content := fyne.NewContainerWithLayout(layout.NewBorderLayout(top, nil, left, nil),
+	// 																		top, left, middle)
+	// myCanvas.SetContent(content)
+	go changeContent(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8, o1)
+
+	w.Resize(fyne.NewSize(500, 230))
+	w.ShowAndRun()
 
 
 
 	endProgram()
 }
 
-func runProgram(c fyne.Canvas) {
+func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -141,6 +276,16 @@ func runProgram(c fyne.Canvas) {
 					//Get user orders
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
+					fmt.Println("In change Content")
+				  oL1.orderIDL.SetText(userOrders.orderID)
+					oL1.userIDL.SetText(userOrders.user)
+					oL1.tapIDL.SetText(userOrders.tapID)
+					oL1.beerIDL.SetText("4")
+					oL1.priceL.SetText("5")
+					oL1.sizeL.SetText("6")
+					oL1.pouredL.SetText("7")
+					oL1.sizeL.SetText("8")
+
 
 					go togglePour(*userOrders)
 
@@ -157,20 +302,8 @@ func runProgram(c fyne.Canvas) {
 				}
 		}
 
-		c.SetContent(canvas.NewRectangle(color.Black))
 
 
-		c.SetContent(canvas.NewLine(color.Gray{0x66}))
-
-
-		circle := canvas.NewCircle(color.White)
-		circle.StrokeWidth = 4
-		circle.StrokeColor = color.RGBA{0xff, 0x33, 0x33, 0xff}
-		c.SetContent(circle)
-
-
-		c.SetContent(canvas.NewImageFromResource(theme.FyneLogo()))
-	}
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 	endProgram()
 }
