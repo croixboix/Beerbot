@@ -301,9 +301,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 						}
 				}
 		}
-
-
-
+	}
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 	endProgram()
 }
