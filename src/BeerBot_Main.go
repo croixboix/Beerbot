@@ -23,6 +23,12 @@ import (
 	"bytes"
 	"runtime"
 	"strings"
+	"fyne.io/fyne"
+	"fyne.io/fyne/app"
+	"fyne.io/fyne/canvas"
+	"fyne.io/fyne/theme"
+	"image/color"
+
 )
 
 const (
@@ -82,6 +88,27 @@ type CheckResponse struct {
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
+
+
+
+	myApp := app.New()
+	myWindow := myApp.NewWindow("Canvas")
+	myCanvas := myWindow.Canvas()
+
+	text := canvas.NewText("Text", color.White)
+	text.TextStyle.Bold = true
+	myCanvas.SetContent(text)
+	go runProgram(myCanvas)
+
+	myWindow.Resize(fyne.NewSize(100, 100))
+	myWindow.ShowAndRun()
+
+
+
+	endProgram()
+}
+
+func runProgram(c fyne.Canvas) {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -129,11 +156,23 @@ func main() {
 						}
 				}
 		}
-	}
 
+		c.SetContent(canvas.NewRectangle(color.Black))
+
+
+		c.SetContent(canvas.NewLine(color.Gray{0x66}))
+
+
+		circle := canvas.NewCircle(color.White)
+		circle.StrokeWidth = 4
+		circle.StrokeColor = color.RGBA{0xff, 0x33, 0x33, 0xff}
+		c.SetContent(circle)
+
+
+		c.SetContent(canvas.NewImageFromResource(theme.FyneLogo()))
+	}
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 	endProgram()
-
 }
 
 
