@@ -60,9 +60,13 @@ type Order struct {
 	//Tap's UUID
 	uuid string
 	//Order's user/customer
-	user int
 	orderID int
+	user int
 	tapID int
+	beerID int
+	price string
+	size string
+
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
 }
@@ -89,7 +93,6 @@ type orderLabels struct {
 	beerIDL *widget.Label
 	priceL *widget.Label
 	sizeL *widget.Label
-	pouredL *widget.Label
 }
 
 
@@ -107,57 +110,49 @@ func main() {
 										 tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-"),
-										 pouredL:widget.NewLabel("-")}
+										 sizeL:widget.NewLabel("-")}
   oL2 := orderLabels{orderIDL: widget.NewLabel("-"),
  										 userIDL:widget.NewLabel("-"),
  										 tapIDL:widget.NewLabel("-"),
  										 beerIDL:widget.NewLabel("-"),
  										 priceL:widget.NewLabel("-"),
- 										 sizeL:widget.NewLabel("-"),
- 										 pouredL:widget.NewLabel("-")}
+ 										 sizeL:widget.NewLabel("-")}
   oL3 := orderLabels{orderIDL: widget.NewLabel("-"),
 										 userIDL:widget.NewLabel("-"),
 									   tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-"),
-										 pouredL:widget.NewLabel("-")}
+										 sizeL:widget.NewLabel("-")}
   oL4 := orderLabels{orderIDL: widget.NewLabel("-"),
 										 userIDL:widget.NewLabel("-"),
 										 tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-"),
-										 pouredL:widget.NewLabel("-")}
+										 sizeL:widget.NewLabel("-")}
   oL5 := orderLabels{orderIDL: widget.NewLabel("-"),
 										 userIDL:widget.NewLabel("-"),
 										 tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-"),
-										 pouredL:widget.NewLabel("-")}
+										 sizeL:widget.NewLabel("-")}
   oL6 := orderLabels{orderIDL: widget.NewLabel("-"),
  										userIDL:widget.NewLabel("-"),
  										tapIDL:widget.NewLabel("-"),
  										beerIDL:widget.NewLabel("-"),
  										priceL:widget.NewLabel("-"),
- 										sizeL:widget.NewLabel("-"),
- 										pouredL:widget.NewLabel("-")}
+ 										sizeL:widget.NewLabel("-")}
 	oL7 := orderLabels{orderIDL: widget.NewLabel("-"),
 										 userIDL:widget.NewLabel("-"),
 										 tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-"),
-										 pouredL:widget.NewLabel("-")}
+										 sizeL:widget.NewLabel("-")}
 	oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
 										 userIDL:widget.NewLabel("-"),
 										 tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-"),
-										 pouredL:widget.NewLabel("-")}
+										 sizeL:widget.NewLabel("-")}
 
 	orderL  := widget.NewLabel("Order ID: ")
   userL   := widget.NewLabel("User ID: ")
@@ -165,74 +160,41 @@ func main() {
   beerL   := widget.NewLabel("Beer ID: ")
   priceL  := widget.NewLabel("Price: ")
   sizeL   := widget.NewLabel("Size: ")
-  pouredL := widget.NewLabel("Poured: ")
+
 
 //Box frenzy
 	myCanvas.SetContent(
     widget.NewHBox(
       widget.NewVBox(
-        orderL, userL, tapL, beerL, priceL, sizeL, pouredL,),//end Heading VBox
+        orderL, userL, tapL, beerL, priceL, sizeL,),//end Heading VBox
       widget.NewVBox(
         oL1.orderIDL, oL1.userIDL, oL1.tapIDL, oL1.beerIDL,
-				oL1.priceL, oL1.sizeL, oL1.pouredL,),//end user1 Vbox
+				oL1.priceL, oL1.sizeL,),//end user1 Vbox
 			widget.NewVBox(
         oL2.orderIDL, oL2.userIDL, oL2.tapIDL, oL2.beerIDL,
-				oL2.priceL, oL2.sizeL, oL2.pouredL,),//end user2 Vbox
+				oL2.priceL, oL2.sizeL,),//end user2 Vbox
 			widget.NewVBox(
         oL3.orderIDL, oL3.userIDL, oL3.tapIDL, oL3.beerIDL,
-				oL3.priceL, oL3.sizeL, oL3.pouredL,),//end user3 Vbox
+				oL3.priceL, oL3.sizeL,),//end user3 Vbox
 			widget.NewVBox(
         oL4.orderIDL, oL4.userIDL, oL4.tapIDL, oL4.beerIDL,
-				oL4.priceL, oL4.sizeL, oL4.pouredL,),//end user4 Vbox
+				oL4.priceL, oL4.sizeL,),//end user4 Vbox
 			widget.NewVBox(
 				oL5.orderIDL, oL5.userIDL, oL5.tapIDL, oL5.beerIDL,
-				oL5.priceL, oL5.sizeL, oL5.pouredL,),//end user5 Vbox
+				oL5.priceL, oL5.sizeL,),//end user5 Vbox
 			widget.NewVBox(
 				oL6.orderIDL, oL6.userIDL, oL6.tapIDL, oL6.beerIDL,
-				oL6.priceL, oL6.sizeL, oL6.pouredL,),//end user6 Vbox
+				oL6.priceL, oL6.sizeL,),//end user6 Vbox
 			widget.NewVBox(
 				oL7.orderIDL, oL7.userIDL, oL7.tapIDL, oL7.beerIDL,
-				oL7.priceL, oL7.sizeL, oL7.pouredL,),//end user7 Vbox
+				oL7.priceL, oL7.sizeL,),//end user7 Vbox
 			widget.NewVBox(
 				oL8.orderIDL, oL8.userIDL, oL8.tapIDL, oL8.beerIDL,
-				oL8.priceL, oL8.sizeL, oL8.pouredL,),//end user8 Vbox
+				oL8.priceL, oL8.sizeL,),//end user8 Vbox
     ),//end Hbox
   ) //adding label widget to window
 
-	// top := canvas.NewText("Orders", color.White)
-	// left :=
-	// widget.NewVBox(orderL, userL, tapL, beerL, priceL, sizeL, pouredL,)//end Heading VBox
-	//
-	//
-	// middle := widget.NewHBox(
-	// 			      widget.NewVBox(
-	// 			        oL1.orderIDL, oL1.userIDL, oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL, oL1.pouredL,),//end user1 Vbox
-	// 						widget.NewVBox(
-	// 			        oL2.orderIDL, oL2.userIDL, oL2.tapIDL, oL2.beerIDL,
-	// 							oL2.priceL, oL2.sizeL, oL2.pouredL,),//end user2 Vbox
-	// 						widget.NewVBox(
-	// 			        oL3.orderIDL, oL3.userIDL, oL3.tapIDL, oL3.beerIDL,
-	// 							oL3.priceL, oL3.sizeL, oL3.pouredL,),//end user3 Vbox
-	// 						widget.NewVBox(
-	// 			        oL4.orderIDL, oL4.userIDL, oL4.tapIDL, oL4.beerIDL,
-	// 							oL4.priceL, oL4.sizeL, oL4.pouredL,),//end user4 Vbox
-	// 						widget.NewVBox(
-	// 							oL5.orderIDL, oL5.userIDL, oL5.tapIDL, oL5.beerIDL,
-	// 							oL5.priceL, oL5.sizeL, oL5.pouredL,),//end user5 Vbox
-	// 						widget.NewVBox(
-	// 							oL6.orderIDL, oL6.userIDL, oL6.tapIDL, oL6.beerIDL,
-	// 							oL6.priceL, oL6.sizeL, oL6.pouredL,),//end user6 Vbox
-	// 						widget.NewVBox(
-	// 							oL7.orderIDL, oL7.userIDL, oL7.tapIDL, oL7.beerIDL,
-	// 							oL7.priceL, oL7.sizeL, oL7.pouredL,),//end user7 Vbox
-	// 						widget.NewVBox(
-	// 							oL8.orderIDL, oL8.userIDL, oL8.tapIDL, oL8.beerIDL,
-	// 							oL8.priceL, oL8.sizeL, oL8.pouredL,),//end user8 Vbox
-	// 	)
-	// // canvas.NewText("User orders", color.White)
-	// content := fyne.NewContainerWithLayout(layout.NewBorderLayout(top, nil, left, nil),
-	// 																		top, left, middle)
-	// myCanvas.SetContent(content)
+
 	go runProgram(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
 	w.Resize(fyne.NewSize(500, 230))
@@ -280,11 +242,9 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 				  oL1.orderIDL.SetText(strconv.Itoa(userOrders.orderID))
 					oL1.userIDL.SetText(strconv.Itoa(userOrders.user))
 					oL1.tapIDL.SetText(strconv.Itoa(userOrders.tapID))
-					oL1.beerIDL.SetText("4")
-					oL1.priceL.SetText("5")
-					oL1.sizeL.SetText("6")
-					oL1.pouredL.SetText("7")
-					oL1.sizeL.SetText("8")
+					oL1.beerIDL.SetText(strconv.Itoa(userOrders.beerID))
+					oL1.priceL.SetText(userOrders.price)
+					oL1.sizeL.SetText(userOrders.size)
 
 
 					go togglePour(*userOrders)
@@ -344,6 +304,10 @@ func getOrders(uuid string, orderID int) *Order {
 	if verifyData.UserID != 0 && verifyData.WasPoured == false{
 		o.user = verifyData.UserID
 		o.orderID = verifyData.OrderID
+		o.tapID = verifyData.TapID
+		o.beerID = verifyData.BeerID
+		o.price = verifyData.Price
+		o.size = verifyData.Size
 		//fmt.Println("Order Username: ", o.user)
 
 		//# pulses = (size in floz) / 0.012549
