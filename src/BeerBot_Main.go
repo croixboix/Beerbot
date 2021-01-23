@@ -233,7 +233,7 @@ func main() {
 	// content := fyne.NewContainerWithLayout(layout.NewBorderLayout(top, nil, left, nil),
 	// 																		top, left, middle)
 	// myCanvas.SetContent(content)
-	go changeContent(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8, o1)
+	go changeContent(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
 	w.Resize(fyne.NewSize(500, 230))
 	w.ShowAndRun()
@@ -277,9 +277,9 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 					userOrders := getOrders(tapUUID, orderIdToServe[i])
 
 					fmt.Println("In change Content")
-				  oL1.orderIDL.SetText(userOrders.orderID)
-					oL1.userIDL.SetText(userOrders.user)
-					oL1.tapIDL.SetText(userOrders.tapID)
+				  oL1.orderIDL.SetText(strconv.Itoa(userOrders.orderID))
+					oL1.userIDL.SetText(strconv.Itoa(userOrders.user))
+					oL1.tapIDL.SetText(strconv.Itoa(userOrders.tapID))
 					oL1.beerIDL.SetText("4")
 					oL1.priceL.SetText("5")
 					oL1.sizeL.SetText("6")
