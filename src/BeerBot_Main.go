@@ -233,7 +233,7 @@ func main() {
 	// content := fyne.NewContainerWithLayout(layout.NewBorderLayout(top, nil, left, nil),
 	// 																		top, left, middle)
 	// myCanvas.SetContent(content)
-	go changeContent(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+	go runProgram(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
 	w.Resize(fyne.NewSize(500, 230))
 	w.ShowAndRun()
