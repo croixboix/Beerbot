@@ -89,12 +89,12 @@ type CheckResponse struct {
 }
 
 type AuthPOST struct {
-	TapControlID string 	`json:"id"`
+	TapControlID int 	`json:"id"`
 	TapUUID string				`json:"uuid"`
 }
 
 type AuthResponse struct {
-	TapControlID string 	`json:"id"`
+	TapControlID int 	`json:"id"`
 	TapUUID string				`json:"uuid"`
 	AuthenToken string 	`json:"authentication_token"`
 }
