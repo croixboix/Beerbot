@@ -312,9 +312,9 @@ func authTapController(uuid string, tapControlID string) string{
 	var authResp []byte = body
 	var verifyAuth AuthResponse
 
-	err := json.Unmarshal(authResp, &verifyAuth)
-	if err != nil {
-		fmt.Println("unmarshal error:", err)
+	errR := json.Unmarshal(authResp, &verifyAuth)
+	if errR != nil {
+		fmt.Println("unmarshal error:", errR)
 	}
 
 	fmt.Println(verifyAuth.AuthenToken)
