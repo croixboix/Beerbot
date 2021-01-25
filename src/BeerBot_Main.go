@@ -43,8 +43,10 @@ const (
 
 var (
 	//This is how we will set the tap system's ID
-	tapUUID string = "TestTap"
-	tapToken string = "a"
+	tapUUID string = "d95c9dcc-3b99-4ad6-9a4e-e60418fcd359"
+	tapControlID = "1"
+	authToken string
+
 
 	//Size of order queue
 	orderQueueSize int = 0
@@ -84,6 +86,15 @@ type OrderResponse struct {
 type CheckResponse struct {
 	OrderID		int			`json:"id"`
 	WasPoured bool		`json:"was_poured"`
+}
+
+type AuthPOST struct {
+	TapControlID string 	`json:"id"`
+	TapUUID string				`json:"uuid"`
+}
+
+type AuthResponse struct {
+	AuthToken string 	`json:"authentication_token"`
 }
 
 type orderLabels struct {
@@ -219,6 +230,9 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
+	//Authenticate with API
+	authToken = authTapController(tapUUID, tapControlID)
+
 
 	//Main program loop
 	for webConnectionAlive == true{
@@ -264,6 +278,48 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	}
 	//Run all the stuff needed to cleanly exit ( IMPORTANT THIS HAPPENS )
 	endProgram()
+}
+
+
+//Tap Controller Authentication with API
+func authTapController(uuid string, tapControlID string) string{
+	url := "http://96.30.244.56:3000/api/v1/tap_sessions"
+
+	authPost := AuthPOST{tapControlID,uuid}
+	//var processData CheckResponse
+
+	payload, err := json.Marshal(authPost)
+	if err != nil {
+		fmt.Println("marshal error:", err)
+	}
+
+	req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(payload))
+
+	req, _ := http.NewRequest("POST", url, nil)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Host", "96.30.244.56:3000")
+	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	//fmt.Println(res)
+	//fmt.Println("body: ", string(body))
+
+	var authResp []byte = body
+	var verifyAuth []AuthResponse
+
+	err := json.Unmarshal([]byte(authResp), &verifyAuth)
+	if err != nil {
+		fmt.Println("unmarshal error:", err)
+	}
+
+	fmt.Println(verifyAuth.AuthToken)
+	return verifyAuth.AuthToken
 }
 
 
@@ -388,7 +444,6 @@ func processOrder(uuid string, orderID int) bool {
 	req.Header.Add("Cache-Control", "no-cache")
 	req.Header.Add("Host", "96.30.244.56:3000")
 	req.Header.Add("Accept-Encoding", "gzip, deflate")
-	req.Header.Add("Content-Length", "39")
 	req.Header.Add("Connection", "keep-alive")
 	req.Header.Add("cache-control", "no-cache")
 
@@ -444,29 +499,7 @@ func togglePour(customerOrder Order) {
 }
 
 
-/*
- OLD MULTI-THREADED POUR FUNCTION
-//Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order) {
-	//Create a wait group for goroutines
-	var wg sync.WaitGroup
-	//wg.Add(numberOfTaps + 1)
-	fmt.Println("Created goroutine wait groups!")
-	//Solenoid normal state = closed
-	for i := 0; i <= numberOfTaps; i++ {
-		//fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-		if customerOrder.tap[i] != 0 {
-			wg.Add(1)
-			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
-			fmt.Printf("(Go Routines)Begin measuring flow for user: %d on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
-		}
-	}
-	// Wait for all goroutines to be finished
-	wg.Wait()
-	fmt.Println("Finished all go routines!")
-}
-*/
+
 
 //DEBUGGING PURPOSES ONLY! // USE goid() to return thread id
 func goid() int {
@@ -496,7 +529,29 @@ func endProgram(){
 
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
 
-
+/*
+ OLD MULTI-THREADED POUR FUNCTION
+//Initiates pour routine (this should be the last thing called, serves order)
+func togglePour(customerOrder Order) {
+	//Create a wait group for goroutines
+	var wg sync.WaitGroup
+	//wg.Add(numberOfTaps + 1)
+	fmt.Println("Created goroutine wait groups!")
+	//Solenoid normal state = closed
+	for i := 0; i <= numberOfTaps; i++ {
+		//fmt.Printf("(Go Routines)Begin measuring flow for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		if customerOrder.tap[i] != 0 {
+			wg.Add(1)
+			go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg)
+			fmt.Printf("(Go Routines)Begin measuring flow for user: %d on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+			//fmt.Printf("Pour limit reached for user: %s on tap: %d of size: %d\n", customerOrder.user, i+1, customerOrder.tap[i])
+		}
+	}
+	// Wait for all goroutines to be finished
+	wg.Wait()
+	fmt.Println("Finished all go routines!")
+}
+*/
 
 
 /*
