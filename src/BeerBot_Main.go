@@ -32,7 +32,7 @@ const (
 	// 10,200 Pulses per Gallon
 	// 10,200 Pulses per 128 fluid ounce
 	//  # pulses = (size in floz) / 0.01254901960784313725490196078431372549019607
-	pulseDivConst float32 = 0.01254902
+	pulseDivConst float64 = 0.01254902
 
 
 	//Define number of taps on system (# of physical taps -1)
@@ -363,7 +363,7 @@ func getOrders(uuid string, orderID int, authToken string) *Order {
 
 		//# pulses = (size in floz) / 0.012549
 		//Calculate the number of pulses for flow sensor for the local order struct
-		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,16)
+		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,32)
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", errPulseConversion)
    	}
