@@ -89,7 +89,7 @@ type CheckResponse struct {
 }
 
 type AuthPOST struct {
-	TapControl []struct {
+	TapControl struct {
 		TapControlID int 	`json:"id"`
 		TapUUID string		`json:"uuid"`
 	} `json:"tap_control"`
@@ -289,7 +289,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 func authTapController(uuid string, tapControlID int) string{
 	url := "http://96.30.244.56:3000/api/v1/tap_sessions"
 
-	authPost := AuthPOST{TapControl[0](tapControlID,uuid)	}
+	authPost := AuthPOST{tapControlID,uuid}
 	//var processData CheckResponse
 
 	payload, err := json.Marshal(authPost)
