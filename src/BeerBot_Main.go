@@ -308,8 +308,8 @@ func authTapController(uuid string, tapControlID string) string{
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	//fmt.Println(res)
-	//fmt.Println("body: ", string(body))
+	fmt.Println(res)
+	fmt.Println("body: ", string(body))
 
 	var authResp []byte = body
 	var verifyAuth AuthResponse
