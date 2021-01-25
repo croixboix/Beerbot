@@ -94,7 +94,7 @@ type AuthPOST struct {
 }
 
 type AuthResponse struct {
-	AuthToken string 	`json:"authentication_token"`
+	AuthenToken string 	`json:"authentication_token"`
 }
 
 type orderLabels struct {
@@ -293,9 +293,8 @@ func authTapController(uuid string, tapControlID string) string{
 		fmt.Println("marshal error:", err)
 	}
 
-	req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(payload))
 
-	req, _ := http.NewRequest("POST", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("Host", "96.30.244.56:3000")
@@ -318,8 +317,8 @@ func authTapController(uuid string, tapControlID string) string{
 		fmt.Println("unmarshal error:", err)
 	}
 
-	fmt.Println(verifyAuth.AuthToken)
-	return verifyAuth.AuthToken
+	fmt.Println(verifyAuth.AuthenToken)
+	return verifyAuth.AuthenToken
 }
 
 
