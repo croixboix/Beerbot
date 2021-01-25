@@ -257,13 +257,11 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 					oL1.sizeL.SetText(userOrders.size)
 
 
-					go togglePour(*userOrders)
+					go togglePour(*userOrders, authToken)
 
 				}
-
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-
 
 				// Remove orders from local order queue
 				for i := len(orderIdToServe) - 1; i >= 0; i-- {
@@ -365,7 +363,7 @@ func getOrders(uuid string, orderID int, authToken string) *Order {
 
 		//# pulses = (size in floz) / 0.012549
 		//Calculate the number of pulses for flow sensor for the local order struct
-		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,32)
+		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,16)
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", errPulseConversion)
    	}
