@@ -44,7 +44,7 @@ const (
 var (
 	//This is how we will set the tap system's ID
 	tapUUID string = "d95c9dcc-3b99-4ad6-9a4e-e60418fcd359"
-	tapControlID = "1"
+	tapControlID = 1
 	authToken string
 
 
