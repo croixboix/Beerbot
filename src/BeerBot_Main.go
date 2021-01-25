@@ -89,16 +89,16 @@ type CheckResponse struct {
 }
 
 type AuthPOST struct {
-	TapControlID int 	`json:"id"`
-	TapUUID string				`json:"uuid"`
+	TapControl []struct {
+		TapControlID int 	`json:"id"`
+		TapUUID string		`json:"uuid"`
+	} `json:"tap_control"`
 }
 
 type AuthResponse struct {
-	TapControl []struct {
-		TapControlID int 		`json:"id"`
-		TapUUID string			`json:"uuid"`
-		AuthenToken string 	`json:"authentication_token"`
-	} `json:"tap_control"`
+	TapControlID int 		`json:"id"`
+	TapUUID string			`json:"uuid"`
+	AuthenToken string 	`json:"authentication_token"`
 }
 
 type orderLabels struct {
@@ -321,8 +321,8 @@ func authTapController(uuid string, tapControlID int) string{
 		fmt.Println("unmarshal error:", errR)
 	}
 
-	fmt.Println(verifyAuth.TapControl[0].AuthenToken)
-	return verifyAuth.TapControl[0].AuthenToken
+	fmt.Println(verifyAuth.AuthenToken)
+	return verifyAuth.AuthenToken
 }
 
 
