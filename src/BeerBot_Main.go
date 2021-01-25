@@ -31,8 +31,8 @@ import (
 const (
 	// 10,200 Pulses per Gallon
 	// 10,200 Pulses per 128 fluid ounce
-	//  # pulses = (size in floz) / 0.0125490196078431372549019607843137254901960784313725490196078431
-
+	//  # pulses = (size in floz) / 0.01254901960784313725490196078431372549019607
+	pulseDivConst float32 = 0.01254902
 
 
 	//Define number of taps on system (# of physical taps -1)
@@ -47,15 +47,8 @@ var (
 	tapControlID = 1
 	authToken string
 
-
-	//Size of order queue
-	orderQueueSize int = 0
-
 	//Keeps track of whether connection is alive
 	webConnectionAlive bool = true
-
-	//Testing variables below ONLY
-	//testMessage string = "Tap ID and Order submitted!"
 )
 
 type Order struct {
@@ -234,9 +227,8 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	gpio_rpi.GPIO_INIT()
 	fmt.Println("GPIO Initialized!")
 
-	//Authenticate with API
+	//Authenticate with API to get our Authentication Token for API communication
 	authToken = authTapController(tapUUID, tapControlID)
-
 
 	//Main program loop
 	for webConnectionAlive == true{
@@ -271,12 +263,11 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
-				// Mark the orders we just fullfilled/poured as poured on the orders API
+
+
+				// Remove orders from local order queue
 				for i := len(orderIdToServe) - 1; i >= 0; i-- {
-					// Call to process order
-					if processOrder(tapUUID, orderIdToServe[i], authToken) == true{
-							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
-						}
+					orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 				}
 		}
 	}
@@ -373,12 +364,12 @@ func getOrders(uuid string, orderID int, authToken string) *Order {
 		//fmt.Println("Order Username: ", o.user)
 
 		//# pulses = (size in floz) / 0.012549
-		//Calculate the number of pulses for the local order struct
+		//Calculate the number of pulses for flow sensor for the local order struct
 		pulses, errPulseConversion := strconv.ParseFloat(verifyData.Size,32)
 		if errPulseConversion != nil {
     	fmt.Println("size to pulse conversion error", errPulseConversion)
    	}
-		pulses = pulses/0.012549
+		pulses = pulses/pulseDivConst
 		//Round our float and store it away in local order struct
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
@@ -434,7 +425,7 @@ func checkOrders(uuid string, authToken string) []int{
 
 
 // Tells API that order processed and deletes order from API order list
-func processOrder(uuid string, orderID int, authToken string) bool {
+func processOrder(uuid string, orderID int, authToken string) {
 	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
 
 	orderResp := CheckResponse{orderID,true}
@@ -457,10 +448,12 @@ func processOrder(uuid string, orderID int, authToken string) bool {
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
+
 	//body, _ := ioutil.ReadAll(res.Body)
 	//fmt.Println("Process Order body: ", string(body))
-
 	//fmt.Println("Process Order res: ", res.Status)
+
+	/* Old return code, probably dont need but good for reference
 	if res.Status == "204 No Content" {
 		fmt.Println("Processed orderID: ", orderID)
 	 	return true
@@ -468,11 +461,12 @@ func processOrder(uuid string, orderID int, authToken string) bool {
 		fmt.Println("FAILED processing orderID: ", orderID)
 		return false
 	}
+	*/
 }
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order) {
+func togglePour(customerOrder Order, authToken string) {
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
 	// Run your long running function in it's own goroutine and pass back it's
@@ -499,25 +493,12 @@ func togglePour(customerOrder Order) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
+			processOrder(customerOrder.uuid, customerOrder.orderID, authToken)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(solenoidToClose)
+			processOrder(customerOrder.uuid, customerOrder.orderID, authToken)
 	}
-}
-
-
-
-
-//DEBUGGING PURPOSES ONLY! // USE goid() to return thread id
-func goid() int {
-	var buf [64]byte
-	n := runtime.Stack(buf[:], false)
-	idField := strings.Fields(strings.TrimPrefix(string(buf[:n]), "goroutine "))[0]
-	id, err := strconv.Atoi(idField)
-	if err != nil {
-		panic(fmt.Sprintf("cannot get goroutine id: %v", err))
-	}
-	return id
 }
 
 
@@ -531,7 +512,17 @@ func endProgram(){
 }
 
 
-
+//DEBUGGING PURPOSES ONLY! // USE goid() to return thread id
+func goid() int {
+	var buf [64]byte
+	n := runtime.Stack(buf[:], false)
+	idField := strings.Fields(strings.TrimPrefix(string(buf[:n]), "goroutine "))[0]
+	id, err := strconv.Atoi(idField)
+	if err != nil {
+		panic(fmt.Sprintf("cannot get goroutine id: %v", err))
+	}
+	return id
+}
 
 
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
