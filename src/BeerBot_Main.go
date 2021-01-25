@@ -95,8 +95,8 @@ type AuthPOST struct {
 
 type AuthResponse struct {
 	TapControl []struct {
-		TapControlID int 	`json:"id"`
-		TapUUID string				`json:"uuid"`
+		TapControlID int 		`json:"id"`
+		TapUUID string			`json:"uuid"`
 		AuthenToken string 	`json:"authentication_token"`
 	} `json:"tap_control"`
 }
@@ -321,8 +321,8 @@ func authTapController(uuid string, tapControlID int) string{
 		fmt.Println("unmarshal error:", errR)
 	}
 
-	fmt.Println(verifyAuth.TapControl.AuthenToken)
-	return verifyAuth.TapControl.AuthenToken
+	fmt.Println(verifyAuth.TapControl[0].AuthenToken)
+	return verifyAuth.TapControl[0].AuthenToken
 }
 
 
