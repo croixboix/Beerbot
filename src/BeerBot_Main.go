@@ -246,7 +246,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 		time.Sleep(1*time.Second)
 
 		//Check order queue for orders to pull
-		orderIdToServe := checkOrders(tapUUID)
+		orderIdToServe := checkOrders(tapUUID, authToken)
 		fmt.Println("Order IDs to serve: ", orderIdToServe)
 
 		//If there are orders to serve then let us fullfill them
@@ -254,7 +254,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 
 				for i := 0; i < len(orderIdToServe); i++ {
 					//Get user orders
-					userOrders := getOrders(tapUUID, orderIdToServe[i])
+					userOrders := getOrders(tapUUID, orderIdToServe[i], authToken)
 
 					fmt.Println("In change Content")
 				  oL1.orderIDL.SetText(strconv.Itoa(userOrders.orderID))
@@ -274,7 +274,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 				// Mark the orders we just fullfilled/poured as poured on the orders API
 				for i := len(orderIdToServe) - 1; i >= 0; i-- {
 					// Call to process order
-					if processOrder(tapUUID, orderIdToServe[i]) == true{
+					if processOrder(tapUUID, orderIdToServe[i], authToken) == true{
 							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
 						}
 				}
@@ -313,7 +313,7 @@ func authTapController(uuid string, tapControlID int) string{
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	fmt.Println("body: ", string(body))
+	//fmt.Println("body: ", string(body))
 
 	var authResp []byte = body
 	var verifyAuth AuthResponse
@@ -329,7 +329,7 @@ func authTapController(uuid string, tapControlID int) string{
 
 
 //Get orders from the orderqueue
-func getOrders(uuid string, orderID int) *Order {
+func getOrders(uuid string, orderID int, authToken string) *Order {
 	o := Order{uuid: tapUUID}
 
 	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
@@ -341,6 +341,7 @@ func getOrders(uuid string, orderID int) *Order {
 	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
 	req.Header.Add("Connection", "keep-alive")
 	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("Authorization", authToken)
 
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
@@ -390,7 +391,7 @@ func getOrders(uuid string, orderID int) *Order {
 
 
 //Check for orders to be served, returns array of ordersId to be served
-func checkOrders(uuid string) []int{
+func checkOrders(uuid string, authToken string) []int{
 	var orderIDs []int
 	fmt.Println("Fetch order ids to fullfill")
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
@@ -401,6 +402,7 @@ func checkOrders(uuid string) []int{
 	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
 	req.Header.Add("Connection", "keep-alive")
 	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("Authorization", authToken)
 
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
@@ -432,7 +434,7 @@ func checkOrders(uuid string) []int{
 
 
 // Tells API that order processed and deletes order from API order list
-func processOrder(uuid string, orderID int) bool {
+func processOrder(uuid string, orderID int, authToken string) bool {
 	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
 
 	orderResp := CheckResponse{orderID,true}
@@ -450,6 +452,7 @@ func processOrder(uuid string, orderID int) bool {
 	req.Header.Add("Accept-Encoding", "gzip, deflate")
 	req.Header.Add("Connection", "keep-alive")
 	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("Authorization", authToken)
 
 	res, _ := http.DefaultClient.Do(req)
 
