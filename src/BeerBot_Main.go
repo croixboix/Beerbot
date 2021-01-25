@@ -38,7 +38,7 @@ const (
 	//Define number of taps on system (# of physical taps -1)
 	//Ex: A 4 tap system would be = 3
 	numberOfTaps int = 7
-	/*	TODO:				Get this info from the API CALL!!! 						*/
+
 )
 
 var (
@@ -94,9 +94,11 @@ type AuthPOST struct {
 }
 
 type AuthResponse struct {
-	TapControlID int 	`json:"id"`
-	TapUUID string				`json:"uuid"`
-	AuthenToken string 	`json:"authentication_token"`
+	TapControl []struct {
+		TapControlID int 	`json:"id"`
+		TapUUID string				`json:"uuid"`
+		AuthenToken string 	`json:"authentication_token"`
+	} `json:"tap_control"`
 }
 
 type orderLabels struct {
