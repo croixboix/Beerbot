@@ -321,8 +321,8 @@ func authTapController(uuid string, tapControlID int) string{
 		fmt.Println("unmarshal error:", errR)
 	}
 
-	fmt.Println(verifyAuth.AuthenToken)
-	return verifyAuth.AuthenToken
+	fmt.Println(verifyAuth.TapControl.AuthenToken)
+	return verifyAuth.TapControl.AuthenToken
 }
 
 
