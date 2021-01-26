@@ -570,7 +570,7 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 
 	tapToClose := 9
 	//Update GUI with retreived user order
-	updateGUI(*customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+	updateGUI(customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
 	go func() {
 		var wg1 sync.WaitGroup
