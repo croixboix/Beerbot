@@ -258,7 +258,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 					oL1.sizeL.SetText(userOrders.size)
 
 
-					go togglePour(*userOrders, authToken)
+					go togglePour(*userOrders)
 
 				}
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
