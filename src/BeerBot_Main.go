@@ -70,7 +70,7 @@ type Order struct {
 	lastName string
 	dob string
 	mobilePhone string
-	picture url
+	pictureURL string
 }
 
 type OrderResponse struct {
