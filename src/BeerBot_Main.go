@@ -213,6 +213,7 @@ func main() {
 	endProgram()
 }
 
+
 func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
@@ -263,9 +264,13 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
 				//fmt.Println("len(orderIdToServe): ", len(orderIdToServe))
 
-				// Remove orders from local order queue
+				// Mark the orders we just fullfilled/poured as poured on the orders API
 				for i := len(orderIdToServe) - 1; i >= 0; i-- {
-					orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+					// Call to process order
+					if processOrder(tapUUID, orderIdToServe[i], authToken) == true{
+							// Remove order from local queue
+							orderIdToServe = append(orderIdToServe[:i], orderIdToServe[i+1:]...)
+						}
 				}
 		}
 	}
@@ -423,7 +428,7 @@ func checkOrders(uuid string, authToken string) []int{
 
 
 // Tells API that order processed and deletes order from API order list
-func processOrder(uuid string, orderID int, authToken string) {
+func processOrder(uuid string, orderID int, authToken string) bool{
 	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
 
 	orderResp := CheckResponse{orderID,true}
@@ -451,7 +456,7 @@ func processOrder(uuid string, orderID int, authToken string) {
 	//fmt.Println("Process Order body: ", string(body))
 	//fmt.Println("Process Order res: ", res.Status)
 
-	/* Old return code, probably dont need but good for reference
+
 	if res.Status == "204 No Content" {
 		fmt.Println("Processed orderID: ", orderID)
 	 	return true
@@ -459,12 +464,12 @@ func processOrder(uuid string, orderID int, authToken string) {
 		fmt.Println("FAILED processing orderID: ", orderID)
 		return false
 	}
-	*/
+
 }
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, authToken string) {
+func togglePour(customerOrder Order) {
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
 	// Run your long running function in it's own goroutine and pass back it's
@@ -491,11 +496,9 @@ func togglePour(customerOrder Order, authToken string) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
-			processOrder(customerOrder.uuid, customerOrder.orderID, authToken)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(solenoidToClose)
-			processOrder(customerOrder.uuid, customerOrder.orderID, authToken)
 	}
 }
 
