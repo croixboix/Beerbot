@@ -242,7 +242,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 
 		//fmt.Println("Created togglePour goroutine wait groups!")
 
-		time.Sleep(1*time.Second)
+		time.Sleep(100*time.Millisecond)
 
 		//Check order queue for orders to pull
 		orderIdToServe := checkOrders(tapUUID, authToken)
@@ -593,7 +593,7 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 			fmt.Println(res)
 			//Clear GUI after finished pouring order
 			clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-		case <-time.After(60 * time.Second):
+		case <-time.After(10 * time.Second):
 			fmt.Println("out of time :(")
 			// Close solenoids incase timeout
 			gpio_rpi.CloseSolenoids(tapToClose)
