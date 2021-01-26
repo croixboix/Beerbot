@@ -562,7 +562,7 @@ func processOrder(uuid string, orderID int, authToken string) bool{
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order) {
+func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
 	// Run your long running function in it's own goroutine and pass back it's
