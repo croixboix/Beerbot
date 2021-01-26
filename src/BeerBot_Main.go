@@ -255,10 +255,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 					//Get user orders
 					userOrders := getOrderData(tapUUID, orderIdToServe[i], authToken)
 
-					//Update GUI with retreived user order
-					updateGUI(*userOrders, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-
-					go togglePour(*userOrders)
+					go togglePour(*userOrders, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
 				}
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
@@ -346,7 +343,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 
 
 //Update Gui Content
-func clearGUIOrder(tapID int) {
+func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
 		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
 	switch tapID {
 		case 1:
@@ -572,6 +569,8 @@ func togglePour(customerOrder Order) {
 	// response into our channel.
 
 	tapToClose := 9
+	//Update GUI with retreived user order
+	updateGUI(*customerOrders, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
 	go func() {
 		var wg1 sync.WaitGroup
@@ -592,10 +591,13 @@ func togglePour(customerOrder Order) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
+			//Clear GUI after finished pouring order
 			clearGUIOrder(tapToClose)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
+			// Close solenoids incase timeout
 			gpio_rpi.CloseSolenoids(tapToClose)
+			//Clear GUI after finished pouring order
 			clearGUIOrder(tapToClose)
 	}
 }
