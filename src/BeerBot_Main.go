@@ -52,18 +52,24 @@ var (
 )
 
 type Order struct {
-	//Tap's UUID
+	//Tap_Orders Data
 	uuid string
-	//Order's user/customer
 	orderID int
 	user int
 	tapID int
 	beerID int
 	price string
 	size string
-
 	//Tap(s) to pour on with array value being drink size
 	tap [numberOfTaps + 1]int
+
+	//Tap_Users Data
+	userID string
+	email string
+	firstName string
+	lastName string
+	dob string
+	mobilePhone string
 }
 
 type OrderResponse struct {
@@ -113,13 +119,54 @@ func main() {
 	myCanvas := w.Canvas()
 
 
-	oL1,oL2,oL3,oL4,oL5,oL6,oL7,oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
+	oL1 := orderLabels{orderIDL: widget.NewLabel("-"),
 										 userIDL:widget.NewLabel("-"),
 										 tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
 										 sizeL:widget.NewLabel("-")}
-  
+  oL2 := orderLabels{orderIDL: widget.NewLabel("-"),
+ 										 userIDL:widget.NewLabel("-"),
+ 										 tapIDL:widget.NewLabel("-"),
+ 										 beerIDL:widget.NewLabel("-"),
+ 										 priceL:widget.NewLabel("-"),
+ 										 sizeL:widget.NewLabel("-")}
+  oL3 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+									   tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-")}
+  oL4 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-")}
+  oL5 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-")}
+  oL6 := orderLabels{orderIDL: widget.NewLabel("-"),
+ 										userIDL:widget.NewLabel("-"),
+ 										tapIDL:widget.NewLabel("-"),
+ 										beerIDL:widget.NewLabel("-"),
+ 										priceL:widget.NewLabel("-"),
+ 										sizeL:widget.NewLabel("-")}
+	oL7 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-")}
+	oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
+										 userIDL:widget.NewLabel("-"),
+										 tapIDL:widget.NewLabel("-"),
+										 beerIDL:widget.NewLabel("-"),
+										 priceL:widget.NewLabel("-"),
+										 sizeL:widget.NewLabel("-")}
 
 	orderL  := widget.NewLabel("Order ID: ")
   userL   := widget.NewLabel("User ID: ")
@@ -206,16 +253,10 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 
 				for i := 0; i < len(orderIdToServe); i++ {
 					//Get user orders
-					userOrders := getOrders(tapUUID, orderIdToServe[i], authToken)
+					userOrders := getOrderData(tapUUID, orderIdToServe[i], authToken)
 
-					fmt.Println("In change Content")
-				  oL1.orderIDL.SetText(strconv.Itoa(userOrders.orderID))
-					oL1.userIDL.SetText(strconv.Itoa(userOrders.user))
-					oL1.tapIDL.SetText(strconv.Itoa(userOrders.tapID))
-					oL1.beerIDL.SetText(strconv.Itoa(userOrders.beerID))
-					oL1.priceL.SetText(userOrders.price)
-					oL1.sizeL.SetText(userOrders.size)
-
+					//Update GUI with retreived user order
+					updateGUI(*userOrders)
 
 					go togglePour(*userOrders)
 
@@ -239,13 +280,37 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 
 
 //Update Gui Content
-func updateGUI() {
+func updateGUI(customerOrder Order) {
+		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
+	switch customerOrder.tapID {
+		case 1:
+			oL1.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
+			oL1.userIDL.SetText(strconv.Itoa(customerOrder.user))
+			oL1.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL1.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL1.priceL.SetText(customerOrder.price)
+			oL1.sizeL.SetText(customerOrder.size)
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		default:
+			fmt.Println("Update GUIInvalid Tap #!!")
+		}
+}
+
+
+//Get user data given orderID
+func getUserData(customerOrder Order, authToken string) {
 
 }
 
 
 //Get orders from the orderqueue
-func getOrders(uuid string, orderID int, authToken string) *Order {
+func getOrderData(uuid string, orderID int, authToken string) *Order {
 	o := Order{uuid: tapUUID}
 
 	url := "http://96.30.244.56:3000/api/v1/tap_orders/"+ strconv.Itoa(orderID)
@@ -298,6 +363,8 @@ func getOrders(uuid string, orderID int, authToken string) *Order {
 		//Round our float and store it away in local order struct
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
+
+		//Get user data
 	}
 
 	fmt.Println("getOrders o: ", o)
@@ -397,7 +464,7 @@ func togglePour(customerOrder Order) {
 	// Run your long running function in it's own goroutine and pass back it's
 	// response into our channel.
 
-	solenoidToClose := 9
+	tapToClose := 9
 
 	go func() {
 		var wg1 sync.WaitGroup
@@ -407,7 +474,7 @@ func togglePour(customerOrder Order) {
 			if customerOrder.tap[i] != 0 {
 				wg1.Add(1)
 				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
-				solenoidToClose = i+1
+				tapToClose = i+1
 			}
 		}
 		wg1.Wait()
@@ -418,9 +485,11 @@ func togglePour(customerOrder Order) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
+			updateGUI(*customerOrder)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
-			gpio_rpi.CloseSolenoids(solenoidToClose)
+			gpio_rpi.CloseSolenoids(tapToClose)
+			updateGUI(*customerOrder)
 	}
 }
 
