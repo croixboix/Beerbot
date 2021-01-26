@@ -340,10 +340,75 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL8.priceL.SetText(customerOrder.price)
 			oL8.sizeL.SetText(customerOrder.size)
 		default:
-			fmt.Println("INVALID Update GUIInvalid Tap #!!")
+			fmt.Println("INVALID Update GUI Tap #!!:", tapID)
 		}
 }
 
+
+//Update Gui Content
+func clearGUIOrder(tapID int) {
+		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
+	switch tapID {
+		case 1:
+			oL1.orderIDL.SetText("-")
+			oL1.userIDL.SetText("-")
+			oL1.tapIDL.SetText("-")
+			oL1.beerIDL.SetText("-")
+			oL1.priceL.SetText("-")
+			oL1.sizeL.SetText("-")
+		case 2:
+			oL2.orderIDL.SetText("-")
+			oL2.userIDL.SetText("-")
+			oL2.tapIDL.SetText("-")
+			oL2.beerIDL.SetText("-")
+			oL2.priceL.SetText("-")
+			oL2.sizeL.SetText("-")
+		case 3:
+			oL3.orderIDL.SetText("-")
+			oL3.userIDL.SetText("-")
+			oL3.tapIDL.SetText("-")
+			oL3.beerIDL.SetText("-")
+			oL3.priceL.SetText("-")
+			oL3.sizeL.SetText("-")
+		case 4:
+			oL4.orderIDL.SetText("-")
+			oL4.userIDL.SetText("-")
+			oL4.tapIDL.SetText("-")
+			oL4.beerIDL.SetText("-")
+			oL4.priceL.SetText("-")
+			oL4.sizeL.SetText("-")
+		case 5:
+			oL5.orderIDL.SetText("-")
+			oL5.userIDL.SetText("-")
+			oL5.tapIDL.SetText("-")
+			oL5.beerIDL.SetText("-")
+			oL5.priceL.SetText("-")
+			oL5.sizeL.SetText("-")
+		case 6:
+			oL6.orderIDL.SetText("-")
+			oL6.userIDL.SetText("-")
+			oL6.tapIDL.SetText("-")
+			oL6.beerIDL.SetText("-")
+			oL6.priceL.SetText("-")
+			oL6.sizeL.SetText("-")
+		case 7:
+			oL7.orderIDL.SetText("-")
+			oL7.userIDL.SetText("-")
+			oL7.tapIDL.SetText("-")
+			oL7.beerIDL.SetText("-")
+			oL7.priceL.SetText("-")
+			oL7.sizeL.SetText("-")
+		case 8:
+			oL8.orderIDL.SetText("-")
+			oL8.userIDL.SetText("-")
+			oL8.tapIDL.SetText("-")
+			oL8.beerIDL.SetText("-")
+			oL8.priceL.SetText("-")
+			oL8.sizeL.SetText("-")
+		default:
+			fmt.Println("INVALID Clear GUI Tap #!!:", tapID)
+		}
+}
 
 //Get user data given orderID
 func getUserData(customerOrder Order, authToken string) {
@@ -527,11 +592,11 @@ func togglePour(customerOrder Order) {
 	select {
 		case res := <-c1:
 			fmt.Println(res)
-			//updateGUI(customerOrder)
+			clearGUIOrder(tapToClose)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(tapToClose)
-			//updateGUI(customerOrder)
+			clearGUIOrder(tapToClose)
 	}
 }
 
