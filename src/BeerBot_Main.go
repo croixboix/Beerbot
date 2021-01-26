@@ -113,54 +113,13 @@ func main() {
 	myCanvas := w.Canvas()
 
 
-	oL1 := orderLabels{orderIDL: widget.NewLabel("-"),
+	oL1,oL2,oL3,oL4,oL5,oL6,oL7,oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
 										 userIDL:widget.NewLabel("-"),
 										 tapIDL:widget.NewLabel("-"),
 										 beerIDL:widget.NewLabel("-"),
 										 priceL:widget.NewLabel("-"),
 										 sizeL:widget.NewLabel("-")}
-  oL2 := orderLabels{orderIDL: widget.NewLabel("-"),
- 										 userIDL:widget.NewLabel("-"),
- 										 tapIDL:widget.NewLabel("-"),
- 										 beerIDL:widget.NewLabel("-"),
- 										 priceL:widget.NewLabel("-"),
- 										 sizeL:widget.NewLabel("-")}
-  oL3 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-									   tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL4 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL5 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL6 := orderLabels{orderIDL: widget.NewLabel("-"),
- 										userIDL:widget.NewLabel("-"),
- 										tapIDL:widget.NewLabel("-"),
- 										beerIDL:widget.NewLabel("-"),
- 										priceL:widget.NewLabel("-"),
- 										sizeL:widget.NewLabel("-")}
-	oL7 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-	oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
+  
 
 	orderL  := widget.NewLabel("Order ID: ")
   userL   := widget.NewLabel("User ID: ")
