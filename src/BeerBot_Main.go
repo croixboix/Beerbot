@@ -236,7 +236,9 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	fmt.Println("GPIO Initialized!")
 
 	//Authenticate with API to get our Authentication Token for API communication
+	fmt.Println("Tap %d with UUID %s", tapControlID, tapUUID)
 	authToken = authTapController(tapUUID, tapControlID)
+	fmt.Println("Authenticated with token: ", authToken)
 
 	//Main program loop
 	for webConnectionAlive == true{
