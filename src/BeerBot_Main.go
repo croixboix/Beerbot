@@ -211,7 +211,7 @@ func main() {
 
 	go runProgram(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
-	w.Resize(fyne.NewSize(1280, 720))
+	w.Resize(fyne.NewSize(500, 230))
 	w.ShowAndRun()
 
 
