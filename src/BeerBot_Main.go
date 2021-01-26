@@ -337,14 +337,14 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL8.priceL.SetText(customerOrder.price)
 			oL8.sizeL.SetText(customerOrder.size)
 		default:
-			fmt.Println("INVALID Update GUI Tap #!!:", tapID)
+			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
 		}
 }
 
 
 //Update Gui Content
 func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
-		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
+		fmt.Println("Clearing GUI display for TAP #: ", tapID)
 	switch tapID {
 		case 1:
 			oL1.orderIDL.SetText("-")
@@ -570,7 +570,7 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 
 	tapToClose := 9
 	//Update GUI with retreived user order
-	updateGUI(*customerOrders, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+	updateGUI(*customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
 	go func() {
 		var wg1 sync.WaitGroup
@@ -592,13 +592,13 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 		case res := <-c1:
 			fmt.Println(res)
 			//Clear GUI after finished pouring order
-			clearGUIOrder(tapToClose)
+			clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 		case <-time.After(60 * time.Second):
 			fmt.Println("out of time :(")
 			// Close solenoids incase timeout
 			gpio_rpi.CloseSolenoids(tapToClose)
 			//Clear GUI after finished pouring order
-			clearGUIOrder(tapToClose)
+			clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 	}
 }
 
