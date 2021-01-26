@@ -279,46 +279,9 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 }
 
 
-//Tap Controller Authentication with API
-func authTapController(uuid string, tapControlID int) string{
-	url := "http://96.30.244.56:3000/api/v1/tap_sessions"
+//Update Gui Content
+func updateGUI() {
 
-	authPost := AuthPOST{}
-	authPost.TapControlPOST.TapControlID = tapControlID
-	authPost.TapControlPOST.TapUUID = uuid
-
-
-	payload, err := json.Marshal(authPost)
-	if err != nil {
-		fmt.Println("marshal error:", err)
-	}
-
-	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(payload))
-
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "*/*")
-	req.Header.Add("Host", "96.30.244.56:3000")
-	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
-	req.Header.Add("Connection", "keep-alive")
-	req.Header.Add("cache-control", "no-cache")
-
-	res, _ := http.DefaultClient.Do(req)
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	//fmt.Println(res)
-	//fmt.Println("body: ", string(body))
-
-	var authResp []byte = body
-	var verifyAuth AuthResponse
-
-	errR := json.Unmarshal(authResp, &verifyAuth)
-	if errR != nil {
-		fmt.Println("unmarshal error:", errR)
-	}
-
-	fmt.Println(verifyAuth.AuthenToken)
-	return verifyAuth.AuthenToken
 }
 
 
@@ -500,6 +463,49 @@ func togglePour(customerOrder Order) {
 			fmt.Println("out of time :(")
 			gpio_rpi.CloseSolenoids(solenoidToClose)
 	}
+}
+
+
+//Tap Controller Authentication with API
+func authTapController(uuid string, tapControlID int) string{
+	url := "http://96.30.244.56:3000/api/v1/tap_sessions"
+
+	authPost := AuthPOST{}
+	authPost.TapControlPOST.TapControlID = tapControlID
+	authPost.TapControlPOST.TapUUID = uuid
+
+
+	payload, err := json.Marshal(authPost)
+	if err != nil {
+		fmt.Println("marshal error:", err)
+	}
+
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(payload))
+
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Host", "96.30.244.56:3000")
+	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	//fmt.Println(res)
+	//fmt.Println("body: ", string(body))
+
+	var authResp []byte = body
+	var verifyAuth AuthResponse
+
+	errR := json.Unmarshal(authResp, &verifyAuth)
+	if errR != nil {
+		fmt.Println("unmarshal error:", errR)
+	}
+
+	fmt.Println(verifyAuth.AuthenToken)
+	return verifyAuth.AuthenToken
 }
 
 
