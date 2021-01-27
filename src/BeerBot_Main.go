@@ -116,7 +116,7 @@ func main() {
 
 
 	a := app.New()
-	w := a.NewWindow("Canvas")
+	w := a.NewWindow("BeerBot Display")
 	myCanvas := w.Canvas()
 
 
