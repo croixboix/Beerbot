@@ -205,7 +205,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinSolenoid1.Low()
 		//Count number of ticks from flow sensor
 		for flowCounter1 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		//Disable flow sensor watcher
 		pinFlowSensor1.Unwatch()
@@ -216,7 +216,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinFlowSensor2.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid2.Low()
 		for flowCounter2 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		pinFlowSensor2.Unwatch()
 		pinSolenoid2.High()
@@ -225,7 +225,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinFlowSensor3.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid3.Low()
 		for flowCounter3 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		pinFlowSensor3.Unwatch()
 		pinSolenoid3.High()
@@ -234,7 +234,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinFlowSensor4.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid4.Low()
 		for flowCounter4 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		pinFlowSensor4.Unwatch()
 		pinSolenoid4.High()
@@ -243,7 +243,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinFlowSensor5.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid5.Low()
 		for flowCounter5 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		pinFlowSensor5.Unwatch()
 		pinSolenoid5.High()
@@ -252,7 +252,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinFlowSensor6.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid6.Low()
 		for flowCounter6 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		pinFlowSensor6.Unwatch()
 		pinSolenoid6.High()
@@ -261,7 +261,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinFlowSensor7.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid7.Low()
 		for flowCounter7 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		pinFlowSensor7.Unwatch()
 		pinSolenoid7.High()
@@ -270,7 +270,7 @@ func Pour(size int, tap int, wg1 *sync.WaitGroup) {
 		pinFlowSensor8.Watch(gpio.EdgeFalling, handleFlowEdge)
 		pinSolenoid8.Low()
 		for flowCounter8 < size {
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(time.Millisecond * 10)
 		}
 		pinFlowSensor8.Unwatch()
 		pinSolenoid8.High()
