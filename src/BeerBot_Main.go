@@ -11,7 +11,7 @@ import (
 	"time"
 	"fmt"
 	"github.com/warthog618/gpio"
-	gpio_rpi "gpio_rpi"
+	"gpio_rpi"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -101,21 +101,21 @@ type AuthResponse struct {
 }
 
 type orderLabels struct {
-	orderIDL *widget.Label
-	userIDL *widget.Label
-	tapIDL *widget.Label
-	beerIDL *widget.Label
-	priceL *widget.Label
-	sizeL *widget.Label
+	tapIDL  	 *widget.Label
+	beerIDL 	 *widget.Label
+	priceL 		 *widget.Label
+	sizeL 		 *widget.Label
+	FirstLastL *widget.Label
+	DOBL 			 *widget.Label
+	emailL 		 *widget.Label
 }
 
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
 
-
 	a := app.New()
-	w := a.NewWindow("Canvas")
+	w := a.NewWindow("Beerbot")
 	myCanvas := w.Canvas()
 
 /**
@@ -123,63 +123,90 @@ func main() {
 	A wild change to test branch
 */
 
-	oL1 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL2 := orderLabels{orderIDL: widget.NewLabel("-"),
- 										 userIDL:widget.NewLabel("-"),
- 										 tapIDL:widget.NewLabel("-"),
- 										 beerIDL:widget.NewLabel("-"),
- 										 priceL:widget.NewLabel("-"),
- 										 sizeL:widget.NewLabel("-")}
-  oL3 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-									   tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL4 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL5 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL6 := orderLabels{orderIDL: widget.NewLabel("-"),
- 										userIDL:widget.NewLabel("-"),
- 										tapIDL:widget.NewLabel("-"),
- 										beerIDL:widget.NewLabel("-"),
- 										priceL:widget.NewLabel("-"),
- 										sizeL:widget.NewLabel("-")}
-	oL7 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-	oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
+	hL  := orderLabels{
+		tapIDL: widget.NewLabel("Tap ID:"),
+		beerIDL:widget.NewLabel("Beer ID: "),
+		priceL:widget.NewLabel("Price: "),
+		sizeL:widget.NewLabel("Size : "),
+		FirstLastL:widget.NewLabel("Name: "),
+		DOBL:widget.NewLabel("DOB: "),
+		emailL:widget.NewLabel("Email: ")}
+	oL1 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	oL2 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+	 DOBL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	oL3 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	oL4 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	oL5 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	oL6 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	oL7 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	oL8 := orderLabels{
+		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
 
-	orderL  := widget.NewLabel("Order ID: ")
-  userL   := widget.NewLabel("User ID: ")
-  tapL    := widget.NewLabel("Tap ID: ")
-  beerL   := widget.NewLabel("Beer ID: ")
-  priceL  := widget.NewLabel("Price: ")
-  sizeL   := widget.NewLabel("Size: ")
 
+	//Layout Config
+	top :=
+	widget.NewLabelWithStyle(
+					"Orders", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 
+	left := //headers
+	widget.NewVBox(hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
+					hL.FirstLastL, hL.DOBL, hL.emailL,)
+
+/*
 //Box frenzy
 	myCanvas.SetContent(
     widget.NewHBox(
@@ -211,7 +238,38 @@ func main() {
 				oL8.priceL, oL8.sizeL,),//end user8 Vbox
     ),//end Hbox
   ) //adding label widget to window
+*/
+	middle := widget.NewHBox(
+							widget.NewVBox(
+								oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
+								oL1.FirstLastL, oL1.DOBL, oL1.emailL, idP1),//end user1 Vbox
+							widget.NewVBox(
+								oL2.tapIDL, oL2.beerIDL, oL2.priceL, oL2.sizeL,
+								oL2.FirstLastL, oL2.DOBL, oL2.emailL, idP2),//end user2 Vbox
+							widget.NewVBox(
+								oL3.tapIDL, oL3.beerIDL, oL3.priceL, oL3.sizeL,
+								oL3.FirstLastL, oL3.DOBL, oL3.emailL, idP3),//end user3 Vbox
+							widget.NewVBox(
+								oL4.tapIDL, oL4.beerIDL, oL4.priceL, oL4.sizeL,
+								oL4.FirstLastL, oL4.DOBL, oL4.emailL, idP4),//end user4 Vbox
+							widget.NewVBox(
+								oL5.tapIDL, oL5.beerIDL, oL5.priceL, oL5.sizeL,
+								oL5.FirstLastL, oL5.DOBL, oL5.emailL, idP5),//end user5 Vbox
+							widget.NewVBox(
+								oL6.tapIDL, oL6.beerIDL, oL6.priceL, oL6.sizeL,
+								oL6.FirstLastL, oL6.DOBL, oL6.emailL, idP6),//end user6 Vbox
+							widget.NewVBox(
+								oL7.tapIDL, oL7.beerIDL, oL7.tapIDL, oL7.sizeL,
+								oL7.FirstLastL, oL7.DOBL, oL7.emailL, idP7),//end user7 Vbox
+							widget.NewVBox(
+								oL8.tapIDL, oL8.beerIDL, oL8.tapIDL, oL8.sizeL,
+								oL8.FirstLastL, oL8.DOBL, oL8.emailL, idP8),//end user8 Vbox
 
+		)
+	content := fyne.NewContainerWithLayout(
+										layout.NewBorderLayout(top, nil, left, nil),
+																			top, left, middle)
+	myCanvas.SetContent(content)
 
 	go runProgram(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 
@@ -671,6 +729,34 @@ func goid() int {
 	}
 	return id
 }
+
+//Add the id face picture with the given parameters
+func addUserPic(url string) fyne.CanvasObject {
+		//Grabs content from url
+ 		response, e := http.Get(url)
+		if e != nil {
+				log.Fatal("Unable to Get URL", e)
+		}
+		defer response.Body.Close()
+
+		//creates tmp file wth a unique name
+		file, err := ioutil.TempFile(os.TempDir(), "userPic.*.jpg")
+		if err != nil{
+			log.Fatal("ioutil TempFile error", err)
+		}
+		defer file.Close()
+
+		// Use io.Copy to just dump the response body to the file. This supports huge files
+		_, err = io.Copy(file, response.Body) //copy data from get request into file
+		if err != nil {
+				log.Fatal(err)
+		}
+		fmt.Println(file.Name())
+		img := canvas.NewImageFromFile(file.Name())
+		img.SetMinSize(fyne.NewSize(100,125)) // approx ~1:1.5 (ID picture ratio)
+
+		return img
+} //end addFacePic
 
 
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
