@@ -49,6 +49,8 @@ var (
 
 	//Keeps track of whether connection is alive
 	webConnectionAlive bool = true
+
+	defaultIDP := "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
 )
 
 type Order struct {
@@ -206,41 +208,41 @@ func main() {
 	widget.NewVBox(hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
 
-	defaultidP := "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
-	oL1idP :=	addFacePic(defaultidP)
-	oL2idP := addFacePic(defaultidP)
-	oL3idP := addFacePic(defaultidP)
-	oL4idP := addFacePic(defaultidP)
-	oL5idP := addFacePic(defaultidP)
-	oL6idP := addFacePic(defaultidP)
-	oL7idP := addFacePic(defaultidP)
-	oL8idP := addFacePic(defaultidP)
+
+	oL1IDP :=	addUserPic(defaultidP)
+	oL2IDP := addUserPic(defaultidP)
+	oL3IDP := addUserPic(defaultidP)
+	oL4IDP := addUserPic(defaultidP)
+	oL5IDP := addUserPic(defaultidP)
+	oL6IDP := addUserPic(defaultidP)
+	oL7IDP := addUserPic(defaultidP)
+	oL8IDP := addUserPic(defaultidP)
 
 	middle := widget.NewHBox(
 							widget.NewVBox( //user1 Vbox
 								oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
-								oL1.FirstLastL, oL1.DOBL, oL1.emailL, oL1idP),
+								oL1.FirstLastL, oL1.DOBL, oL1.emailL, oL1IDP),
 							widget.NewVBox( //end user2 Vbox
 								oL2.tapIDL, oL2.beerIDL, oL2.priceL, oL2.sizeL,
-								oL2.FirstLastL, oL2.DOBL, oL2.emailL, oL2idP),
+								oL2.FirstLastL, oL2.DOBL, oL2.emailL, oL2IDP),
 							widget.NewVBox( //end user3 Vbox
 								oL3.tapIDL, oL3.beerIDL, oL3.priceL, oL3.sizeL,
-								oL3.FirstLastL, oL3.DOBL, oL3.emailL, oL3idP),
+								oL3.FirstLastL, oL3.DOBL, oL3.emailL, oL3IDP),
 							widget.NewVBox( //end user4 Vbox
 								oL4.tapIDL, oL4.beerIDL, oL4.priceL, oL4.sizeL,
-								oL4.FirstLastL, oL4.DOBL, oL4.emailL, oL4idP),
+								oL4.FirstLastL, oL4.DOBL, oL4.emailL, oL4IDP),
 							widget.NewVBox( //end user5 Vbox
 								oL5.tapIDL, oL5.beerIDL, oL5.priceL, oL5.sizeL,
-								oL5.FirstLastL, oL5.DOBL, oL5.emailL, oL5idP),
+								oL5.FirstLastL, oL5.DOBL, oL5.emailL, oL5IDP),
 							widget.NewVBox( //end user6 Vbox
 								oL6.tapIDL, oL6.beerIDL, oL6.priceL, oL6.sizeL,
-								oL6.FirstLastL, oL6.DOBL, oL6.emailL, oL6idP),
+								oL6.FirstLastL, oL6.DOBL, oL6.emailL, oL6IDP),
 							widget.NewVBox( //end user7 Vbox
 								oL7.tapIDL, oL7.beerIDL, oL7.tapIDL, oL7.sizeL,
-								oL7.FirstLastL, oL7.DOBL, oL7.emailL, oL7idP),
+								oL7.FirstLastL, oL7.DOBL, oL7.emailL, oL7IDP),
 							widget.NewVBox( //end user8 Vbox
 								oL8.tapIDL, oL8.beerIDL, oL8.tapIDL, oL8.sizeL,
-								oL8.FirstLastL, oL8.DOBL, oL8.emailL, oL8idP),
+								oL8.FirstLastL, oL8.DOBL, oL8.emailL, oL8IDP),
 
 		)
 	content := fyne.NewContainerWithLayout(
@@ -325,7 +327,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL1.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL1.priceL.SetText(customerOrder.price)
 			oL1.sizeL.SetText(customerOrder.size)
-			oL1idP := addFacePic(oL1.pictureURL)
+			oL1IDP := addUserPic(oL1.pictureURL)
 		case 2:
 			oL2.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL2.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -333,7 +335,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL2.priceL.SetText(customerOrder.price)
 			oL2.sizeL.SetText(customerOrder.size)
-			oL2idP := addFacePic(oL2.pictureURL)
+			oL2iIDP := addUserPic(oL2.pictureURL)
 		case 3:
 			oL3.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL3.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -341,7 +343,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL3.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL3.priceL.SetText(customerOrder.price)
 			oL3.sizeL.SetText(customerOrder.size)
-			oL3idP := addFacePic(oL3.pictureURL)
+			oL3IDP := addUserPic(oL3.pictureURL)
 		case 4:
 			oL4.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL4.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -349,7 +351,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL4.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL4.priceL.SetText(customerOrder.price)
 			oL4.sizeL.SetText(customerOrder.size)
-			oL4idP := addFacePic(oL4.pictureURL)
+			oL4IDP := addUserPic(oL4.pictureURL)
 		case 5:
 			oL5.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL5.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -357,7 +359,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL5.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL5.priceL.SetText(customerOrder.price)
 			oL5.sizeL.SetText(customerOrder.size)
-			oL5idP := addFacePic(oL5.pictureURL)
+			oL5IDP := addUserPic(oL5.pictureURL)
 		case 6:
 			oL6.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL6.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -365,7 +367,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL6.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL6.priceL.SetText(customerOrder.price)
 			oL6.sizeL.SetText(customerOrder.size)
-			oL6idP := addFacePic(oL6.pictureURL)
+			oL6IDP := addUserPic(oL6.pictureURL)
 		case 7:
 			oL7.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL7.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -373,7 +375,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL7.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL7.priceL.SetText(customerOrder.price)
 			oL7.sizeL.SetText(customerOrder.size)
-			oL7idP7 := addFacePic(oL7.pictureURL)
+			oL7IDP7 := addUserPic(oL7.pictureURL)
 		case 8:
 			oL8.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL8.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -381,7 +383,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL8.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL8.priceL.SetText(customerOrder.price)
 			oL8.sizeL.SetText(customerOrder.size)
-			oL8idP8 := addFacePic(oL8.pictureURL)
+			oL8IDP8 := addUserPic(oL8.pictureURL)
 		default:
 			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
 		}
@@ -399,6 +401,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL1.beerIDL.SetText("-")
 			oL1.priceL.SetText("-")
 			oL1.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		case 2:
 			oL2.orderIDL.SetText("-")
 			oL2.userIDL.SetText("-")
@@ -406,6 +409,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL2.beerIDL.SetText("-")
 			oL2.priceL.SetText("-")
 			oL2.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		case 3:
 			oL3.orderIDL.SetText("-")
 			oL3.userIDL.SetText("-")
@@ -413,6 +417,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL3.beerIDL.SetText("-")
 			oL3.priceL.SetText("-")
 			oL3.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		case 4:
 			oL4.orderIDL.SetText("-")
 			oL4.userIDL.SetText("-")
@@ -420,6 +425,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL4.beerIDL.SetText("-")
 			oL4.priceL.SetText("-")
 			oL4.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		case 5:
 			oL5.orderIDL.SetText("-")
 			oL5.userIDL.SetText("-")
@@ -427,6 +433,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL5.beerIDL.SetText("-")
 			oL5.priceL.SetText("-")
 			oL5.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		case 6:
 			oL6.orderIDL.SetText("-")
 			oL6.userIDL.SetText("-")
@@ -434,6 +441,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL6.beerIDL.SetText("-")
 			oL6.priceL.SetText("-")
 			oL6.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		case 7:
 			oL7.orderIDL.SetText("-")
 			oL7.userIDL.SetText("-")
@@ -441,6 +449,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL7.beerIDL.SetText("-")
 			oL7.priceL.SetText("-")
 			oL7.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		case 8:
 			oL8.orderIDL.SetText("-")
 			oL8.userIDL.SetText("-")
@@ -448,6 +457,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL8.beerIDL.SetText("-")
 			oL8.priceL.SetText("-")
 			oL8.sizeL.SetText("-")
+			oL1IDP :=	addUserPic(defaultidP)
 		default:
 			fmt.Println("INVALID Clear GUI Tap #!!:", tapID)
 		}
@@ -740,7 +750,7 @@ func addUserPic(url string) fyne.CanvasObject {
 		img.SetMinSize(fyne.NewSize(100,125)) // approx ~1:1.5 (ID picture ratio)
 
 		return img
-} //end addFacePic
+} //end addUserPic
 
 
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
