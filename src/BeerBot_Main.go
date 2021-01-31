@@ -50,7 +50,7 @@ var (
 	//Keeps track of whether connection is alive
 	webConnectionAlive bool = true
 
-	defaultIDP := "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
+	defaultIDP string = "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
 )
 
 type Order struct {
