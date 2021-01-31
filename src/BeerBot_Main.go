@@ -206,14 +206,15 @@ func main() {
 	widget.NewVBox(hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
 
-	// oL1idP :=	addFacePic("https://image.shutterstock.com/image-photo/man-posing-police-mugshot-260nw-637218115.jpg")
-	// oL2idP := addFacePic("https://www.gocivilairpatrol.com/media/cms/Membership_ID_photo_FA67888970A73.jpg")
-	// oL3idP := addFacePic("https://static.wikia.nocookie.net/darling-in-the-franxx/images/b/b3/Zero_Two_appearance.jpg/revision/latest/scale-to-width-down/340?cb=20180807204943")
-	// oL4idP := addFacePic("https://i.pinimg.com/originals/64/86/60/648660b8d170ba0540bc1ed50f33de4e.jpg")
-	// oL5idP := addFacePic("https://i.pinimg.com/originals/4d/8e/cc/4d8ecc6967b4a3d475be5c4d881c4d9c.jpg")
-	// oL6idP := addFacePic("https://www.auburn.edu/administration/tigercard/images/sample_id_photo.jpg")
-	// oL7idP := addFacePic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")
-	// oL8idP := addFacePic("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlb9odaRFcDKI8LF4x3lOiajYk2CXs_PcGRg&usqp=CAU")
+	defaultidP := "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
+	oL1idP :=	addFacePic(defaultidP)
+	oL2idP := addFacePic(defaultidP)
+	oL3idP := addFacePic(defaultidP)
+	oL4idP := addFacePic(defaultidP)
+	oL5idP := addFacePic(defaultidP)
+	oL6idP := addFacePic(defaultidP)
+	oL7idP := addFacePic(defaultidP)
+	oL8idP := addFacePic(defaultidP)
 
 	middle := widget.NewHBox(
 							widget.NewVBox( //user1 Vbox
