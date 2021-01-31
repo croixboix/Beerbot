@@ -327,7 +327,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL1.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL1.priceL.SetText(customerOrder.price)
 			oL1.sizeL.SetText(customerOrder.size)
-			oL1IDP := addUserPic(oL1.pictureURL)
+			oL1IDP := addUserPic(customerOrder.pictureURL)
 		case 2:
 			oL2.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL2.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -335,7 +335,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL2.priceL.SetText(customerOrder.price)
 			oL2.sizeL.SetText(customerOrder.size)
-			oL2iIDP := addUserPic(oL2.pictureURL)
+			oL2iIDP := addUserPic(customerOrder.pictureURL)
 		case 3:
 			oL3.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL3.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -343,7 +343,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL3.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL3.priceL.SetText(customerOrder.price)
 			oL3.sizeL.SetText(customerOrder.size)
-			oL3IDP := addUserPic(oL3.pictureURL)
+			oL3IDP := addUserPic(customerOrder.pictureURL)
 		case 4:
 			oL4.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL4.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -351,7 +351,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL4.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL4.priceL.SetText(customerOrder.price)
 			oL4.sizeL.SetText(customerOrder.size)
-			oL4IDP := addUserPic(oL4.pictureURL)
+			oL4IDP := addUserPic(customerOrder.pictureURL)
 		case 5:
 			oL5.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL5.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -359,7 +359,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL5.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL5.priceL.SetText(customerOrder.price)
 			oL5.sizeL.SetText(customerOrder.size)
-			oL5IDP := addUserPic(oL5.pictureURL)
+			oL5IDP := addUserPic(customerOrder.pictureURL)
 		case 6:
 			oL6.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL6.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -367,7 +367,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL6.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL6.priceL.SetText(customerOrder.price)
 			oL6.sizeL.SetText(customerOrder.size)
-			oL6IDP := addUserPic(oL6.pictureURL)
+			oL6IDP := addUserPic(customerOrder.pictureURL)
 		case 7:
 			oL7.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL7.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -375,7 +375,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL7.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL7.priceL.SetText(customerOrder.price)
 			oL7.sizeL.SetText(customerOrder.size)
-			oL7IDP7 := addUserPic(oL7.pictureURL)
+			oL7IDP7 := addUserPic(customerOrder.pictureURL)
 		case 8:
 			oL8.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL8.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -383,7 +383,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL8.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL8.priceL.SetText(customerOrder.price)
 			oL8.sizeL.SetText(customerOrder.size)
-			oL8IDP8 := addUserPic(oL8.pictureURL)
+			oL8IDP8 := addUserPic(customerOrder.pictureURL)
 		default:
 			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
 		}
