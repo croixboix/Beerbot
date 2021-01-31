@@ -70,6 +70,7 @@ type Order struct {
 	lastName string
 	dob string
 	mobilePhone string
+	pictureURL string
 }
 
 type OrderResponse struct {
@@ -118,8 +119,7 @@ func main() {
 	w := a.NewWindow("Beerbot")
 	myCanvas := w.Canvas()
 
-/**
-
+/*
 	A wild change to test branch
 */
 
@@ -206,40 +206,40 @@ func main() {
 	widget.NewVBox(hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
 
-	idP1 :=	addFacePic("https://image.shutterstock.com/image-photo/man-posing-police-mugshot-260nw-637218115.jpg")
-	idP2 := addFacePic("https://www.gocivilairpatrol.com/media/cms/Membership_ID_photo_FA67888970A73.jpg")
-	idP3 := addFacePic("https://static.wikia.nocookie.net/darling-in-the-franxx/images/b/b3/Zero_Two_appearance.jpg/revision/latest/scale-to-width-down/340?cb=20180807204943")
-	idP4 := addFacePic("https://i.pinimg.com/originals/64/86/60/648660b8d170ba0540bc1ed50f33de4e.jpg")
-	idP5 := addFacePic("https://i.pinimg.com/originals/4d/8e/cc/4d8ecc6967b4a3d475be5c4d881c4d9c.jpg")
-	idP6 := addFacePic("https://www.auburn.edu/administration/tigercard/images/sample_id_photo.jpg")
-	idP7 := addFacePic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")
-	idP8 := addFacePic("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlb9odaRFcDKI8LF4x3lOiajYk2CXs_PcGRg&usqp=CAU")
+	// oL1idP :=	addFacePic("https://image.shutterstock.com/image-photo/man-posing-police-mugshot-260nw-637218115.jpg")
+	// oL2idP := addFacePic("https://www.gocivilairpatrol.com/media/cms/Membership_ID_photo_FA67888970A73.jpg")
+	// oL3idP := addFacePic("https://static.wikia.nocookie.net/darling-in-the-franxx/images/b/b3/Zero_Two_appearance.jpg/revision/latest/scale-to-width-down/340?cb=20180807204943")
+	// oL4idP := addFacePic("https://i.pinimg.com/originals/64/86/60/648660b8d170ba0540bc1ed50f33de4e.jpg")
+	// oL5idP := addFacePic("https://i.pinimg.com/originals/4d/8e/cc/4d8ecc6967b4a3d475be5c4d881c4d9c.jpg")
+	// oL6idP := addFacePic("https://www.auburn.edu/administration/tigercard/images/sample_id_photo.jpg")
+	// oL7idP := addFacePic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")
+	// oL8idP := addFacePic("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlb9odaRFcDKI8LF4x3lOiajYk2CXs_PcGRg&usqp=CAU")
 
 	middle := widget.NewHBox(
-							widget.NewVBox(
+							widget.NewVBox( //user1 Vbox
 								oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
-								oL1.FirstLastL, oL1.DOBL, oL1.emailL, idP1),//end user1 Vbox
-							widget.NewVBox(
+								oL1.FirstLastL, oL1.DOBL, oL1.emailL, oL1idP),
+							widget.NewVBox( //end user2 Vbox
 								oL2.tapIDL, oL2.beerIDL, oL2.priceL, oL2.sizeL,
-								oL2.FirstLastL, oL2.DOBL, oL2.emailL, idP2),//end user2 Vbox
-							widget.NewVBox(
+								oL2.FirstLastL, oL2.DOBL, oL2.emailL, oL2idP),
+							widget.NewVBox( //end user3 Vbox
 								oL3.tapIDL, oL3.beerIDL, oL3.priceL, oL3.sizeL,
-								oL3.FirstLastL, oL3.DOBL, oL3.emailL, idP3),//end user3 Vbox
-							widget.NewVBox(
+								oL3.FirstLastL, oL3.DOBL, oL3.emailL, oL3idP),
+							widget.NewVBox( //end user4 Vbox
 								oL4.tapIDL, oL4.beerIDL, oL4.priceL, oL4.sizeL,
-								oL4.FirstLastL, oL4.DOBL, oL4.emailL, idP4),//end user4 Vbox
-							widget.NewVBox(
+								oL4.FirstLastL, oL4.DOBL, oL4.emailL, oL4idP),
+							widget.NewVBox( //end user5 Vbox
 								oL5.tapIDL, oL5.beerIDL, oL5.priceL, oL5.sizeL,
-								oL5.FirstLastL, oL5.DOBL, oL5.emailL, idP5),//end user5 Vbox
-							widget.NewVBox(
+								oL5.FirstLastL, oL5.DOBL, oL5.emailL, oL5idP),
+							widget.NewVBox( //end user6 Vbox
 								oL6.tapIDL, oL6.beerIDL, oL6.priceL, oL6.sizeL,
-								oL6.FirstLastL, oL6.DOBL, oL6.emailL, idP6),//end user6 Vbox
-							widget.NewVBox(
+								oL6.FirstLastL, oL6.DOBL, oL6.emailL, oL6idP),
+							widget.NewVBox( //end user7 Vbox
 								oL7.tapIDL, oL7.beerIDL, oL7.tapIDL, oL7.sizeL,
-								oL7.FirstLastL, oL7.DOBL, oL7.emailL, idP7),//end user7 Vbox
-							widget.NewVBox(
+								oL7.FirstLastL, oL7.DOBL, oL7.emailL, oL7idP),
+							widget.NewVBox( //end user8 Vbox
 								oL8.tapIDL, oL8.beerIDL, oL8.tapIDL, oL8.sizeL,
-								oL8.FirstLastL, oL8.DOBL, oL8.emailL, idP8),//end user8 Vbox
+								oL8.FirstLastL, oL8.DOBL, oL8.emailL, oL8idP),
 
 		)
 	content := fyne.NewContainerWithLayout(
@@ -251,7 +251,6 @@ func main() {
 
 	w.Resize(fyne.NewSize(500, 230))
 	w.ShowAndRun()
-
 
 
 	endProgram()
@@ -314,7 +313,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 }
 
 
-//Update Gui Content
+//Update GUI Content
 func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
 		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
 	switch customerOrder.tapID {
@@ -325,6 +324,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL1.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL1.priceL.SetText(customerOrder.price)
 			oL1.sizeL.SetText(customerOrder.size)
+			oL1idP := addFacePic(oL1.pictureURL)
 		case 2:
 			oL2.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL2.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -332,6 +332,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL2.priceL.SetText(customerOrder.price)
 			oL2.sizeL.SetText(customerOrder.size)
+			oL2idP := addFacePic(oL2.pictureURL)
 		case 3:
 			oL3.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL3.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -339,6 +340,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL3.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL3.priceL.SetText(customerOrder.price)
 			oL3.sizeL.SetText(customerOrder.size)
+			oL3idP := addFacePic(oL3.pictureURL)
 		case 4:
 			oL4.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL4.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -346,6 +348,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL4.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL4.priceL.SetText(customerOrder.price)
 			oL4.sizeL.SetText(customerOrder.size)
+			oL4idP := addFacePic(oL4.pictureURL)
 		case 5:
 			oL5.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL5.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -353,6 +356,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL5.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL5.priceL.SetText(customerOrder.price)
 			oL5.sizeL.SetText(customerOrder.size)
+			oL5idP := addFacePic(oL5.pictureURL)
 		case 6:
 			oL6.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL6.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -360,6 +364,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL6.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL6.priceL.SetText(customerOrder.price)
 			oL6.sizeL.SetText(customerOrder.size)
+			oL6idP := addFacePic(oL6.pictureURL)
 		case 7:
 			oL7.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL7.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -367,6 +372,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL7.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL7.priceL.SetText(customerOrder.price)
 			oL7.sizeL.SetText(customerOrder.size)
+			oL7idP7 := addFacePic(oL7.pictureURL)
 		case 8:
 			oL8.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
 			oL8.userIDL.SetText(strconv.Itoa(customerOrder.user))
@@ -374,6 +380,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL8.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
 			oL8.priceL.SetText(customerOrder.price)
 			oL8.sizeL.SetText(customerOrder.size)
+			oL8idP8 := addFacePic(oL8.pictureURL)
 		default:
 			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
 		}
