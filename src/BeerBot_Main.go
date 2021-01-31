@@ -206,39 +206,15 @@ func main() {
 	widget.NewVBox(hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
 
-/*
-//Box frenzy
-	myCanvas.SetContent(
-    widget.NewHBox(
-      widget.NewVBox(
-        orderL, userL, tapL, beerL, priceL, sizeL,),//end Heading VBox
-      widget.NewVBox(
-        oL1.orderIDL, oL1.userIDL, oL1.tapIDL, oL1.beerIDL,
-				oL1.priceL, oL1.sizeL,),//end user1 Vbox
-			widget.NewVBox(
-        oL2.orderIDL, oL2.userIDL, oL2.tapIDL, oL2.beerIDL,
-				oL2.priceL, oL2.sizeL,),//end user2 Vbox
-			widget.NewVBox(
-        oL3.orderIDL, oL3.userIDL, oL3.tapIDL, oL3.beerIDL,
-				oL3.priceL, oL3.sizeL,),//end user3 Vbox
-			widget.NewVBox(
-        oL4.orderIDL, oL4.userIDL, oL4.tapIDL, oL4.beerIDL,
-				oL4.priceL, oL4.sizeL,),//end user4 Vbox
-			widget.NewVBox(
-				oL5.orderIDL, oL5.userIDL, oL5.tapIDL, oL5.beerIDL,
-				oL5.priceL, oL5.sizeL,),//end user5 Vbox
-			widget.NewVBox(
-				oL6.orderIDL, oL6.userIDL, oL6.tapIDL, oL6.beerIDL,
-				oL6.priceL, oL6.sizeL,),//end user6 Vbox
-			widget.NewVBox(
-				oL7.orderIDL, oL7.userIDL, oL7.tapIDL, oL7.beerIDL,
-				oL7.priceL, oL7.sizeL,),//end user7 Vbox
-			widget.NewVBox(
-				oL8.orderIDL, oL8.userIDL, oL8.tapIDL, oL8.beerIDL,
-				oL8.priceL, oL8.sizeL,),//end user8 Vbox
-    ),//end Hbox
-  ) //adding label widget to window
-*/
+	idP1 :=	addFacePic("https://image.shutterstock.com/image-photo/man-posing-police-mugshot-260nw-637218115.jpg")
+	idP2 := addFacePic("https://www.gocivilairpatrol.com/media/cms/Membership_ID_photo_FA67888970A73.jpg")
+	idP3 := addFacePic("https://static.wikia.nocookie.net/darling-in-the-franxx/images/b/b3/Zero_Two_appearance.jpg/revision/latest/scale-to-width-down/340?cb=20180807204943")
+	idP4 := addFacePic("https://i.pinimg.com/originals/64/86/60/648660b8d170ba0540bc1ed50f33de4e.jpg")
+	idP5 := addFacePic("https://i.pinimg.com/originals/4d/8e/cc/4d8ecc6967b4a3d475be5c4d881c4d9c.jpg")
+	idP6 := addFacePic("https://www.auburn.edu/administration/tigercard/images/sample_id_photo.jpg")
+	idP7 := addFacePic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")
+	idP8 := addFacePic("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlb9odaRFcDKI8LF4x3lOiajYk2CXs_PcGRg&usqp=CAU")
+
 	middle := widget.NewHBox(
 							widget.NewVBox(
 								oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
