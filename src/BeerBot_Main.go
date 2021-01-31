@@ -209,14 +209,14 @@ func main() {
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
 
 
-	oL1IDP :=	addUserPic(defaultidP)
-	oL2IDP := addUserPic(defaultidP)
-	oL3IDP := addUserPic(defaultidP)
-	oL4IDP := addUserPic(defaultidP)
-	oL5IDP := addUserPic(defaultidP)
-	oL6IDP := addUserPic(defaultidP)
-	oL7IDP := addUserPic(defaultidP)
-	oL8IDP := addUserPic(defaultidP)
+	oL1IDP :=	addUserPic(defaultIDP)
+	oL2IDP := addUserPic(defaultIDP)
+	oL3IDP := addUserPic(defaultIDP)
+	oL4IDP := addUserPic(defaultIDP)
+	oL5IDP := addUserPic(defaultIDP)
+	oL6IDP := addUserPic(defaultIDP)
+	oL7IDP := addUserPic(defaultIDP)
+	oL8IDP := addUserPic(defaultIDP)
 
 	middle := widget.NewHBox(
 							widget.NewVBox( //user1 Vbox
