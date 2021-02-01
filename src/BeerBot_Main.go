@@ -14,6 +14,7 @@ import (
 	"gpio_rpi"
 	"io/ioutil"
 	"net/http"
+	"io"
 	"os"
 	"os/signal"
 	"log"
@@ -25,6 +26,7 @@ import (
 	"strings"
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
+	"fyne.io/fyne/layout"
 	"fyne.io/fyne/widget"
 )
 
