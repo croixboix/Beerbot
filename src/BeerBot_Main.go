@@ -410,7 +410,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL8.FirstLastL.SetText("-")
 			oL8.DOBL.SetText("-")
 			oL8.emailL.SetText("-")
-			oL1IDP :=	addUserPic(defaultidP)
+			oL1IDP :=	addUserPic(defaultIDP)
 		case 2:
 			oL2.tapIDL.SetText("-")
 			oL2.beerIDL.SetText("-")
@@ -419,7 +419,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL2.FirstLastL.SetText("-")
 			oL2.DOBL.SetText("-")
 			oL2.emailL.SetText("-")
-			oL2IDP :=	addUserPic(defaultidP)
+			oL2IDP :=	addUserPic(defaultIDP)
 		case 3:
 			oL3.tapIDL.SetText("-")
 			oL3.beerIDL.SetText("-")
@@ -428,7 +428,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL3.FirstLastL.SetText("-")
 			oL3.DOBL.SetText("-")
 			oL3.emailL.SetText("-")
-			oL3IDP :=	addUserPic(defaultidP)
+			oL3IDP :=	addUserPic(defaultIDP)
 		case 4:
 			oL4.tapIDL.SetText("-")
 			oL4.beerIDL.SetText("-")
@@ -437,7 +437,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL4.FirstLastL.SetText("-")
 			oL4.DOBL.SetText("-")
 			oL4.emailL.SetText("-")
-			oL4IDP :=	addUserPic(defaultidP)
+			oL4IDP :=	addUserPic(defaultIDP)
 		case 5:
 			oL5.tapIDL.SetText("-")
 			oL5.beerIDL.SetText("-")
@@ -446,7 +446,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL5.FirstLastL.SetText("-")
 			oL5.DOBL.SetText("-")
 			oL5.emailL.SetText("-")
-			oL5IDP :=	addUserPic(defaultidP)
+			oL5IDP :=	addUserPic(defaultIDP)
 		case 6:
 			oL6.tapIDL.SetText("-")
 			oL6.beerIDL.SetText("-")
@@ -455,7 +455,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL6.FirstLastL.SetText("-")
 			oL6.DOBL.SetText("-")
 			oL6.emailL.SetText("-")
-			oL6IDP :=	addUserPic(defaultidP)
+			oL6IDP :=	addUserPic(defaultIDP)
 		case 7:
 			oL7.tapIDL.SetText("-")
 			oL7.beerIDL.SetText("-")
@@ -464,7 +464,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL7.FirstLastL.SetText("-")
 			oL7.DOBL.SetText("-")
 			oL7.emailL.SetText("-")
-			oL7IDP :=	addUserPic(defaultidP)
+			oL7IDP :=	addUserPic(defaultIDP)
 		case 8:
 			oL8.tapIDL.SetText("-")
 			oL8.beerIDL.SetText("-")
@@ -473,7 +473,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL8.FirstLastL.SetText("-")
 			oL8.DOBL.SetText("-")
 			oL8.emailL.SetText("-")
-			oL8IDP :=	addUserPic(defaultidP)
+			oL8IDP :=	addUserPic(defaultIDP)
 		default:
 			fmt.Println("INVALID Clear GUI Tap #!!:", tapID)
 		}
