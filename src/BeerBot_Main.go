@@ -28,6 +28,7 @@ import (
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/layout"
 	"fyne.io/fyne/widget"
+	"fyne.io/fyne/canvas"
 )
 
 const (
