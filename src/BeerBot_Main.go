@@ -114,6 +114,7 @@ type orderLabels struct {
 	FirstLastL *widget.Label
 	DOBL 			 *widget.Label
 	emailL 		 *widget.Label
+	userPic	  	fyne.CanvasObject
 }
 
 
@@ -143,15 +144,17 @@ func main() {
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+		emailL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 	oL2 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		priceL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		sizeL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-	 DOBL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+	 	DOBL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		emailL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 	oL3 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -159,7 +162,8 @@ func main() {
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 	oL4 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -167,7 +171,8 @@ func main() {
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 	oL5 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -175,7 +180,8 @@ func main() {
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 	oL6 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -183,7 +189,8 @@ func main() {
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 	oL7 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -191,7 +198,8 @@ func main() {
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 	oL8 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -199,7 +207,8 @@ func main() {
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false})}
+		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		userPic:setUserPic(defaultIDP)}
 
 
 	//Layout Config
@@ -212,40 +221,40 @@ func main() {
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
 
 
-	oL1IDP :=	addUserPic(defaultIDP)
-	oL2IDP := addUserPic(defaultIDP)
-	oL3IDP := addUserPic(defaultIDP)
-	oL4IDP := addUserPic(defaultIDP)
-	oL5IDP := addUserPic(defaultIDP)
-	oL6IDP := addUserPic(defaultIDP)
-	oL7IDP := addUserPic(defaultIDP)
-	oL8IDP := addUserPic(defaultIDP)
+	// oL1IDP :=	setUserPic(defaultIDP)
+	// oL2IDP := setUserPic(defaultIDP)
+	// oL3IDP := setUserPic(defaultIDP)
+	// oL4IDP := setUserPic(defaultIDP)
+	// oL5IDP := setUserPic(defaultIDP)
+	// oL6IDP := setUserPic(defaultIDP)
+	// oL7IDP := setUserPic(defaultIDP)
+	// oL8IDP := setUserPic(defaultIDP)
 
 	middle := widget.NewHBox(
 							widget.NewVBox( //user1 Vbox
 								oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
-								oL1.FirstLastL, oL1.DOBL, oL1.emailL, oL1IDP),
+								oL1.FirstLastL, oL1.DOBL, oL1.emailL, oL1.userPic),
 							widget.NewVBox( //end user2 Vbox
 								oL2.tapIDL, oL2.beerIDL, oL2.priceL, oL2.sizeL,
-								oL2.FirstLastL, oL2.DOBL, oL2.emailL, oL2IDP),
+								oL2.FirstLastL, oL2.DOBL, oL2.emailL, oL2.userPic),
 							widget.NewVBox( //end user3 Vbox
 								oL3.tapIDL, oL3.beerIDL, oL3.priceL, oL3.sizeL,
-								oL3.FirstLastL, oL3.DOBL, oL3.emailL, oL3IDP),
+								oL3.FirstLastL, oL3.DOBL, oL3.emailL, oL3.userPic),
 							widget.NewVBox( //end user4 Vbox
 								oL4.tapIDL, oL4.beerIDL, oL4.priceL, oL4.sizeL,
-								oL4.FirstLastL, oL4.DOBL, oL4.emailL, oL4IDP),
+								oL4.FirstLastL, oL4.DOBL, oL4.emailL, oL4.userPic),
 							widget.NewVBox( //end user5 Vbox
 								oL5.tapIDL, oL5.beerIDL, oL5.priceL, oL5.sizeL,
-								oL5.FirstLastL, oL5.DOBL, oL5.emailL, oL5IDP),
+								oL5.FirstLastL, oL5.DOBL, oL5.emailL, oL5.userPic),
 							widget.NewVBox( //end user6 Vbox
 								oL6.tapIDL, oL6.beerIDL, oL6.priceL, oL6.sizeL,
-								oL6.FirstLastL, oL6.DOBL, oL6.emailL, oL6IDP),
+								oL6.FirstLastL, oL6.DOBL, oL6.emailL, oL6.userPic),
 							widget.NewVBox( //end user7 Vbox
 								oL7.tapIDL, oL7.beerIDL, oL7.tapIDL, oL7.sizeL,
-								oL7.FirstLastL, oL7.DOBL, oL7.emailL, oL7IDP),
+								oL7.FirstLastL, oL7.DOBL, oL7.emailL, oL7.userPic),
 							widget.NewVBox( //end user8 Vbox
 								oL8.tapIDL, oL8.beerIDL, oL8.tapIDL, oL8.sizeL,
-								oL8.FirstLastL, oL8.DOBL, oL8.emailL, oL8IDP),
+								oL8.FirstLastL, oL8.DOBL, oL8.emailL, oL8.userPic),
 
 		)
 	content := fyne.NewContainerWithLayout(
@@ -331,7 +340,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL1.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL1.DOBL.SetText(customerOrder.dob)
 			oL1.emailL.SetText(customerOrder.email)
-			oL1IDP := addUserPic(customerOrder.pictureURL)
+			oL1.userPic := setUserPic(customerOrder.pictureURL)
 		case 2:
 			oL2.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
@@ -340,7 +349,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL2.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL2.DOBL.SetText(customerOrder.dob)
 			oL2.emailL.SetText(customerOrder.email)
-			oL2IDP := addUserPic(customerOrder.pictureURL)
+			oL2.userPic := setUserPic(customerOrder.pictureURL)
 		case 3:
 			oL3.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL3.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
@@ -349,7 +358,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL3.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL3.DOBL.SetText(customerOrder.dob)
 			oL3.emailL.SetText(customerOrder.email)
-			oL3IDP := addUserPic(customerOrder.pictureURL)
+			oL3.userPic := setUserPic(customerOrder.pictureURL)
 		case 4:
 			oL4.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL4.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
@@ -358,7 +367,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL4.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL4.DOBL.SetText(customerOrder.dob)
 			oL4.emailL.SetText(customerOrder.email)
-			oL4IDP := addUserPic(customerOrder.pictureURL)
+			oL4.userPic := setUserPic(customerOrder.pictureURL)
 		case 5:
 			oL5.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL5.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
@@ -367,7 +376,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL5.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL5.DOBL.SetText(customerOrder.dob)
 			oL5.emailL.SetText(customerOrder.email)
-			oL5IDP := addUserPic(customerOrder.pictureURL)
+			oL5.userPic := setUserPic(customerOrder.pictureURL)
 		case 6:
 			oL6.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL6.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
@@ -376,7 +385,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL6.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL6.DOBL.SetText(customerOrder.dob)
 			oL6.emailL.SetText(customerOrder.email)
-			oL6IDP := addUserPic(customerOrder.pictureURL)
+			oL6.userPic := setUserPic(customerOrder.pictureURL)
 		case 7:
 			oL7.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL7.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
@@ -385,7 +394,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL7.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL7.DOBL.SetText(customerOrder.dob)
 			oL7.emailL.SetText(customerOrder.email)
-			oL7IDP := addUserPic(customerOrder.pictureURL)
+			oL7.userPic := setUserPic(customerOrder.pictureURL)
 		case 8:
 			oL8.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL8.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
@@ -394,7 +403,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL8.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL8.DOBL.SetText(customerOrder.dob)
 			oL8.emailL.SetText(customerOrder.email)
-			oL8IDP := addUserPic(customerOrder.pictureURL)
+			oL8.userPic := setUserPic(customerOrder.pictureURL)
 		default:
 			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
 		}
@@ -413,7 +422,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL8.FirstLastL.SetText("-")
 			oL8.DOBL.SetText("-")
 			oL8.emailL.SetText("-")
-			oL1IDP :=	addUserPic(defaultIDP)
+			oL1IDP :=	setUserPic(defaultIDP)
 		case 2:
 			oL2.tapIDL.SetText("-")
 			oL2.beerIDL.SetText("-")
@@ -422,7 +431,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL2.FirstLastL.SetText("-")
 			oL2.DOBL.SetText("-")
 			oL2.emailL.SetText("-")
-			oL2IDP :=	addUserPic(defaultIDP)
+			oL2IDP :=	setUserPic(defaultIDP)
 		case 3:
 			oL3.tapIDL.SetText("-")
 			oL3.beerIDL.SetText("-")
@@ -431,7 +440,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL3.FirstLastL.SetText("-")
 			oL3.DOBL.SetText("-")
 			oL3.emailL.SetText("-")
-			oL3IDP :=	addUserPic(defaultIDP)
+			oL3IDP :=	setUserPic(defaultIDP)
 		case 4:
 			oL4.tapIDL.SetText("-")
 			oL4.beerIDL.SetText("-")
@@ -440,7 +449,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL4.FirstLastL.SetText("-")
 			oL4.DOBL.SetText("-")
 			oL4.emailL.SetText("-")
-			oL4IDP :=	addUserPic(defaultIDP)
+			oL4IDP :=	setUserPic(defaultIDP)
 		case 5:
 			oL5.tapIDL.SetText("-")
 			oL5.beerIDL.SetText("-")
@@ -449,7 +458,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL5.FirstLastL.SetText("-")
 			oL5.DOBL.SetText("-")
 			oL5.emailL.SetText("-")
-			oL5IDP :=	addUserPic(defaultIDP)
+			oL5IDP :=	setUserPic(defaultIDP)
 		case 6:
 			oL6.tapIDL.SetText("-")
 			oL6.beerIDL.SetText("-")
@@ -458,7 +467,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL6.FirstLastL.SetText("-")
 			oL6.DOBL.SetText("-")
 			oL6.emailL.SetText("-")
-			oL6IDP :=	addUserPic(defaultIDP)
+			oL6IDP :=	setUserPic(defaultIDP)
 		case 7:
 			oL7.tapIDL.SetText("-")
 			oL7.beerIDL.SetText("-")
@@ -467,7 +476,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL7.FirstLastL.SetText("-")
 			oL7.DOBL.SetText("-")
 			oL7.emailL.SetText("-")
-			oL7IDP :=	addUserPic(defaultIDP)
+			oL7IDP :=	setUserPic(defaultIDP)
 		case 8:
 			oL8.tapIDL.SetText("-")
 			oL8.beerIDL.SetText("-")
@@ -476,7 +485,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL8.FirstLastL.SetText("-")
 			oL8.DOBL.SetText("-")
 			oL8.emailL.SetText("-")
-			oL8IDP :=	addUserPic(defaultIDP)
+			oL8IDP :=	setUserPic(defaultIDP)
 		default:
 			fmt.Println("INVALID Clear GUI Tap #!!:", tapID)
 		}
@@ -744,7 +753,7 @@ func goid() int {
 }
 
 //Add the id face picture with the given parameters
-func addUserPic(url string) fyne.CanvasObject {
+func setUserPic(url string) fyne.CanvasObject {
 		//Grabs content from url
  		response, e := http.Get(url)
 		if e != nil {
@@ -769,7 +778,7 @@ func addUserPic(url string) fyne.CanvasObject {
 		img.SetMinSize(fyne.NewSize(100,125)) // approx ~1:1.5 (ID picture ratio)
 
 		return img
-} //end addUserPic
+} //end setUserPic
 
 
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
