@@ -298,7 +298,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 
 		//Check order queue for orders to pull
 		orderIdToServe := checkOrders(tapUUID, authToken)
-		fmt.Println("Order IDs to serve: ", orderIdToServe)
+		//fmt.Println("Order IDs to serve: ", orderIdToServe)
 
 		//If there are orders to serve then let us fullfill them
 		if len(orderIdToServe) >= 1 {
@@ -564,7 +564,7 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 //Check for orders to be served, returns array of ordersId to be served
 func checkOrders(uuid string, authToken string) []int{
 	var orderIDs []int
-	fmt.Println("Fetch order ids to fullfill")
+	//fmt.Println("Fetch order ids to fullfill")
 	url := "http://96.30.244.56:3000/api/v1/tap_orders"
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
