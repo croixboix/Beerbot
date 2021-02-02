@@ -70,7 +70,8 @@ type Order struct {
 
 	//Tap_Users Data
 	email string
-	firstLast string
+	firstName string
+	lastName string
 	dob string
 	mobilePhone string
 	pictureURL string
@@ -526,7 +527,8 @@ func getUserData(customerOrder Order, authToken string) *Order{
 
 
 	customerOrder.email = verifyData.UserEmail
-	customerOrder.firstLast = verifyData.FirstName + " " + verifyData.LastName
+	customerOrder.firstName = verifyData.FirstName
+	customerOrder.lastName = verifyData.LastName
 	customerOrder.dob = verifyData.DoB
 	customerOrder.mobilePhone = verifyData.MobilePhone
 	//customerOrder.pictureURL = verifyData.PicURL
