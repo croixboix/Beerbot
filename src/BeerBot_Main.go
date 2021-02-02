@@ -153,7 +153,7 @@ func main() {
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		emailL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		userPic:setUserPic(defaultIDP)}
+		userPic:setUserPic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")}
 	oL2 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		beerIDL:widget.NewLabelWithStyle("-",fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
