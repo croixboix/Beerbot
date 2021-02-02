@@ -591,7 +591,7 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
 		//Get user data
-		getUserData(&o, authToken)
+		getUserData(*o, authToken)
 	}
 
 	fmt.Println("getOrders o: ", o)
