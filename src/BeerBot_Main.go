@@ -427,9 +427,9 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 			oL1.beerIDL.SetText("-")
 			oL1.priceL.SetText("-")
 			oL1.sizeL.SetText("-")
-			oL8.FirstLastL.SetText("-")
-			oL8.DOBL.SetText("-")
-			oL8.emailL.SetText("-")
+			oL1.FirstLastL.SetText("-")
+			oL1.DOBL.SetText("-")
+			oL1.emailL.SetText("-")
 			// oL1IDP :=	setUserPic(defaultIDP)
 		case 2:
 			oL2.tapIDL.SetText("-")
@@ -499,7 +499,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 		}
 }
 
-//Get user data given orderID
+//Get user data for given order
 func getUserData(customerOrder *Order, authToken string) {
 	url := "http://96.30.244.56:3000/api/v1/tap_users/"+ strconv.Itoa(customerOrder.user)
 	req, _ := http.NewRequest("GET", url, nil)
@@ -515,12 +515,10 @@ func getUserData(customerOrder *Order, authToken string) {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	fmt.Println("getUserData body: ", string(body))
+	//fmt.Println("getUserData body: ", string(body))
 
 	var verifyResp []byte = body
 	var verifyData TapUserResponse
-
-	fmt.Println("getUserData verifyData: ", verifyData)
 
 	err := json.Unmarshal(verifyResp, &verifyData)
 	if err != nil {
