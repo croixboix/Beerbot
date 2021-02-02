@@ -69,10 +69,8 @@ type Order struct {
 	tap [numberOfTaps + 1]int
 
 	//Tap_Users Data
-	userID string
 	email string
-	firstName string
-	lastName string
+	firstLast string
 	dob string
 	mobilePhone string
 	pictureURL string
@@ -525,6 +523,13 @@ func getUserData(customerOrder Order, authToken string) *Order{
 	if err != nil {
 		fmt.Println("unmarshal error:", err)
 	}
+
+
+	customerOrder.email = verifyData.UserEmail
+	customerOrder.firstLast = verifyData.FirstName + " " + verifyData.LastName
+	customerOrder.dob = verifyData.DoB
+	customerOrder.mobilePhone = verifyData.MobilePhone
+	//customerOrder.pictureURL = verifyData.PicURL
 
 	return &customerOrder
 }
