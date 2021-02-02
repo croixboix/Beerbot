@@ -106,6 +106,15 @@ type AuthResponse struct {
 	AuthenToken string 	`json:"authentication_token"`
 }
 
+type TapUserResponse struct{
+	UserID int					`json:"id"`
+	UserEmail string		`json:"email"`
+	FirstName string		`json:"first_name"`
+	LastName	string		`json:"last_name"`
+	DoB	string					`json:"dob"`
+	MobilePhone string	`json:"string"`
+}
+
 type orderLabels struct {
 	tapIDL  	 *widget.Label
 	beerIDL 	 *widget.Label
@@ -492,8 +501,32 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 }
 
 //Get user data given orderID
-func getUserData(customerOrder Order, authToken string) {
+func getUserData(customerOrder Order, authToken string) *Order{
+	url := "http://96.30.244.56:3000/api/v1/tap_users/"+ customerOrder.user
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Host", "96.30.244.56:3000")
+	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("Authorization", authToken)
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
 
+	//fmt.Println(res)
+	fmt.Println("getUserData body: ", string(body))
+
+	var verifyResp []byte = body
+	var verifyData TapUserResponse
+
+	err := json.Unmarshal(verifyResp, &verifyData)
+	if err != nil {
+		fmt.Println("unmarshal error:", err)
+	}
+
+	return &customerOrder
 }
 
 
@@ -517,7 +550,7 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	fmt.Println("getOrders body: ", string(body))
+	//fmt.Println("getOrders body: ", string(body))
 
 	var verifyResp []byte = body
 	var verifyData OrderResponse
@@ -527,9 +560,8 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 		fmt.Println("unmarshal error:", err)
 	}
 
-	fmt.Println("Verify Order Response Dump:")
-	fmt.Println("verifyData: ", verifyData)
-	//fmt.Println("userID: ", verifyData.UserID)
+	//fmt.Println("Verify Order Response Dump:")
+	//fmt.Println("verifyData: ", verifyData)
 
 	//If data isn't empty then import data into local order struct
 	if verifyData.UserID != 0 && verifyData.WasPoured == false{
@@ -551,8 +583,8 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 		//Round our float and store it away in local order struct
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
-
 		//Get user data
+		getUserData(o, authToken)
 	}
 
 	fmt.Println("getOrders o: ", o)
