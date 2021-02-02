@@ -500,7 +500,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 }
 
 //Get user data given orderID
-func getUserData(customerOrder Order, authToken string) *Order{
+func getUserData(customerOrder *Order, authToken string) {
 	url := "http://96.30.244.56:3000/api/v1/tap_users/"+ strconv.Itoa(customerOrder.user)
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
@@ -520,6 +520,8 @@ func getUserData(customerOrder Order, authToken string) *Order{
 	var verifyResp []byte = body
 	var verifyData TapUserResponse
 
+	fmt.Println("getUserData verifyData: ", verifyData)
+
 	err := json.Unmarshal(verifyResp, &verifyData)
 	if err != nil {
 		fmt.Println("unmarshal error:", err)
@@ -533,7 +535,8 @@ func getUserData(customerOrder Order, authToken string) *Order{
 	customerOrder.mobilePhone = verifyData.MobilePhone
 	//customerOrder.pictureURL = verifyData.PicURL
 
-	return &customerOrder
+	fmt.Println("getOrders o: ", o)
+
 }
 
 
@@ -590,8 +593,8 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 		//Round our float and store it away in local order struct
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
-		//Get user data
-		getUserData(*o, authToken)
+		//Get user data filled into the order struct
+		getUserData(&o, authToken)
 	}
 
 	fmt.Println("getOrders o: ", o)
