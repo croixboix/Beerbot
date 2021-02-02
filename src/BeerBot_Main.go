@@ -501,7 +501,7 @@ func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels,
 
 //Get user data given orderID
 func getUserData(customerOrder Order, authToken string) *Order{
-	url := "http://96.30.244.56:3000/api/v1/tap_users/"+ customerOrder.user
+	url := "http://96.30.244.56:3000/api/v1/tap_users/"+ strconv.Itoa(customerOrder.user)
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "*/*")
