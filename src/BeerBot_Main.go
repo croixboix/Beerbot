@@ -348,7 +348,7 @@ func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderL
 			oL1.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
 			oL1.DOBL.SetText(customerOrder.dob)
 			oL1.emailL.SetText(customerOrder.email)
-			// oL1.userPic = setUserPic(customerOrder.pictureURL)
+			setUserPic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")
 		case 2:
 			oL2.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
 			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
