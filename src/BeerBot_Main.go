@@ -535,8 +535,6 @@ func getUserData(customerOrder *Order, authToken string) {
 	customerOrder.mobilePhone = verifyData.MobilePhone
 	//customerOrder.pictureURL = verifyData.PicURL
 
-	fmt.Println("getOrders o: ", o)
-
 }
 
 
