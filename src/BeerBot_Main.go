@@ -733,7 +733,6 @@ func authTapController(uuid string, tapControlID int) string{
 	authPost.TapControlPOST.TapControlID = tapControlID
 	authPost.TapControlPOST.TapUUID = uuid
 
-
 	payload, err := json.Marshal(authPost)
 	if err != nil {
 		fmt.Println("marshal error:", err)
@@ -751,9 +750,6 @@ func authTapController(uuid string, tapControlID int) string{
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-
-	//fmt.Println(res)
-	//fmt.Println("body: ", string(body))
 
 	var authResp []byte = body
 	var verifyAuth AuthResponse
