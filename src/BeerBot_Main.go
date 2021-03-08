@@ -587,7 +587,7 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
    	}
 		pulses = pulses/pulseDivConst
 		//Round our float and store it away in local order struct
-		o.tap[verifyData.TapID] = int(math.Round(pulses))
+		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
 		//Get user data filled into the order struct
 		getUserData(&o, authToken)
