@@ -99,7 +99,7 @@ func main() {
 	}
   oL4 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWurceithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -113,21 +113,7 @@ func main() {
 		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		DOBL:widget.NewLabelWithStpackage GUI
-
-import (
-	"fmt"
-	"github.com/warthog618/gpio"
-	"os"
-	"sync"
-	"time"
-
-	//For debugging only
-	"runtime"
-	"strconv"
-	"strings"
-)
-yle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		DOBL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		userPic:setUserPic(defaultIDP),
 	}
@@ -286,21 +272,7 @@ func setUserPic(url string) fyne.CanvasObject {
 func (bGUI *beerbot) downloadImage(url string){
 	//Grabs content from url
 	response, e := http.Get(url)
-	if e != nil {package GUI
-
-import (
-	"fmt"
-	"github.com/warthog618/gpio"
-	"os"
-	"sync"
-	"time"
-
-	//For debugging only
-	"runtime"
-	"strconv"
-	"strings"
-)
-
+	if e != nil {
 			log.Fatal("Unable to Get URL", e)
 	}
 	defer response.Body.Close()
@@ -376,21 +348,7 @@ import (
 	// 			tag := myType.Field(i).Tag.Get("json")
 	// 			switch tag {
 	// 			case "": // not a dipackage GUI
-
-import (
-	"fmt"
-	"github.com/warthog618/gpio"
-	"os"
-	"sync"
-	"time"
-
-	//For debugging only
-	"runtime"
-	"strconv"
-	"strings"
-)
-splay field
-	// 			case "img": // special field for images
+// 			case "img": // special field for images
 	// 				url := myValue.Field(i).String()
 	//
 	// 				go x.downloadImage(url)
