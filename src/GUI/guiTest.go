@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fyne.io/fyne"
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/canvas"
-	"fyne.io/fyne/layout"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/widget"
+	"fyne.io/fyne/v2/container"
 	"time"
 	"fmt"
 	"io"
@@ -99,7 +100,7 @@ func main() {
 	}
   oL4 := orderLabels{
 		tapIDL: widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
-		beerIDL:widget.NewLabelWurceithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
+		beerIDL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		priceL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		sizeL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		FirstLastL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
@@ -149,31 +150,31 @@ func main() {
 	}
 
 
-	headerVBox := widget.NewVBox(
+	headerVBox := container.New(layout.NewVBoxLayout(),
 					hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
-				 	hL.FirstLastL, hL.DOBL, hL.emailL,)
-	userVBox1 := widget.NewVBox(
+				 	hL.FirstLastL, hL.DOBL, hL.emailL)
+	userVBox1 := container.New(layout.NewVBoxLayout(),
 		oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
 		oL1.FirstLastL, oL1.DOBL, oL1.emailL, oL1.userPic)
-	userVBox2 := widget.NewVBox(
+	userVBox2 := container.New(layout.NewVBoxLayout(),
 		oL2.tapIDL, oL2.beerIDL, oL2.priceL, oL2.sizeL,
 		oL2.FirstLastL, oL2.DOBL, oL2.emailL, oL2.userPic)
-	userVBox3 := widget.NewVBox(
+	userVBox3 := container.New(layout.NewVBoxLayout(),
 		oL3.tapIDL, oL3.beerIDL, oL3.priceL, oL3.sizeL,
 		oL3.FirstLastL, oL3.DOBL, oL3.emailL, oL3.userPic)
-	userVBox4 := widget.NewVBox(
+	userVBox4 := container.New(layout.NewVBoxLayout(),
 		oL4.tapIDL, oL4.beerIDL, oL4.priceL, oL4.sizeL,
 		oL4.FirstLastL, oL4.DOBL, oL4.emailL, oL4.userPic)
-	userVBox5 := widget.NewVBox(
+	userVBox5 := container.New(layout.NewVBoxLayout(),
 		oL5.tapIDL, oL5.beerIDL, oL5.priceL, oL5.sizeL,
 		oL5.FirstLastL, oL5.DOBL, oL5.emailL, oL5.userPic)
-	userVBox6 := widget.NewVBox(
+	userVBox6 := container.New(layout.NewVBoxLayout(),
 		oL6.tapIDL, oL6.beerIDL, oL6.priceL, oL6.sizeL,
 		oL6.FirstLastL, oL6.DOBL, oL6.emailL, oL6.userPic)
-	userVBox7 := widget.NewVBox(
+	userVBox7 := container.New(layout.NewVBoxLayout(),
 		oL7.tapIDL, oL7.beerIDL, oL7.priceL, oL7.sizeL,
 		oL7.FirstLastL, oL7.DOBL, oL7.emailL, oL7.userPic)
-	userVBox8 := widget.NewVBox(
+	userVBox8 := container.New(layout.NewVBoxLayout(),
 		oL8.tapIDL, oL8.beerIDL, oL8.priceL, oL8.sizeL,
 		oL8.FirstLastL, oL8.DOBL, oL8.emailL, oL8.userPic)
 	//Layout Config
@@ -182,16 +183,15 @@ func main() {
 
 	left := headerVBox //headers
 
-	middle := widget.NewHBox(
+	middle := container.New(layout.NewHBoxLayout(),
 							userVBox1, userVBox2, userVBox3, userVBox4, userVBox5, userVBox6,
-							userVBox7, userVBox8,
-		)
-	right:= widget.NewVBox(bGUI.headerL, bGUI.id1)
+							userVBox7, userVBox8)
+	// right:= container.New(layout.NewHBoxLayout(),bGUI.headerL, bGUI.id1)
 	// bottom := widget.NewHBox(widget.NewVBox(oL1.userPic),
 	// 					)
 
 	content := fyne.NewContainerWithLayout(
-										layout.NewBorderLayout(top, nil, left, right),
+										layout.NewBorderLayout(top, nil, left, nil),
 																			top, left, middle)
 	// bGUI.content = fyne.NewContainerWithLayout(
 	// 									layout.NewBorderLayout(top, bottom, left, nil),
@@ -264,7 +264,7 @@ func setUserPic(url string) fyne.CanvasObject {
 		}
 		fmt.Println(file.Name())
 		img := canvas.NewImageFromFile(file.Name())
-		img.SetMinSize(fyne.NewSize(100,125)) // approx ~1:1.5 (ID picture ratio)
+		img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
 
 		return img
 } //end addFacePic
