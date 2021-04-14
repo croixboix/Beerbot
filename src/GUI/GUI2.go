@@ -1,54 +1,56 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
-	"io/ioutil"
-	"log"
-	"math/rand"
-	"net/http"
-	"os"
-	"reflect"
-	"strconv"
-	"strings"
-	"time"
+	"image/color"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/widget"
-
 )
 
-// XKCD is an app to get xkcd images and display them
-type XKCD struct {
-	ID         int    `json:"num"`
-	Title      string `json:"title"`
-	Day        string `json:"day"`
-	Month      string `json:"month"`
-	Year       string `json:"year"`
-	Link       string `json:"link"`
-	SafeTitle  string `json:"safe_title"`
-	Transcript string `json:"transcript"`
-	News       string `json:"news"`
-	Alt        string `json:"alt"`
-	Img        string `json:"img"`
 
-	image   *canvas.Image
-	iDEntry *widget.Entry
-	labels  map[string]*widget.Label
+func makeImageItem() fyne.CanvasObject {
+	label := canvas.NewText("label", color.Gray{128})
+	label.Alignment = fyne.TextAlignCenter
+
+	img := canvas.NewRectangle(color.Black)
+	return container.NewBorder(nil, label, nil, nil, img)
 }
+
+
+func makeImageGrid() fyne.CanvasObject {
+	items := []fyne.CanvasObject{}
+
+	for range []int{1,2,3} {
+		img := makeImageItem()
+		items = append(items, img)
+	}
+
+	cellSize := fyne.NewSize(160, 120)
+	return container.NewGridWrap(cellSize, items...)
+}
+
+
+func makeStatus()fyne.CanvasObject{
+	return canvas.NewText("status", color.Gray{128})
+}
+
+
+func makeUI() fyne.CanvasObject {
+	status := makeStatus()
+	content := makeImageGrid()
+	return container.NewBorder(nil, status, nil, nil, content)
+}
+
+
 
 func main() {
 	a := app.New()
-	//a.SetIcon(resourceIconPng)
-
-	w := a.NewWindow("BeerBot")
-
-	w.SetContent(Show(w))
-	w.Resize(fyne.NewSize(480, 360))
+	w := a.NewWindow("Image Browser")
+	w.SetContent(makeUI())
+	w.Resize(fyne.NewSize(480,360))
 	w.ShowAndRun()
+
+
 }

@@ -1,183 +1,104 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
+	"image/color"
 	"io/ioutil"
-	"log"
-	"math/rand"
 	"net/http"
+	"io"
 	"os"
-	"reflect"
-	"strconv"
-	"strings"
-	"time"
+	"log"
+	"fmt"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/widget"
-
 )
 
-// XKCD is an app to get xkcd images and display them
-type XKCD struct {
-	ID         int    `json:"num"`
-	Title      string `json:"title"`
-	Day        string `json:"day"`
-	Month      string `json:"month"`
-	Year       string `json:"year"`
-	Link       string `json:"link"`
-	SafeTitle  string `json:"safe_title"`
-	Transcript string `json:"transcript"`
-	News       string `json:"news"`
-	Alt        string `json:"alt"`
-	Img        string `json:"img"`
 
-	image   *canvas.Image
-	iDEntry *widget.Entry
-	labels  map[string]*widget.Label
+func makeTapItems() fyne.CanvasObject {
+	label := canvas.NewText("Tap 1", color.Gray{128})
+	label.Alignment = fyne.TextAlignCenter
+
+	status := canvas.NewText("Scan Tag to Pour", color.Gray{128})
+	status.Alignment = fyne.TextAlignCenter
+
+	userName := canvas.NewText("User Name", color.Gray{128})
+	userName.Alignment = fyne.TextAlignCenter
+
+	dob := canvas.NewText("1/1/1984", color.Gray{128})
+	dob.Alignment = fyne.TextAlignCenter
+
+	beer := canvas.NewText("Miller Lite", color.Gray{128})
+	beer.Alignment = fyne.TextAlignCenter
+
+	size := canvas.NewText("12 Ounces", color.Gray{128})
+	size.Alignment = fyne.TextAlignCenter
+
+
+	myURL := "https://miro.medium.com/max/868/1*Hyd_x4yW3H_wxn_f8tFYLQ.png"
+	img := loadImage(myURL)
+
+
+	return container.NewVBox(label, status, userName, dob, beer, size, img)
+}
+
+
+func makeUI() fyne.CanvasObject {
+	items := []fyne.CanvasObject{}
+
+	for range []int{1,2,3,4,5,6,7,8} {
+		img := makeTapItems()
+		items = append(items, img)
+	}
+
+	return container.NewGridWithRows(2, items...)
+}
+
+
+//Add the id face picture with the given parameters
+func loadImage(url string) fyne.CanvasObject {
+		//Grabs content from url
+ 		response, e := http.Get(url)
+		if e != nil {
+				log.Fatal("Unable to Get URL", e)
+				img := canvas.NewRectangle(color.Black)
+				return img
+		}
+		defer response.Body.Close()
+
+		//creates tmp file wth a unique name
+		file, err := ioutil.TempFile(os.TempDir(), "userPic.*.jpg")
+		if err != nil{
+			log.Fatal("ioutil TempFile error", err)
+			img := canvas.NewRectangle(color.Black)
+			return img
+		}
+		defer file.Close()
+
+		// Use io.Copy to just dump the response body to the file. This supports huge files
+		_, err = io.Copy(file, response.Body) //copy data from get request into file
+		if err != nil {
+			log.Fatal(err)
+			img := canvas.NewRectangle(color.Black)
+			return img
+		}
+		fmt.Println(file.Name())
+		img := canvas.NewImageFromFile(file.Name())
+		img.SetMinSize(fyne.NewSize(255,340)) // 4:3 aspect ratio
+		img.FillMode = canvas.ImageFillContain
+
+		return img
 }
 
 
 
 func main() {
 	a := app.New()
-	//a.SetIcon(resourceIconPng)
-
-	w := a.NewWindow("BeerBot")
-
-	w.SetContent(Show(w))
-	w.Resize(fyne.NewSize(480, 360))
+	w := a.NewWindow("BeerBot Tap Display")
+	w.SetContent(container.NewPadded(makeUI()))
+	w.Resize(fyne.NewSize(1920,1080))
 	w.ShowAndRun()
-}
 
-func (x *XKCD) newLabel(name string) *widget.Label {
-	w := widget.NewLabel("")
-	x.labels[name] = w
-	return w
-}
 
-// NewXKCD returns a new xkcd app
-func NewXKCD() *XKCD {
-	rand.Seed(time.Now().UnixNano())
-	return &XKCD{
-		labels: make(map[string]*widget.Label),
-	}
-}
-
-// Submit will lookup the xkcd cartoon and do something useful with it
-func (x *XKCD) Submit() {
-	// Get the ID
-	id, _ := strconv.Atoi(x.iDEntry.Text)
-	if id == 0 {
-		id = rand.Intn(2075)
-	}
-
-	resp, err := http.Get(fmt.Sprintf("https://xkcd.com/%d/info.0.json", id))
-	if err != nil {
-		return
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode == http.StatusOK {
-		data, _ := ioutil.ReadAll(resp.Body)
-		json.Unmarshal(data, x)
-		x.DataToScreen()
-	} else {
-		fmt.Println("Error getting ID", id, resp.Status, resp.StatusCode)
-	}
-}
-
-func (x *XKCD) downloadImage(url string) {
-	response, e := http.Get(url)
-	if e != nil {
-		log.Fatal(e)
-	}
-	defer response.Body.Close()
-
-	file, err := ioutil.TempFile(os.TempDir(), "xkcd.png")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	_, err = io.Copy(file, response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	x.image.File = file.Name()
-	canvas.Refresh(x.image)
-}
-
-// DataToScreen copies the data model to the screen
-func (x *XKCD) DataToScreen() {
-	myType := reflect.TypeOf(x).Elem()
-	myValue := reflect.ValueOf(x).Elem()
-	for i := 0; i < myType.NumField(); i++ {
-		tag := myType.Field(i).Tag.Get("json")
-		switch tag {
-		case "": // not a display field
-		case "img": // special field for images
-			url := myValue.Field(i).String()
-
-			go x.downloadImage(url)
-		case "num":
-			v := myValue.Field(i).Int()
-			x.iDEntry.SetText(fmt.Sprintf("%d", v))
-		default:
-			v := myValue.Field(i).String()
-			if newline := strings.IndexAny(v, "\n.-,"); newline > -1 {
-				v = v[:newline] + "..."
-			}
-			x.labels[tag].SetText(v)
-		}
-	}
-}
-
-// NewForm generates a new XKCD form
-func (x *XKCD) NewForm(w fyne.Window) fyne.Widget {
-	form := &widget.Form{}
-	tt := reflect.TypeOf(x).Elem()
-	for i := 0; i < tt.NumField(); i++ {
-		fld := tt.Field(i)
-		tag := fld.Tag.Get("json")
-		switch tag {
-		case "": // not a display field
-		case "img": // special field for images
-			// we created this in the setup
-		case "num": // special field for ID
-			entry := widget.NewEntry()
-			x.iDEntry = entry
-			form.Append(fld.Name, entry)
-		default:
-			form.Append(fld.Name, x.newLabel(tag))
-		}
-	}
-	return form
-}
-
-// Show starts a new xkcd widget
-func Show(win fyne.Window) fyne.CanvasObject {
-	x := NewXKCD()
-
-	form := x.NewForm(win)
-	submit := widget.NewButton("Submit", func() {
-		x.Submit()
-	})
-	submit.Importance = widget.HighImportance
-	buttons := container.NewHBox(
-		layout.NewSpacer(),
-		widget.NewButton("Random", func() {
-			x.iDEntry.Text = ""
-			x.Submit()
-		}),
-		submit)
-	x.image = &canvas.Image{FillMode: canvas.ImageFillOriginal}
-	return fyne.NewContainerWithLayout(
-		layout.NewBorderLayout(form, buttons, nil, nil),
-		form, buttons, x.image)
 }
