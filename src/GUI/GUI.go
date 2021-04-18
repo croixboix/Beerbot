@@ -16,12 +16,13 @@ import (
 	"fyne.io/fyne/v2/container"
 )
 
+//Holds orders (uses labels from makeItems()) and container for window
 type beerbot struct{
-	// orders [8]orderInfo
 	orders [8]orderInfo
 	c *fyne.Container
 }
 
+//Holds the order information and image for organization and ease for passing around the program
 type orderInfo struct {
 	tapNum 		int
 	label 	 *canvas.Text
@@ -33,8 +34,9 @@ type orderInfo struct {
 	img 		 *canvas.Image
 	}
 
+//Called by makeUI() to create a VBox with several labels and an image
 func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
-	//Tap number
+	//Sets tap number and tap label
 	b.orders[tapNum-1].tapNum = tapNum
 	tapLabel := "Tap " + strconv.Itoa(tapNum)
 	b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{128})
@@ -61,9 +63,6 @@ func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 
 	b.orders[tapNum-1].img = img
 
-	// fmt.Println(*(b.orders[tapNum-1].label))
-	// newURL := "https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg" //pic of Than
-	// changeImage(newURL, img)
 
 	return container.NewVBox(b.orders[tapNum-1].label,
 												b.orders[tapNum-1].status, b.orders[tapNum-1].userName,
@@ -99,7 +98,7 @@ func loadImage(url string) *canvas.Image {
 		}
 
 		img := canvas.NewImageFromFile(imgLoc)
-		//For some reason when this is called, all the images are updated
+		//For some reason when this is called, all the images are updated instead of just 1
 		// img.FillMode = canvas.ImageFillOriginal
 		img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
 
@@ -127,7 +126,7 @@ func changeImage (url string, img *canvas.Image){
 	}
 
 	img.File = file.Name()
-	// img.FillMode = canvas.ImageFillOriginal
+	// img.FillMode = canvas.ImageFillOriginal //same issue as above
 	img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
 	img.Refresh()
 
