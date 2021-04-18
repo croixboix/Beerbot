@@ -151,8 +151,8 @@ func main() {
 
 
 	headerVBox := container.New(layout.NewVBoxLayout(),
-					hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
-				 	hL.FirstLastL, hL.DOBL, hL.emailL)
+		hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
+	 	hL.FirstLastL, hL.DOBL, hL.emailL)
 	userVBox1 := container.New(layout.NewVBoxLayout(),
 		oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
 		oL1.FirstLastL, oL1.DOBL, oL1.emailL, oL1.userPic)
