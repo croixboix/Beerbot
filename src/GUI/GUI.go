@@ -99,11 +99,14 @@ func loadImage(url string) *canvas.Image {
 		}
 
 		img := canvas.NewImageFromFile(imgLoc)
+		//For some reason when this is called, all the images are updated
+		// img.FillMode = canvas.ImageFillOriginal
 		img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
 
 		return img
 }//end loadImage
 
+//Change the existing id image shown on the GUI
 func changeImage (url string, img *canvas.Image){
 	time.Sleep(3*time.Second)
 
@@ -124,15 +127,13 @@ func changeImage (url string, img *canvas.Image){
 	}
 
 	img.File = file.Name()
+	// img.FillMode = canvas.ImageFillOriginal
+	img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
 	img.Refresh()
 
 	file.Close()
 }//end changeImage
 
-// func (b *beerbot) testUpdate(url string){
-// 	changeImage(url, b.orders[1].img)
-//
-// } //end testUpdate
 
 func main() {
 	a := app.New()
