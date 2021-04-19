@@ -488,7 +488,7 @@ func getUserData(customerOrder *Order, authToken string) {
 	customerOrder.lastName = verifyData.LastName
 	customerOrder.dob = verifyData.DoB
 	customerOrder.mobilePhone = verifyData.MobilePhone
-	customerOrder.photo = verifyData.pictureURL
+	customerOrder.pictureURL = verifyData.PhotoURL
 
 }
 
