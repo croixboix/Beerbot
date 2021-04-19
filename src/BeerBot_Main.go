@@ -656,7 +656,7 @@ func togglePour(customerOrder Order, b beerbot) {
 		//Solenoid normal state = closed
 		for i := 0; i <= numberOfTaps; i++ {
 			if customerOrder.tap[i] != 0 {
-				go changeImage(customerOrder.pictureURL, b.orders[1].img)
+				go changeImage(customerOrder.pictureURL, b.orders[i].img)
 				wg1.Add(1)
 				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
 				tapToClose = i+1
@@ -673,7 +673,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[1].img)
+			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[tapToClose].img)
 
 		case <-time.After(20 * time.Second):
 			fmt.Println("out of time :(")
@@ -682,7 +682,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[1].img)
+			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[tapToClose].img)
 
 	}
 }
