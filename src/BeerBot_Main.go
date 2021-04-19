@@ -285,7 +285,7 @@ func main() {
 	myCanvas.SetContent(content)
 	*/
 
-	go runProgram(b.c, b)
+	go runProgram(b)
 
 	/*
 	w.Resize(fyne.NewSize(500, 230))
@@ -300,7 +300,7 @@ func main() {
 }
 
 
-func runProgram(c fyne.Container, b beerbot) {
+func runProgram(b beerbot) {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -488,9 +488,7 @@ func getUserData(customerOrder *Order, authToken string) {
 	customerOrder.lastName = verifyData.LastName
 	customerOrder.dob = verifyData.DoB
 	customerOrder.mobilePhone = verifyData.MobilePhone
-	customerOrder.photo = verifyData.PhotoURL
-	customerOrder.drivers_license_front = verifyData.DriverLFrontURL
-	customerOrder.drivers_license_back = verifyData.DriverLBackURL
+	customerOrder.photo = verifyData.pictureURL
 
 }
 
@@ -652,7 +650,7 @@ func togglePour(customerOrder Order, b beerbot) {
 	tapToClose := 9
 	//Update GUI with retreived user order
 	//updateGUI(customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-	go changeImage(customerOrder.PhotoURL, b.orders[0].img)
+	go changeImage(customerOrder.pictureURL, b.orders[0].img)
 
 	go func() {
 		var wg1 sync.WaitGroup
