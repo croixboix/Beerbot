@@ -285,7 +285,7 @@ func main() {
 	myCanvas.SetContent(content)
 	*/
 
-	go runProgram(myCanvas, b)
+	go runProgram(b.c, b)
 
 	/*
 	w.Resize(fyne.NewSize(500, 230))
