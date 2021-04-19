@@ -24,11 +24,11 @@ import (
 	"bytes"
 	"runtime"
 	"strings"
-	"fyne.io/fyne"
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/layout"
-	"fyne.io/fyne/widget"
-	"fyne.io/fyne/canvas"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
+	"image/color"
 )
 
 const (
@@ -41,7 +41,6 @@ const (
 	//Define number of taps on system (# of physical taps -1)
 	//Ex: A 4 tap system would be = 3
 	numberOfTaps int = 7
-
 )
 
 var (
@@ -117,6 +116,26 @@ type TapUserResponse struct{
 	DriverLBackURL string		`json:"drivers_license_back"`
 }
 
+//Holds orders (uses labels from makeItems()) and container for window
+type beerbot struct{
+	orders [8]orderInfo
+	c *fyne.Container
+}
+
+//Holds the order information and image for organization and ease for passing around the program
+type orderInfo struct {
+	tapNum 		int
+	label 	 *canvas.Text
+	status 	 *canvas.Text
+	userName *canvas.Text
+	dob 		 *canvas.Text
+	beer 		 *canvas.Text
+	size 		 *canvas.Text
+	img 		 *canvas.Image
+	}
+
+
+/*
 type orderLabels struct {
 	tapIDL  	 *widget.Label
 	beerIDL 	 *widget.Label
@@ -126,19 +145,23 @@ type orderLabels struct {
 	DOBL 			 *widget.Label
 	emailL 		 *widget.Label
 	userPic	  	fyne.CanvasObject
-}
+}*/
 
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
 
 	a := app.New()
-	w := a.NewWindow("Beerbot")
-	myCanvas := w.Canvas()
+	w := a.NewWindow("BeerBot Tap Display")
+	b := beerbot{}
+
+	b.c = container.NewPadded(b.makeUI())
+	w.SetContent(b.c)
 
 	/*
-		A wild change to test branch
-	*/
+	a := app.New()
+	w := a.NewWindow("Beerbot")
+	myCanvas := w.Canvas()
 
 	hL  := orderLabels{
 		tapIDL: widget.NewLabel("Tap ID:"),
@@ -221,7 +244,6 @@ func main() {
 		emailL:widget.NewLabelWithStyle("-", fyne.TextAlignCenter, fyne.TextStyle{Bold: false}),
 		userPic:setUserPic(defaultIDP)}
 
-
 	//Layout Config
 	top :=
 	widget.NewLabelWithStyle(
@@ -230,7 +252,6 @@ func main() {
 	left := //headers
 	widget.NewVBox(hL.tapIDL, hL.beerIDL, hL.priceL, hL.sizeL,
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
-
 
 	middle := widget.NewHBox(
 							widget.NewVBox( //user1 Vbox
@@ -263,18 +284,24 @@ func main() {
 										layout.NewBorderLayout(top, nil, left, nil),
 																			top, left, middle)
 	myCanvas.SetContent(content)
+	*/
 
-	go runProgram(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+	go runProgram(myCanvas, b)
 
+	/*
 	w.Resize(fyne.NewSize(500, 230))
 	w.ShowAndRun()
+	*/
 
+
+	w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
+	w.ShowAndRun()
 
 	endProgram()
 }
 
 
-func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
+func runProgram(c fyne.Canvas, b beerbot) {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -309,7 +336,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 					//Get user orders
 					userOrders := getOrderData(tapUUID, orderIdToServe[i], authToken)
 
-					go togglePour(*userOrders, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+					go togglePour(*userOrders, b)
 
 				}
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
@@ -329,169 +356,106 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	endProgram()
 }
 
+//Called by makeUI() to create a VBox with several labels and an image
+func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
+	//Sets tap number and tap label
+	b.orders[tapNum-1].tapNum = tapNum
+	tapLabel := "Tap " + strconv.Itoa(tapNum)
+	b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{128})
+	b.orders[tapNum-1].label.Alignment = fyne.TextAlignCenter
+	//Scan tag
+	b.orders[tapNum-1].status = canvas.NewText("Scan Tag to Pour", color.Gray{128})
+	b.orders[tapNum-1].status.Alignment = fyne.TextAlignCenter
+	//name
+	b.orders[tapNum-1].userName = canvas.NewText("User Name", color.Gray{128})
+	b.orders[tapNum-1].userName.Alignment = fyne.TextAlignCenter
+	//dob
+	b.orders[tapNum-1].dob = canvas.NewText("1/1/1984", color.Gray{128})
+	b.orders[tapNum-1].dob.Alignment = fyne.TextAlignCenter
+	//Beer choice
+	b.orders[tapNum-1].beer = canvas.NewText("Miller Lite", color.Gray{128})
+	b.orders[tapNum-1].beer.Alignment = fyne.TextAlignCenter
+	//Pour size
+	b.orders[tapNum-1].size = canvas.NewText("12 Ounces", color.Gray{128})
+	b.orders[tapNum-1].size.Alignment = fyne.TextAlignCenter
 
-//Update GUI Content
-func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
-		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
-	switch customerOrder.tapID {
-		case 1:
-			oL1.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL1.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL1.priceL.SetText(customerOrder.price)
-			oL1.sizeL.SetText(customerOrder.size)
-			oL1.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL1.DOBL.SetText(customerOrder.dob)
-			oL1.emailL.SetText(customerOrder.email)
-			// oL1.userPic := setUserPic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")
-		case 2:
-			oL2.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL2.priceL.SetText(customerOrder.price)
-			oL2.sizeL.SetText(customerOrder.size)
-			oL2.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL2.DOBL.SetText(customerOrder.dob)
-			oL2.emailL.SetText(customerOrder.email)
-			// oL2.userPic = setUserPic(customerOrder.pictureURL)
-		case 3:
-			oL3.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL3.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL3.priceL.SetText(customerOrder.price)
-			oL3.sizeL.SetText(customerOrder.size)
-			oL3.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL3.DOBL.SetText(customerOrder.dob)
-			oL3.emailL.SetText(customerOrder.email)
-			// oL3.userPic = setUserPic(customerOrder.pictureURL)
-		case 4:
-			oL4.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL4.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL4.priceL.SetText(customerOrder.price)
-			oL4.sizeL.SetText(customerOrder.size)
-			oL4.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL4.DOBL.SetText(customerOrder.dob)
-			oL4.emailL.SetText(customerOrder.email)
-			// oL4.userPic = setUserPic(customerOrder.pictureURL)
-		case 5:
-			oL5.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL5.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL5.priceL.SetText(customerOrder.price)
-			oL5.sizeL.SetText(customerOrder.size)
-			oL5.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL5.DOBL.SetText(customerOrder.dob)
-			oL5.emailL.SetText(customerOrder.email)
-			// oL5.userPic = setUserPic(customerOrder.pictureURL)
-		case 6:
-			oL6.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL6.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL6.priceL.SetText(customerOrder.price)
-			oL6.sizeL.SetText(customerOrder.size)
-			oL6.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL6.DOBL.SetText(customerOrder.dob)
-			oL6.emailL.SetText(customerOrder.email)
-			// oL6.userPic = setUserPic(customerOrder.pictureURL)
-		case 7:
-			oL7.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL7.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL7.priceL.SetText(customerOrder.price)
-			oL7.sizeL.SetText(customerOrder.size)
-			oL7.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL7.DOBL.SetText(customerOrder.dob)
-			oL7.emailL.SetText(customerOrder.email)
-			// oL7.userPic = setUserPic(customerOrder.pictureURL)
-		case 8:
-			oL8.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL8.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL8.priceL.SetText(customerOrder.price)
-			oL8.sizeL.SetText(customerOrder.size)
-			oL8.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
-			oL8.DOBL.SetText(customerOrder.dob)
-			oL8.emailL.SetText(customerOrder.email)
-			// oL8.userPic = setUserPic(customerOrder.pictureURL)
-		default:
-			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
+	//Initial image
+	myURL := "https://miro.medium.com/max/868/1*Hyd_x4yW3H_wxn_f8tFYLQ.png" //Pic of sam
+	img := loadImage(myURL)
+
+	b.orders[tapNum-1].img = img
+
+
+	return container.NewVBox(b.orders[tapNum-1].label,
+												b.orders[tapNum-1].status, b.orders[tapNum-1].userName,
+												b.orders[tapNum-1].dob, b.orders[tapNum-1].beer,
+												b.orders[tapNum-1].size, b.orders[tapNum-1].img)
+}//end makeTapIems
+
+
+//creates the 8 orders and put them in a 4x2 grid
+func (b *beerbot) makeUI() fyne.CanvasObject {
+	items := []fyne.CanvasObject{}
+
+	//For each order, create a set of labels and a canvas image
+	for _, v := range []int{1,2,3,4,5,6,7,8} {
+		orderContainer := b.makeTapItems(v) //creates label and image and put them into VBOX
+		items = append(items, orderContainer) //adds the VBox to an array
+	}
+
+	return container.NewGridWithRows(2, items...)
+}//end makeUI
+
+
+//Add the id face picture with the given parameters
+func loadImage(url string) *canvas.Image {
+		req, _ := http.NewRequest("GET", url, nil)
+		res, _ := http.DefaultClient.Do(req)
+		defer res.Body.Close()
+		body, _ := ioutil.ReadAll(res.Body)
+
+		imgLoc := os.TempDir() + "/idImg.jpg" //Location for any device
+		err := ioutil.WriteFile(imgLoc, body, 0644)
+		if err != nil{
+			log.Fatal ("ioutil TempFile error", err)
 		}
-}
 
+		img := canvas.NewImageFromFile(imgLoc)
+		//For some reason when this is called, all the images are updated instead of just 1
+		// img.FillMode = canvas.ImageFillOriginal
+		img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
 
-//Update Gui Content
-func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
-		fmt.Println("Clearing GUI display for TAP #: ", tapID)
-	switch tapID {
-		case 1:
-			oL1.tapIDL.SetText("-")
-			oL1.beerIDL.SetText("-")
-			oL1.priceL.SetText("-")
-			oL1.sizeL.SetText("-")
-			oL1.FirstLastL.SetText("-")
-			oL1.DOBL.SetText("-")
-			oL1.emailL.SetText("-")
-			// oL1IDP :=	setUserPic(defaultIDP)
-		case 2:
-			oL2.tapIDL.SetText("-")
-			oL2.beerIDL.SetText("-")
-			oL2.priceL.SetText("-")
-			oL2.sizeL.SetText("-")
-			oL2.FirstLastL.SetText("-")
-			oL2.DOBL.SetText("-")
-			oL2.emailL.SetText("-")
-			// oL2IDP :=	setUserPic(defaultIDP)
-		case 3:
-			oL3.tapIDL.SetText("-")
-			oL3.beerIDL.SetText("-")
-			oL3.priceL.SetText("-")
-			oL3.sizeL.SetText("-")
-			oL3.FirstLastL.SetText("-")
-			oL3.DOBL.SetText("-")
-			oL3.emailL.SetText("-")
-			// oL3IDP :=	setUserPic(defaultIDP)
-		case 4:
-			oL4.tapIDL.SetText("-")
-			oL4.beerIDL.SetText("-")
-			oL4.priceL.SetText("-")
-			oL4.sizeL.SetText("-")
-			oL4.FirstLastL.SetText("-")
-			oL4.DOBL.SetText("-")
-			oL4.emailL.SetText("-")
-			// oL4IDP :=	setUserPic(defaultIDP)
-		case 5:
-			oL5.tapIDL.SetText("-")
-			oL5.beerIDL.SetText("-")
-			oL5.priceL.SetText("-")
-			oL5.sizeL.SetText("-")
-			oL5.FirstLastL.SetText("-")
-			oL5.DOBL.SetText("-")
-			oL5.emailL.SetText("-")
-			// oL5IDP :=	setUserPic(defaultIDP)
-		case 6:
-			oL6.tapIDL.SetText("-")
-			oL6.beerIDL.SetText("-")
-			oL6.priceL.SetText("-")
-			oL6.sizeL.SetText("-")
-			oL6.FirstLastL.SetText("-")
-			oL6.DOBL.SetText("-")
-			oL6.emailL.SetText("-")
-			// oL6IDP :=	setUserPic(defaultIDP)
-		case 7:
-			oL7.tapIDL.SetText("-")
-			oL7.beerIDL.SetText("-")
-			oL7.priceL.SetText("-")
-			oL7.sizeL.SetText("-")
-			oL7.FirstLastL.SetText("-")
-			oL7.DOBL.SetText("-")
-			oL7.emailL.SetText("-")
-			// oL7IDP :=	setUserPic(defaultIDP)
-		case 8:
-			oL8.tapIDL.SetText("-")
-			oL8.beerIDL.SetText("-")
-			oL8.priceL.SetText("-")
-			oL8.sizeL.SetText("-")
-			oL8.FirstLastL.SetText("-")
-			oL8.DOBL.SetText("-")
-			oL8.emailL.SetText("-")
-			// oL8IDP :=	setUserPic(defaultIDP)
-		default:
-			fmt.Println("INVALID Clear GUI Tap #!!:", tapID)
-		}
-}
+		return img
+}//end loadImage
+
+//Change the existing id image shown on the GUI
+func changeImage (url string, img *canvas.Image){
+	time.Sleep(3*time.Second)
+
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	imgLoc := os.TempDir() + "/idImg.jpg"
+	err := ioutil.WriteFile(imgLoc, body, 0644)
+	if err != nil{
+		log.Fatal ("ioutil TempFile error", err)
+	}
+
+	file, err := os.Open(imgLoc)
+	if err != nil {
+		panic(err)
+	}
+
+	img.File = file.Name()
+	// img.FillMode = canvas.ImageFillOriginal //same issue as above
+	img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
+	img.Refresh()
+
+	file.Close()
+}//end changeImage
+
 
 //Get user data for given order
 func getUserData(customerOrder *Order, authToken string) {
@@ -680,7 +644,7 @@ func processOrder(uuid string, orderID int, authToken string) bool{
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
+func togglePour(customerOrder Order, b beerbot) {
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
 	// Run your long running function in it's own goroutine and pass back it's
@@ -688,7 +652,8 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 
 	tapToClose := 9
 	//Update GUI with retreived user order
-	updateGUI(customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+	//updateGUI(customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+	go changeImage(customerOrder.PhotoURL, b.orders[0].img)
 
 	go func() {
 		var wg1 sync.WaitGroup
@@ -709,14 +674,18 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 	select {
 		case res := <-c1:
 			fmt.Println(res)
+
 			//Clear GUI after finished pouring order
-			clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+
 		case <-time.After(120 * time.Second):
 			fmt.Println("out of time :(")
 			// Close solenoids incase timeout
 			gpio_rpi.CloseSolenoids(tapToClose)
+
 			//Clear GUI after finished pouring order
-			clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+
 	}
 }
 
@@ -782,6 +751,9 @@ func goid() int {
 	return id
 }
 
+
+
+/*
 //Add the id face picture with the given parameters
 func setUserPic(url string) fyne.CanvasObject {
 		//Grabs content from url
@@ -810,7 +782,169 @@ func setUserPic(url string) fyne.CanvasObject {
 		return img
 } //end setUserPic
 
+//Update GUI Content
+func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
+		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
+	switch customerOrder.tapID {
+		case 1:
+			oL1.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL1.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL1.priceL.SetText(customerOrder.price)
+			oL1.sizeL.SetText(customerOrder.size)
+			oL1.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL1.DOBL.SetText(customerOrder.dob)
+			oL1.emailL.SetText(customerOrder.email)
+			// oL1.userPic := setUserPic("https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/4a/4a5a8309b3ec29a8e3e1cd3f64704ab54427bb4b_full.jpg")
+		case 2:
+			oL2.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL2.priceL.SetText(customerOrder.price)
+			oL2.sizeL.SetText(customerOrder.size)
+			oL2.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL2.DOBL.SetText(customerOrder.dob)
+			oL2.emailL.SetText(customerOrder.email)
+			// oL2.userPic = setUserPic(customerOrder.pictureURL)
+		case 3:
+			oL3.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL3.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL3.priceL.SetText(customerOrder.price)
+			oL3.sizeL.SetText(customerOrder.size)
+			oL3.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL3.DOBL.SetText(customerOrder.dob)
+			oL3.emailL.SetText(customerOrder.email)
+			// oL3.userPic = setUserPic(customerOrder.pictureURL)
+		case 4:
+			oL4.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL4.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL4.priceL.SetText(customerOrder.price)
+			oL4.sizeL.SetText(customerOrder.size)
+			oL4.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL4.DOBL.SetText(customerOrder.dob)
+			oL4.emailL.SetText(customerOrder.email)
+			// oL4.userPic = setUserPic(customerOrder.pictureURL)
+		case 5:
+			oL5.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL5.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL5.priceL.SetText(customerOrder.price)
+			oL5.sizeL.SetText(customerOrder.size)
+			oL5.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL5.DOBL.SetText(customerOrder.dob)
+			oL5.emailL.SetText(customerOrder.email)
+			// oL5.userPic = setUserPic(customerOrder.pictureURL)
+		case 6:
+			oL6.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL6.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL6.priceL.SetText(customerOrder.price)
+			oL6.sizeL.SetText(customerOrder.size)
+			oL6.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL6.DOBL.SetText(customerOrder.dob)
+			oL6.emailL.SetText(customerOrder.email)
+			// oL6.userPic = setUserPic(customerOrder.pictureURL)
+		case 7:
+			oL7.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL7.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL7.priceL.SetText(customerOrder.price)
+			oL7.sizeL.SetText(customerOrder.size)
+			oL7.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL7.DOBL.SetText(customerOrder.dob)
+			oL7.emailL.SetText(customerOrder.email)
+			// oL7.userPic = setUserPic(customerOrder.pictureURL)
+		case 8:
+			oL8.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
+			oL8.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
+			oL8.priceL.SetText(customerOrder.price)
+			oL8.sizeL.SetText(customerOrder.size)
+			oL8.FirstLastL.SetText((customerOrder.firstName + " " + customerOrder.lastName))
+			oL8.DOBL.SetText(customerOrder.dob)
+			oL8.emailL.SetText(customerOrder.email)
+			// oL8.userPic = setUserPic(customerOrder.pictureURL)
+		default:
+			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
+		}
+}
 
+
+//Update Gui Content
+func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
+		fmt.Println("Clearing GUI display for TAP #: ", tapID)
+	switch tapID {
+		case 1:
+			oL1.tapIDL.SetText("-")
+			oL1.beerIDL.SetText("-")
+			oL1.priceL.SetText("-")
+			oL1.sizeL.SetText("-")
+			oL1.FirstLastL.SetText("-")
+			oL1.DOBL.SetText("-")
+			oL1.emailL.SetText("-")
+			// oL1IDP :=	setUserPic(defaultIDP)
+		case 2:
+			oL2.tapIDL.SetText("-")
+			oL2.beerIDL.SetText("-")
+			oL2.priceL.SetText("-")
+			oL2.sizeL.SetText("-")
+			oL2.FirstLastL.SetText("-")
+			oL2.DOBL.SetText("-")
+			oL2.emailL.SetText("-")
+			// oL2IDP :=	setUserPic(defaultIDP)
+		case 3:
+			oL3.tapIDL.SetText("-")
+			oL3.beerIDL.SetText("-")
+			oL3.priceL.SetText("-")
+			oL3.sizeL.SetText("-")
+			oL3.FirstLastL.SetText("-")
+			oL3.DOBL.SetText("-")
+			oL3.emailL.SetText("-")
+			// oL3IDP :=	setUserPic(defaultIDP)
+		case 4:
+			oL4.tapIDL.SetText("-")
+			oL4.beerIDL.SetText("-")
+			oL4.priceL.SetText("-")
+			oL4.sizeL.SetText("-")
+			oL4.FirstLastL.SetText("-")
+			oL4.DOBL.SetText("-")
+			oL4.emailL.SetText("-")
+			// oL4IDP :=	setUserPic(defaultIDP)
+		case 5:
+			oL5.tapIDL.SetText("-")
+			oL5.beerIDL.SetText("-")
+			oL5.priceL.SetText("-")
+			oL5.sizeL.SetText("-")
+			oL5.FirstLastL.SetText("-")
+			oL5.DOBL.SetText("-")
+			oL5.emailL.SetText("-")
+			// oL5IDP :=	setUserPic(defaultIDP)
+		case 6:
+			oL6.tapIDL.SetText("-")
+			oL6.beerIDL.SetText("-")
+			oL6.priceL.SetText("-")
+			oL6.sizeL.SetText("-")
+			oL6.FirstLastL.SetText("-")
+			oL6.DOBL.SetText("-")
+			oL6.emailL.SetText("-")
+			// oL6IDP :=	setUserPic(defaultIDP)
+		case 7:
+			oL7.tapIDL.SetText("-")
+			oL7.beerIDL.SetText("-")
+			oL7.priceL.SetText("-")
+			oL7.sizeL.SetText("-")
+			oL7.FirstLastL.SetText("-")
+			oL7.DOBL.SetText("-")
+			oL7.emailL.SetText("-")
+			// oL7IDP :=	setUserPic(defaultIDP)
+		case 8:
+			oL8.tapIDL.SetText("-")
+			oL8.beerIDL.SetText("-")
+			oL8.priceL.SetText("-")
+			oL8.sizeL.SetText("-")
+			oL8.FirstLastL.SetText("-")
+			oL8.DOBL.SetText("-")
+			oL8.emailL.SetText("-")
+			// oL8IDP :=	setUserPic(defaultIDP)
+		default:
+			fmt.Println("INVALID Clear GUI Tap #!!:", tapID)
+		}
+}
+*/
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
 
 /*
