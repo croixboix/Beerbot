@@ -448,8 +448,8 @@ func changeImage (url string, img *canvas.Image){
 	}
 
 	img.File = file.Name()
-	// img.FillMode = canvas.ImageFillOriginal //same issue as above
-	img.SetMinSize(fyne.NewSize(125,125)) // approx ~1:1.5 (ID picture ratio)
+	img.FillMode = canvas.ImageFillContain
+	img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
 	img.Refresh()
 
 	file.Close()
