@@ -446,7 +446,7 @@ func changeImage (url string, img *canvas.Image){
 	}
 
 	img.File = file.Name()
-	//img.FillMode = canvas.ImageFillContain
+	img.FillMode = canvas.ImageFillContain
 	img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
 	img.Refresh()
 
@@ -648,7 +648,7 @@ func togglePour(customerOrder Order, b beerbot) {
 	tapToClose := 9
 	//Update GUI with retreived user order
 	//updateGUI(customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-	go changeImage(customerOrder.pictureURL, b.orders[1].img)
+
 
 	go func() {
 		var wg1 sync.WaitGroup
@@ -656,6 +656,7 @@ func togglePour(customerOrder Order, b beerbot) {
 		//Solenoid normal state = closed
 		for i := 0; i <= numberOfTaps; i++ {
 			if customerOrder.tap[i] != 0 {
+				go changeImage(customerOrder.pictureURL, b.orders[1].img)
 				wg1.Add(1)
 				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
 				tapToClose = i+1
