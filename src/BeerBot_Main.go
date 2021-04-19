@@ -422,7 +422,7 @@ func loadImage(url string) *canvas.Image {
 		img := canvas.NewImageFromFile(imgLoc)
 		//For some reason when this is called, all the images are updated instead of just 1
 		img.FillMode = canvas.ImageFillContain
-		img.SetMinSize(fyne.NewSize(340,340)) // approx ~1:1.5 (ID picture ratio)
+		img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
 
 		return img
 }//end loadImage
@@ -674,6 +674,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[0].img)
 
 		case <-time.After(120 * time.Second):
 			fmt.Println("out of time :(")
@@ -682,6 +683,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[0].img)
 
 	}
 }
