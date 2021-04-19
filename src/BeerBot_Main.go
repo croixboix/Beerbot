@@ -106,12 +106,15 @@ type AuthResponse struct {
 }
 
 type TapUserResponse struct{
-	UserID int					`json:"id"`
-	UserEmail string		`json:"email"`
-	FirstName string		`json:"first_name"`
-	LastName	string		`json:"last_name"`
-	DoB	string					`json:"dob"`
-	MobilePhone string	`json:"string"`
+	UserID int							`json:"id"`
+	UserEmail string				`json:"email"`
+	FirstName string				`json:"first_name"`
+	LastName	string				`json:"last_name"`
+	DoB	string							`json:"dob"`
+	MobilePhone string			`json:"string"`
+	PhotoURL string					`json:"photo"`
+	DriverLFrontURL string	`json:"drivers_license_front"`
+	DriverLBackURL string		`json:"drivers_license_back"`
 }
 
 type orderLabels struct {
@@ -133,9 +136,9 @@ func main() {
 	w := a.NewWindow("Beerbot")
 	myCanvas := w.Canvas()
 
-/*
-	A wild change to test branch
-*/
+	/*
+		A wild change to test branch
+	*/
 
 	hL  := orderLabels{
 		tapIDL: widget.NewLabel("Tap ID:"),
@@ -229,15 +232,6 @@ func main() {
 					hL.FirstLastL, hL.DOBL, hL.emailL,)
 
 
-	// oL1IDP :=	setUserPic(defaultIDP)
-	// oL2IDP := setUserPic(defaultIDP)
-	// oL3IDP := setUserPic(defaultIDP)
-	// oL4IDP := setUserPic(defaultIDP)
-	// oL5IDP := setUserPic(defaultIDP)
-	// oL6IDP := setUserPic(defaultIDP)
-	// oL7IDP := setUserPic(defaultIDP)
-	// oL8IDP := setUserPic(defaultIDP)
-
 	middle := widget.NewHBox(
 							widget.NewVBox( //user1 Vbox
 								oL1.tapIDL, oL1.beerIDL, oL1.priceL, oL1.sizeL,
@@ -300,8 +294,8 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	//Main program loop
 	for webConnectionAlive == true{
 
-		//fmt.Println("Created togglePour goroutine wait groups!")
 
+		//Sleep for 100ms to save CPU time
 		time.Sleep(100*time.Millisecond)
 
 		//Check order queue for orders to pull
@@ -531,7 +525,9 @@ func getUserData(customerOrder *Order, authToken string) {
 	customerOrder.lastName = verifyData.LastName
 	customerOrder.dob = verifyData.DoB
 	customerOrder.mobilePhone = verifyData.MobilePhone
-	//customerOrder.pictureURL = verifyData.PicURL
+	customerOrder.photo = verifyData.PhotoURL
+	customerOrder.drivers_license_front = verifyData.DriverLFrontURL
+	customerOrder.drivers_license_back = verifyData.DriverLBackURL
 
 }
 
