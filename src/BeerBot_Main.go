@@ -446,7 +446,7 @@ func changeImage (url string, img *canvas.Image){
 	}
 
 	img.File = file.Name()
-	img.FillMode = canvas.ImageFillContain
+	//img.FillMode = canvas.ImageFillContain
 	img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
 	img.Refresh()
 
@@ -648,7 +648,7 @@ func togglePour(customerOrder Order, b beerbot) {
 	tapToClose := 9
 	//Update GUI with retreived user order
 	//updateGUI(customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-	go changeImage(customerOrder.pictureURL, b.orders[0].img)
+	go changeImage(customerOrder.pictureURL, b.orders[1].img)
 
 	go func() {
 		var wg1 sync.WaitGroup
@@ -672,16 +672,16 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[0].img)
+			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[1].img)
 
-		case <-time.After(120 * time.Second):
+		case <-time.After(20 * time.Second):
 			fmt.Println("out of time :(")
 			// Close solenoids incase timeout
 			gpio_rpi.CloseSolenoids(tapToClose)
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[0].img)
+			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[1].img)
 
 	}
 }
