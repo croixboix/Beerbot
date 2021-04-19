@@ -14,7 +14,6 @@ import (
 	"gpio_rpi"
 	"io/ioutil"
 	"net/http"
-	"io"
 	"os"
 	"os/signal"
 	"log"
