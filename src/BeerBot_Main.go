@@ -429,8 +429,6 @@ func loadImage(url string) *canvas.Image {
 
 //Change the existing id image shown on the GUI
 func changeImage (url string, img *canvas.Image){
-	time.Sleep(3*time.Second)
-
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
