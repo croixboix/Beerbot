@@ -41,6 +41,7 @@ func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 	tapLabel := "Tap " + strconv.Itoa(tapNum)
 	b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{128})
 	b.orders[tapNum-1].label.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].label.TextSize = 12
 	//Scan tag
 	b.orders[tapNum-1].status = canvas.NewText("Scan Tag to Pour", color.Gray{128})
 	b.orders[tapNum-1].status.Alignment = fyne.TextAlignCenter
@@ -131,7 +132,7 @@ func changeImage (url string, img *canvas.Image){
 	img.Refresh()
 
 	file.Close()
-}//end changeImage
+}//end changeImageTeam
 
 
 func main() {
@@ -144,6 +145,7 @@ func main() {
 
 	//changes the ID image
 	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[0].img)
+	b.orders[1].label.Text = "Changed label"
 
 	w.Resize(fyne.NewSize(1024, 700)) //wouldn't fit on my screen lol
 	w.ShowAndRun()
