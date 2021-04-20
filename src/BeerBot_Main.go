@@ -146,6 +146,7 @@ func main() {
 	go runProgram(b)
 
 	w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
+	w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
 	w.ShowAndRun()
 
 	endProgram()
@@ -212,23 +213,29 @@ func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 	//Sets tap number and tap label
 	b.orders[tapNum-1].tapNum = tapNum
 	tapLabel := "Tap " + strconv.Itoa(tapNum)
-	b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{128})
+	b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{200})
 	b.orders[tapNum-1].label.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].label.TextSize = 18
 	//Scan tag
-	b.orders[tapNum-1].status = canvas.NewText("Scan Tag to Pour", color.Gray{128})
+	b.orders[tapNum-1].status = canvas.NewText("Scan Tag to Pour", color.Gray{200})
 	b.orders[tapNum-1].status.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].status.TextSize = 18
 	//name
 	b.orders[tapNum-1].userName = canvas.NewText("User Name", color.Gray{128})
 	b.orders[tapNum-1].userName.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 10
 	//dob
 	b.orders[tapNum-1].dob = canvas.NewText("1/1/1984", color.Gray{128})
 	b.orders[tapNum-1].dob.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 10
 	//Beer choice
 	b.orders[tapNum-1].beer = canvas.NewText("Miller Lite", color.Gray{128})
 	b.orders[tapNum-1].beer.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 10
 	//Pour size
 	b.orders[tapNum-1].size = canvas.NewText("12 Ounces", color.Gray{128})
 	b.orders[tapNum-1].size.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 10
 
 	//Initial image
 	myURL := "https://miro.medium.com/max/868/1*Hyd_x4yW3H_wxn_f8tFYLQ.png" //Pic of sam
@@ -273,7 +280,7 @@ func loadImage(url string) *canvas.Image {
 
 		img := canvas.NewImageFromFile(imgLoc)
 		//For some reason when this is called, all the images are updated instead of just 1
-		img.FillMode = canvas.ImageFillContain
+		// img.FillMode = canvas.ImageFillContain //try commenting this out
 		img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
 
 		return img
@@ -298,7 +305,7 @@ func changeImage (url string, img *canvas.Image){
 	}
 
 	img.File = file.Name()
-	img.FillMode = canvas.ImageFillContain
+	// img.FillMode = canvas.ImageFillContain
 	img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
 	img.Refresh()
 
