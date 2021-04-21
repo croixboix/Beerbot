@@ -153,7 +153,7 @@ func main() {
 }
 
 
-func (b *beerbot) runProgram {
+func (b *beerbot) runProgram() {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
