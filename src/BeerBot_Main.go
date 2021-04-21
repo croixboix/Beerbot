@@ -319,6 +319,7 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 		case 1:
 		case 2:
 			b.orders[1].label.Text = "Changed label"
+			b.orders[1].label.Text.Refresh()
 			fmt.Println("Changed label case 2")
 
 		case 3:
@@ -570,7 +571,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[tapToClose-1].img)
+			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
 
 		case <-time.After(20 * time.Second):
 			fmt.Println("out of time :(")
@@ -579,7 +580,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-			go changeImage("https://i.kym-cdn.com/photos/images/newsfeed/001/996/641/bc2.jpg", b.orders[tapToClose-1].img)
+			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
 
 	}
 }
