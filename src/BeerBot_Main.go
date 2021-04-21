@@ -304,7 +304,7 @@ func changeImage (url string, img *canvas.Image){
 		panic(err)
 	}
 
-	func changeLabel (customerOrder Order, tap Int) {
+	func changeLabel (customerOrder Order, tap int) {
 		switch tap {
 			case 1:
 			case 2:
@@ -316,9 +316,7 @@ func changeImage (url string, img *canvas.Image){
 			case 7:
 			case 8:
 			default:
-
 		}
-
 	}
 
 	img.File = file.Name()
