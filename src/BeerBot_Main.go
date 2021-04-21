@@ -551,7 +551,8 @@ func togglePour(customerOrder Order, b beerbot) {
 			if customerOrder.tap[i] != 0 {
 				//Update GUI with retreived user order
 				changeImage(customerOrder.pictureURL, b.orders[i].img)
-				b.changeLabel(customerOrder, i+1)
+				//b.changeLabel(customerOrder, i+1)
+				b.orders[1].label.Text = "Changed label"
 				//Add to our waitgroup
 				wg1.Add(1)
 				//Shoot off a thread to pour customer's order on specific tap

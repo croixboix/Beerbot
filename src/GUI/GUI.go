@@ -25,7 +25,7 @@ type beerbot struct{
 //Holds the order information and image for organization and ease for passing around the program
 type orderInfo struct {
 	tapNum 		int
-	label 	 *widget.Label
+	label 	 *canvas.Text
 	status 	 *canvas.Text
 	userName *canvas.Text
 	dob 		 *canvas.Text
