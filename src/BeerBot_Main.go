@@ -331,6 +331,23 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 	}
 }
 
+func (b *beerbot) clearLabel (tap int) {
+	switch tap {
+		case 1:
+		case 2:
+			b.orders[1].label.Text = "Changed label"
+			fmt.Println("Clear label case 2")
+
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		default:
+	}
+}
+
 
 //Get user data for given order
 func getUserData(customerOrder *Order, authToken string) {
@@ -533,8 +550,8 @@ func togglePour(customerOrder Order, b beerbot) {
 		for i := 0; i <= numberOfTaps; i++ {
 			if customerOrder.tap[i] != 0 {
 				//Update GUI with retreived user order
-				go changeImage(customerOrder.pictureURL, b.orders[i].img)
-				go b.changeLabel(customerOrder, i+1)
+				changeImage(customerOrder.pictureURL, b.orders[i].img)
+				b.changeLabel(customerOrder, i+1)
 				//Add to our waitgroup
 				wg1.Add(1)
 				//Shoot off a thread to pour customer's order on specific tap
