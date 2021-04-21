@@ -221,11 +221,11 @@ func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 	b.orders[tapNum-1].status.Alignment = fyne.TextAlignCenter
 	b.orders[tapNum-1].status.TextSize = 18
 	//name
-	b.orders[tapNum-1].userName = canvas.NewText("User Name", color.Gray{128})
+	b.orders[tapNum-1].userName = canvas.NewText("-", color.Gray{128})
 	b.orders[tapNum-1].userName.Alignment = fyne.TextAlignCenter
 	b.orders[tapNum-1].userName.TextSize = 10
 	//dob
-	b.orders[tapNum-1].dob = canvas.NewText("1/1/1984", color.Gray{128})
+	b.orders[tapNum-1].dob = canvas.NewText("-", color.Gray{128})
 	b.orders[tapNum-1].dob.Alignment = fyne.TextAlignCenter
 	b.orders[tapNum-1].userName.TextSize = 10
 	//Beer choice
@@ -233,12 +233,12 @@ func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 	b.orders[tapNum-1].beer.Alignment = fyne.TextAlignCenter
 	b.orders[tapNum-1].userName.TextSize = 10
 	//Pour size
-	b.orders[tapNum-1].size = canvas.NewText("12 Ounces", color.Gray{128})
+	b.orders[tapNum-1].size = canvas.NewText("-", color.Gray{128})
 	b.orders[tapNum-1].size.Alignment = fyne.TextAlignCenter
 	b.orders[tapNum-1].userName.TextSize = 10
 
 	//Initial image
-	myURL := "https://miro.medium.com/max/868/1*Hyd_x4yW3H_wxn_f8tFYLQ.png" //Pic of sam
+	myURL := "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" //Pic of sam
 	img := loadImage(myURL)
 
 	b.orders[tapNum-1].img = img
@@ -302,6 +302,23 @@ func changeImage (url string, img *canvas.Image){
 	file, err := os.Open(imgLoc)
 	if err != nil {
 		panic(err)
+	}
+
+	func changeLabel (customerOrder Order, tap Int){
+		switch tap {
+			case 1:
+			case 2:
+				b.orders[1].label.Text = "Changed label"
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			default:
+
+		}
+
 	}
 
 	img.File = file.Name()
