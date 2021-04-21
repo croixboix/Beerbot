@@ -143,7 +143,7 @@ func main() {
 	b.c = container.NewPadded(b.makeUI())
 	w.SetContent(b.c)
 
-	go runProgram()
+	go runProgram(b)
 
 	w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
 	w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
@@ -153,7 +153,7 @@ func main() {
 }
 
 
-func (b *beerbot) runProgram() {
+func runProgram(b beerbot) {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
