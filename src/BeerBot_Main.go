@@ -153,7 +153,7 @@ func main() {
 }
 
 
-func runProgram(b beerbot) {
+func (b *beerbot) runProgram {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -318,7 +318,7 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 	switch tap {
 		case 1:
 		case 2:
-			b.orders[1].label.SetText = "Changed label"
+			b.orders[1].label.Text = "Changed label"
 			fmt.Println("Changed label case 2")
 
 		case 3:
@@ -335,7 +335,7 @@ func (b *beerbot) clearLabel (tap int) {
 	switch tap {
 		case 1:
 		case 2:
-			b.orders[1].label.SetText = "Changed label"
+			b.orders[1].label.Text = "Changed label"
 			fmt.Println("Clear label case 2")
 
 		case 3:
