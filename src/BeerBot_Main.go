@@ -314,7 +314,7 @@ func changeImage (url string, img *canvas.Image){
 
 
 
-func (b *beerbot) changeLabel (customerOrder Order, tap int) {
+func (b *beerbot) changeLabel (customerOrder Order, tap int, b beerbot) {
 	switch tap {
 		case 1:
 		case 2:
@@ -551,8 +551,7 @@ func togglePour(customerOrder Order, b beerbot) {
 			if customerOrder.tap[i] != 0 {
 				//Update GUI with retreived user order
 				changeImage(customerOrder.pictureURL, b.orders[i].img)
-				//b.changeLabel(customerOrder, i+1)
-				b.orders[1].label.Text = "Changed label"
+				changeLabel(customerOrder, i+1, b)
 				//Add to our waitgroup
 				wg1.Add(1)
 				//Shoot off a thread to pour customer's order on specific tap
