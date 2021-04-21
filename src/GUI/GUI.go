@@ -154,7 +154,7 @@ func main() {
 	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[2].img)
 	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[4].img)
 	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[6].img)
-	// b.orders[1].label.Text = "Changed label"
+	b.orders[1].label.Text = "Changed label"
 
 	w.Resize(fyne.NewSize(1024, 700)) //wouldn't fit on my screen lol
 	w.SetFixedSize(true)
