@@ -143,7 +143,7 @@ func main() {
 	b.c = container.NewPadded(b.makeUI())
 	w.SetContent(b.c)
 
-	go runProgram(b)
+	go runProgram()
 
 	w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
 	w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
