@@ -304,21 +304,6 @@ func changeImage (url string, img *canvas.Image){
 		panic(err)
 	}
 
-	func changeLabel (customerOrder Order, tap int) {
-		switch tap {
-			case 1:
-			case 2:
-				b.orders[1].label.Text = "Changed label"
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			default:
-		}
-	}
-
 	img.File = file.Name()
 	// img.FillMode = canvas.ImageFillContain
 	img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
@@ -326,6 +311,23 @@ func changeImage (url string, img *canvas.Image){
 
 	file.Close()
 }//end changeImage
+
+
+
+func changeLabel (customerOrder Order, tap Int) {
+	switch tap {
+		case 1:
+		case 2:
+			b.orders[1].label.Text = "Changed label"
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		default:
+	}
+}
 
 
 //Get user data for given order
