@@ -304,7 +304,7 @@ func changeImage (url string, img *canvas.Image){
 		panic(err)
 	}
 
-	func changeLabel (customerOrder Order, tap Int){
+	func changeLabel (customerOrder Order, tap Int) {
 		switch tap {
 			case 1:
 			case 2:
