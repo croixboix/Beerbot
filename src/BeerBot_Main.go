@@ -314,7 +314,7 @@ func changeImage (url string, img *canvas.Image){
 
 
 
-func (b *beerbot) changeLabel (customerOrder Order, tap int, b beerbot) {
+func changeLabel (customerOrder Order, tap int, b beerbot) {
 	switch tap {
 		case 1:
 		case 2:
