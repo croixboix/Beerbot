@@ -305,7 +305,7 @@ func changeImage (url string, img *canvas.Image){
 	}
 
 	img.File = file.Name()
-	img.FillMode = canvas.ImageFillContain
+	//img.FillMode = canvas.ImageFillContain
 	img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
 	img.Refresh()
 
