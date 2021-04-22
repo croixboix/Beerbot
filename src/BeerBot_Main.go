@@ -145,8 +145,9 @@ func main() {
 
 	go runProgram(b)
 
-	w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
-	w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
+	//w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
+	//w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
+	w.SetFullScreen(true)
 	w.ShowAndRun()
 
 	endProgram()
@@ -659,6 +660,7 @@ func (b *beerbot) clearLabel (tap int) {
 			e.Refresh()
 
 		default:
+
 	}
 }
 
@@ -886,8 +888,8 @@ func togglePour(customerOrder Order, b beerbot) {
 			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
 
-		case <-time.After(20 * time.Second):
-			fmt.Println("out of time :(")
+		case <-time.After(120 * time.Second):
+			fmt.Println("pur out of time :(")
 			// Close solenoids incase timeout
 			gpio_rpi.CloseSolenoids(tapToClose)
 
