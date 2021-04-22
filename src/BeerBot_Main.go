@@ -318,7 +318,11 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 	switch tap {
 		case 1:
 		case 2:
-			b.orders[1].label.Text = "Changed label"
+			//b.orders[1].label.Text = "Changed label"
+			t := b.orders[1].label
+			t.Text = "Changed label"
+			t.Refresh()
+			
 			fmt.Println("Changed label case 2")
 		case 3:
 		case 4:
