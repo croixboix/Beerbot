@@ -229,7 +229,7 @@ func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 	b.orders[tapNum-1].dob.Alignment = fyne.TextAlignCenter
 	b.orders[tapNum-1].userName.TextSize = 10
 	//Beer choice
-	b.orders[tapNum-1].beer = canvas.NewText("Miller Lite", color.Gray{128})
+	b.orders[tapNum-1].beer = canvas.NewText("-", color.Gray{128})
 	b.orders[tapNum-1].beer.Alignment = fyne.TextAlignCenter
 	b.orders[tapNum-1].userName.TextSize = 10
 	//Pour size
@@ -330,7 +330,7 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 			c.Refresh()
 
 			d := b.orders[0].beer
-			d.Text = strconv.Itoa(customerOrder.beerID)
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
 			d.Refresh()
 
 			e := b.orders[0].size
