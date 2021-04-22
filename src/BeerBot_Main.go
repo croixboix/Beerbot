@@ -330,7 +330,7 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 			c.Refresh()
 
 			d := b.orders[0].beer
-			d.Text = customerOrder.beerID
+			d.Text = strconv.Itoa(customerOrder.beerID)
 			d.Refresh()
 
 			e := b.orders[0].size
