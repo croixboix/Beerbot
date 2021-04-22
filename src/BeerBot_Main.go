@@ -317,6 +317,26 @@ func changeImage (url string, img *canvas.Image){
 func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 	switch tap {
 		case 1:
+			t := b.orders[0].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.order[0].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.order[0].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.order[0].beer
+			d.Text = customerOrder.beerID
+			d.Refresh()
+
+			e := b.order[0].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		case 2:
 			//b.orders[1].label.Text = "Changed label"
 			t := b.orders[1].label
@@ -337,6 +357,27 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 func (b *beerbot) clearLabel (tap int) {
 	switch tap {
 		case 1:
+			t := b.orders[0].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.order[0].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.order[0].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.order[0].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.order[0].size
+			e.Text = "-"
+			e.Refresh()
+
+
 		case 2:
 			//b.orders[1].label.NewText = "Changed label"
 			t := b.orders[1].label
