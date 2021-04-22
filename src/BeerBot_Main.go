@@ -888,8 +888,8 @@ func togglePour(customerOrder Order, b beerbot) {
 			fmt.Println(res)
 
 			//Clear GUI after finished pouring order
-			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
+			b.clearLabel(customerOrder, tapToClose)
 
 		case <-time.After(120 * time.Second):
 			fmt.Println("pur out of time :(")
@@ -897,8 +897,8 @@ func togglePour(customerOrder Order, b beerbot) {
 			gpio_rpi.CloseSolenoids(tapToClose)
 
 			//Clear GUI after finished pouring order
-			//clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
 			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
+			b.clearLabel(customerOrder, tapToClose)
 
 	}
 }
