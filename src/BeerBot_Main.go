@@ -860,12 +860,14 @@ func togglePour(customerOrder Order, b beerbot) {
 	//Set this outside the switch range as a fail safe
 	tapToClose := 9
 
+	if customerOrder.tapID != 0 && customerOrder.beerID != 0 {
+
 	go func() {
 		var wg1 sync.WaitGroup
 
 		//Solenoid normal state = closed
 		for i := 0; i <= numberOfTaps; i++ {
-			if customerOrder.tap[i] != 0 && customerOrder.tapID != 0 && customerOrder.beerID != 0 {
+			if customerOrder.tap[i] != 0 {
 				//Update GUI with retreived user order
 				changeImage(customerOrder.pictureURL, b.orders[i].img)
 				b.changeLabel(customerOrder, i+1)
@@ -899,6 +901,7 @@ func togglePour(customerOrder Order, b beerbot) {
 			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
 
 	}
+}
 }
 
 
