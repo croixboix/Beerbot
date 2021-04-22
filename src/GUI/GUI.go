@@ -20,6 +20,7 @@ import (
 type beerbot struct{
 	orders [8]orderInfo
 	c *fyne.Container
+  bCanvas fyne.Canvas
 }
 
 //Holds the order information and image for organization and ease for passing around the program
@@ -113,7 +114,7 @@ func loadImage(url string) *canvas.Image {
 }//end loadImage
 
 //Change the existing id image shown on the GUI
-func changeImage (url string, img *canvas.Image){
+func changeImage (url string, img *canvas.Image, label *canvas.Text, c fyne.Canvas){
 	time.Sleep(3*time.Second)
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -138,22 +139,26 @@ func changeImage (url string, img *canvas.Image){
 	img.Refresh()
 
 	file.Close()
+  label.Text = ("Zach come back")
+  c.Refresh(label)
 }//end changeImageTeam
 
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("BeerBot Tap Display")
-	b := beerbot{}
+  myCanvas := w.Canvas()
 
+	b := beerbot{}
 	b.c = container.NewPadded(b.makeUI())
-	w.SetContent(b.c)
+  myCanvas.SetContent(b.c)
+  // w.SetContent(b.c)
 
 	//changes the ID image
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[0].img)
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[2].img)
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[4].img)
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[6].img)
+	go changeImage("https://scontent-ort2-1.xx.fbcdn.net/v/t1.6435-9/70310717_1212718218936713_272075350589046784_n.jpg?_nc_cat=104&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=38Mk9QqgYpoAX-mwyfL&_nc_ht=scontent-ort2-1.xx&oh=053a0336ad954ac1c52c56ea25175246&oe=60A4CB27", b.orders[0].img, b.orders[0].label, myCanvas)
+	// go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[2].img)
+	// go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[4].img)
+	// go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[6].img)
 	// b.orders[1].label.Text = "Changed label"
 
 	w.Resize(fyne.NewSize(1024, 700)) //wouldn't fit on my screen lol
