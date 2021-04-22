@@ -223,7 +223,7 @@ func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 	//name
 	b.orders[tapNum-1].userName = canvas.NewText("-", color.Gray{128})
 	b.orders[tapNum-1].userName.Alignment = fyne.TextAlignCenter
-	b.orders[tapNum-1].userName.TextSize = 10
+	b.orders[tapNum-1].userName.TextSize = 12
 	//dob
 	b.orders[tapNum-1].dob = canvas.NewText("-", color.Gray{128})
 	b.orders[tapNum-1].dob.Alignment = fyne.TextAlignCenter
