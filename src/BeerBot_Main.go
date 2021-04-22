@@ -736,7 +736,7 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 	//fmt.Println("verifyData: ", verifyData)
 
 	//If data isn't empty then import data into local order struct
-	if verifyData.UserID != 0 && verifyData.WasPoured == false && verifyData.TapID != "null" && verifyData.BeerID != "null"{
+	if verifyData.UserID != 0 && verifyData.WasPoured == false && verifyData.TapID != 0 && verifyData.BeerID != 0{
 		o.user = verifyData.UserID
 		o.orderID = verifyData.OrderID
 		o.tapID = verifyData.TapID
