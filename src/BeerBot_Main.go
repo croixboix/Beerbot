@@ -865,7 +865,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 		//Solenoid normal state = closed
 		for i := 0; i <= numberOfTaps; i++ {
-			if customerOrder.tap[i] != 0 && customerOrder.tapID[i] != 0 && customerOrder.beerID[i] != 0 {
+			if customerOrder.tap[i] != 0 && customerOrder.tapID != 0 && customerOrder.beerID != 0 {
 				//Update GUI with retreived user order
 				changeImage(customerOrder.pictureURL, b.orders[i].img)
 				b.changeLabel(customerOrder, i+1)
