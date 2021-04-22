@@ -889,7 +889,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
-			b.clearLabel(customerOrder, tapToClose)
+			b.clearLabel(tapToClose)
 
 		case <-time.After(120 * time.Second):
 			fmt.Println("pur out of time :(")
@@ -898,7 +898,7 @@ func togglePour(customerOrder Order, b beerbot) {
 
 			//Clear GUI after finished pouring order
 			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
-			b.clearLabel(customerOrder, tapToClose)
+			b.clearLabel(tapToClose)
 
 	}
 }
