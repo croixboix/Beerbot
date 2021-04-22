@@ -732,11 +732,12 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 		fmt.Println("unmarshal error:", err)
 	}
 
-	//fmt.Println("Verify Order Response Dump:")
-	//fmt.Println("verifyData: ", verifyData)
+	fmt.Println("Verify Order Response Dump:")
+	fmt.Println("verifyData: ", verifyData)
 
 	//If data isn't empty then import data into local order struct
 	if verifyData.UserID != 0 && verifyData.WasPoured == false && verifyData.TapID != 0 && verifyData.BeerID != 0{
+		fmt.Println("Passed order null checks!")
 		o.user = verifyData.UserID
 		o.orderID = verifyData.OrderID
 		o.tapID = verifyData.TapID
