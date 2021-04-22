@@ -145,8 +145,8 @@ func main() {
 
 	go runProgram(b)
 
-	//w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
-	//w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
+	w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
+	w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
 	w.SetFullScreen(true)
 	w.ShowAndRun()
 
