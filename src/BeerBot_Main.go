@@ -321,19 +321,19 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 			t.Text = "Pour Now!"
 			t.Refresh()
 
-			a := b.order[0].userName
+			a := b.orders[0].userName
 			a.Text = customerOrder.firstName + " " + customerOrder.lastName
 			a.Refresh()
 
-			c := b.order[0].dob
+			c := b.orders[0].dob
 			c.Text = customerOrder.dob
 			c.Refresh()
 
-			d := b.order[0].beer
+			d := b.orders[0].beer
 			d.Text = customerOrder.beerID
 			d.Refresh()
 
-			e := b.order[0].size
+			e := b.orders[0].size
 			e.Text = customerOrder.size + " Oz"
 			e.Refresh()
 
@@ -361,19 +361,19 @@ func (b *beerbot) clearLabel (tap int) {
 			t.Text = "Scan Tag to Pour"
 			t.Refresh()
 
-			a := b.order[0].userName
+			a := b.orders[0].userName
 			a.Text = "-"
 			a.Refresh()
 
-			c := b.order[0].dob
+			c := b.orders[0].dob
 			c.Text = "-"
 			c.Refresh()
 
-			d := b.order[0].beer
+			d := b.orders[0].beer
 			d.Text = "-"
 			d.Refresh()
 
-			e := b.order[0].size
+			e := b.orders[0].size
 			e.Text = "-"
 			e.Refresh()
 
