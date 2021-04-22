@@ -338,18 +338,152 @@ func (b *beerbot) changeLabel (customerOrder Order, tap int) {
 			e.Refresh()
 
 		case 2:
-			//b.orders[1].label.Text = "Changed label"
-			t := b.orders[1].label
-			t.Text = "Changed label"
+			t := b.orders[1].status
+			t.Text = "Pour Now!"
 			t.Refresh()
 
-			fmt.Println("Changed label case 2")
+			a := b.orders[1].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[1].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[1].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[1].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		case 3:
+			t := b.orders[2].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[2].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[2].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[2].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[2].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		case 4:
+			t := b.orders[3].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[3].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[3].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[3].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[3].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		case 5:
+			t := b.orders[4].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[4].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[4].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[4].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[4].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		case 6:
+			t := b.orders[5].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[5].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[5].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[5].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[5].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		case 7:
+			t := b.orders[6].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[6].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[6].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[6].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[6].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		case 8:
+			t := b.orders[7].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[7].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[7].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[7].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[7].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
 		default:
 	}
 }
@@ -377,21 +511,153 @@ func (b *beerbot) clearLabel (tap int) {
 			e.Text = "-"
 			e.Refresh()
 
-
 		case 2:
-			//b.orders[1].label.NewText = "Changed label"
-			t := b.orders[1].label
-			t.Text = "Changed label"
+			t := b.orders[1].status
+			t.Text = "Scan Tag to Pour"
 			t.Refresh()
 
-			fmt.Println("Clear label case 2")
+			a := b.orders[1].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[1].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[1].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[1].size
+			e.Text = "-"
+			e.Refresh()
 
 		case 3:
+			t := b.orders[2].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[2].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[2].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[2].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[2].size
+			e.Text = "-"
+			e.Refresh()
+
 		case 4:
+			t := b.orders[3].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[3].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[3].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[3].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[3].size
+			e.Text = "-"
+			e.Refresh()
+
 		case 5:
+			t := b.orders[4].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[4].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[4].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[4].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[4].size
+			e.Text = "-"
+			e.Refresh()
+
 		case 6:
+			t := b.orders[5].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[5].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[5].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[5].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[5].size
+			e.Text = "-"
+			e.Refresh()
+
 		case 7:
+			t := b.orders[6].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[6].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[6].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[6].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[6].size
+			e.Text = "-"
+			e.Refresh()
+
 		case 8:
+			t := b.orders[7].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[7].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[7].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[7].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[7].size
+			e.Text = "-"
+			e.Refresh()
+
 		default:
 	}
 }
