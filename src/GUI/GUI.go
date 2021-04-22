@@ -139,6 +139,7 @@ func changeImage (url string, img *canvas.Image, label *canvas.Text, c fyne.Canv
 	img.Refresh()
 
 	file.Close()
+  
   label.Text = ("Zach come back")
   c.Refresh(label)
 }//end changeImageTeam
@@ -151,8 +152,9 @@ func main() {
 
 	b := beerbot{}
 	b.c = container.NewPadded(b.makeUI())
-  myCanvas.SetContent(b.c)
-  // w.SetContent(b.c)
+
+
+  b.bCanvas.SetContent(b.c)
 
 	//changes the ID image
 	go changeImage("https://scontent-ort2-1.xx.fbcdn.net/v/t1.6435-9/70310717_1212718218936713_272075350589046784_n.jpg?_nc_cat=104&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=38Mk9QqgYpoAX-mwyfL&_nc_ht=scontent-ort2-1.xx&oh=053a0336ad954ac1c52c56ea25175246&oe=60A4CB27", b.orders[0].img, b.orders[0].label, myCanvas)
