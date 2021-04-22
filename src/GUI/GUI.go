@@ -7,13 +7,14 @@ import (
 	// "io"
 	"os"
 	"log"
-	// "fmt"
+	"fmt"
 	"strconv"
 	"time"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 )
 
 //Holds orders (uses labels from makeItems()) and container for window
@@ -25,7 +26,7 @@ type beerbot struct{
 //Holds the order information and image for organization and ease for passing around the program
 type orderInfo struct {
 	tapNum 		int
-	label 	 *canvas.Text
+	label 	 *widget.Label
 	status 	 *canvas.Text
 	userName *canvas.Text
 	dob 		 *canvas.Text
@@ -38,10 +39,11 @@ type orderInfo struct {
 func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
 	//Sets tap number and tap label
 	b.orders[tapNum-1].tapNum = tapNum
-	tapLabel := "Tap " + strconv.Itoa(tapNum)
-	b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{200})
-	b.orders[tapNum-1].label.Alignment = fyne.TextAlignCenter
-	b.orders[tapNum-1].label.TextSize = 18
+	tapNumLabel := "Tap " + strconv.Itoa(tapNum)
+	// b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{200})
+	// b.orders[tapNum-1].label.Alignment = fyne.TextAlignCenter
+	// b.orders[tapNum-1].label.TextSize = 18
+	b.orders[tapNum-1].label.SetText(tapNumLabel)
 	//Scan tag
 	b.orders[tapNum-1].status = canvas.NewText("Scan Tag to Pour", color.Gray{200})
 	b.orders[tapNum-1].status.Alignment = fyne.TextAlignCenter
@@ -113,7 +115,7 @@ func loadImage(url string) *canvas.Image {
 }//end loadImage
 
 //Change the existing id image shown on the GUI
-func changeImage (url string, img *canvas.Image){
+func changeImage (url string, img *canvas.Image, label *widget.Label){
 	time.Sleep(3*time.Second)
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -140,21 +142,56 @@ func changeImage (url string, img *canvas.Image){
 	file.Close()
 }//end changeImageTeam
 
+func (b *beerbot) changeLabel (tap int) {
+    switch tap {
+        case 1:
+        case 2:
+						time.Sleep(3*time.Second)
+            b.orders[1].label.Text = "Changed label"
+            fmt.Println("Changed label case 2")
+
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        default:
+    }
+}
+
+func (b *beerbot) clearLabel (tap int) {
+    switch tap {
+        case 1:
+        case 2:
+            b.orders[1].label.Text = "-"
+            fmt.Println("Clear label case 2")
+
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        default:
+    }
+}
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("BeerBot Tap Display")
 	b := beerbot{}
+	b.orders[0].label.SetText("-")
 
 	b.c = container.NewPadded(b.makeUI())
 	w.SetContent(b.c)
 
 	//changes the ID image
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[0].img)
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[2].img)
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[4].img)
-	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[6].img)
-	// b.orders[1].label.Text = "Changed label"
+	go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[0].img, b.orders[0].label)
+	// go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[2].img)
+	// go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[4].img)
+	// go changeImage("https://i.kym-cdn.com/entries/icons/original/000/035/432/41rtwpO9McL.jpg", b.orders[6].img)
+	// b.changeLabel(2)
 
 	w.Resize(fyne.NewSize(1024, 700)) //wouldn't fit on my screen lol
 	w.SetFixedSize(true)
