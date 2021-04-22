@@ -759,13 +759,11 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 
 		//Get user data filled into the order struct
 		getUserData(&o, authToken)
-	} else {
-		return null
 	}
 
-	//fmt.Println("getOrders o: ", o)
+	fmt.Println("getOrders o: ", o)
 
-	//return &o
+	return 0
 }
 
 
