@@ -3,7 +3,8 @@
 ## Authors
 
 Sam Jansen
-*Than Win 
+
+Than Win 
 MSOE 2020 CE Senior Design   
 Dr. Gerald Thomas
 
