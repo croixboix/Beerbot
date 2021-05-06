@@ -2,11 +2,10 @@
 
 ## Authors
 
-Sam Jansen
-
-Than Win 
-MSOE 2020 CE Senior Design   
-Dr. Gerald Thomas
+Sam Jansen  
+Than Win    
+MSOE 2020 CE Senior Design  
+Dr. Gerald Thomas   
 
 ## Go Versions
 
