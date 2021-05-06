@@ -3,8 +3,7 @@
 ## Authors
 
 Sam Jansen
-Than Win  
-GitHub: [croixboix](https://github.com/croixboix)   
+*Than Win 
 MSOE 2020 CE Senior Design   
 Dr. Gerald Thomas
 
