@@ -11,7 +11,7 @@ import (
 	"time"
 	"fmt"
 	"github.com/warthog618/gpio"
-	gpio_rpi "gpio_rpi"
+	"gpio_rpi"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -23,9 +23,11 @@ import (
 	"bytes"
 	"runtime"
 	"strings"
-	"fyne.io/fyne"
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
+	"image/color"
 )
 
 const (
@@ -38,7 +40,6 @@ const (
 	//Define number of taps on system (# of physical taps -1)
 	//Ex: A 4 tap system would be = 3
 	numberOfTaps int = 7
-
 )
 
 var (
@@ -49,6 +50,8 @@ var (
 
 	//Keeps track of whether connection is alive
 	webConnectionAlive bool = true
+
+	defaultIDP string = "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
 )
 
 type Order struct {
@@ -64,7 +67,6 @@ type Order struct {
 	tap [numberOfTaps + 1]int
 
 	//Tap_Users Data
-	userID string
 	email string
 	firstName string
 	lastName string
@@ -101,127 +103,58 @@ type AuthResponse struct {
 	AuthenToken string 	`json:"authentication_token"`
 }
 
-type orderLabels struct {
-	orderIDL *widget.Label
-	userIDL *widget.Label
-	tapIDL *widget.Label
-	beerIDL *widget.Label
-	priceL *widget.Label
-	sizeL *widget.Label
+type TapUserResponse struct{
+	UserID int							`json:"id"`
+	UserEmail string				`json:"email"`
+	FirstName string				`json:"first_name"`
+	LastName	string				`json:"last_name"`
+	DoB	string							`json:"dob"`
+	MobilePhone string			`json:"string"`
+	PhotoURL string					`json:"photo"`
+	DriverLFrontURL string	`json:"drivers_license_front"`
+	DriverLBackURL string		`json:"drivers_license_back"`
 }
 
+//Holds orders (uses labels from makeItems()) and container for window
+type beerbot struct{
+	orders [8]orderInfo
+	c *fyne.Container
+}
+
+//Holds the order information and image for organization and ease for passing around the program
+type orderInfo struct {
+	tapNum 		int
+	label 	 *canvas.Text
+	status 	 *canvas.Text
+	userName *canvas.Text
+	dob 		 *canvas.Text
+	beer 		 *canvas.Text
+	size 		 *canvas.Text
+	img 		 *canvas.Image
+	}
 
 // ######################## MAIN PROGRAM PROGRAM PROGRAM #######################
 func main() {
 
-
 	a := app.New()
-	w := a.NewWindow("BeerBot Display")
-	myCanvas := w.Canvas()
+	w := a.NewWindow("BeerBot Tap Display")
+	b := beerbot{}
 
+	b.c = container.NewPadded(b.makeUI())
+	w.SetContent(b.c)
 
-	oL1 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL2 := orderLabels{orderIDL: widget.NewLabel("-"),
- 										 userIDL:widget.NewLabel("-"),
- 										 tapIDL:widget.NewLabel("-"),
- 										 beerIDL:widget.NewLabel("-"),
- 										 priceL:widget.NewLabel("-"),
- 										 sizeL:widget.NewLabel("-")}
-  oL3 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-									   tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL4 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL5 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-  oL6 := orderLabels{orderIDL: widget.NewLabel("-"),
- 										userIDL:widget.NewLabel("-"),
- 										tapIDL:widget.NewLabel("-"),
- 										beerIDL:widget.NewLabel("-"),
- 										priceL:widget.NewLabel("-"),
- 										sizeL:widget.NewLabel("-")}
-	oL7 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
-	oL8 := orderLabels{orderIDL: widget.NewLabel("-"),
-										 userIDL:widget.NewLabel("-"),
-										 tapIDL:widget.NewLabel("-"),
-										 beerIDL:widget.NewLabel("-"),
-										 priceL:widget.NewLabel("-"),
-										 sizeL:widget.NewLabel("-")}
+	go runProgram(b)
 
-	orderL  := widget.NewLabel("Order ID: ")
-  userL   := widget.NewLabel("User ID: ")
-  tapL    := widget.NewLabel("Tap ID: ")
-  beerL   := widget.NewLabel("Beer ID: ")
-  priceL  := widget.NewLabel("Price: ")
-  sizeL   := widget.NewLabel("Size: ")
-
-
-//Box frenzy
-	myCanvas.SetContent(
-    widget.NewHBox(
-      widget.NewVBox(
-        orderL, userL, tapL, beerL, priceL, sizeL,),//end Heading VBox
-      widget.NewVBox(
-        oL1.orderIDL, oL1.userIDL, oL1.tapIDL, oL1.beerIDL,
-				oL1.priceL, oL1.sizeL,),//end user1 Vbox
-			widget.NewVBox(
-        oL2.orderIDL, oL2.userIDL, oL2.tapIDL, oL2.beerIDL,
-				oL2.priceL, oL2.sizeL,),//end user2 Vbox
-			widget.NewVBox(
-        oL3.orderIDL, oL3.userIDL, oL3.tapIDL, oL3.beerIDL,
-				oL3.priceL, oL3.sizeL,),//end user3 Vbox
-			widget.NewVBox(
-        oL4.orderIDL, oL4.userIDL, oL4.tapIDL, oL4.beerIDL,
-				oL4.priceL, oL4.sizeL,),//end user4 Vbox
-			widget.NewVBox(
-				oL5.orderIDL, oL5.userIDL, oL5.tapIDL, oL5.beerIDL,
-				oL5.priceL, oL5.sizeL,),//end user5 Vbox
-			widget.NewVBox(
-				oL6.orderIDL, oL6.userIDL, oL6.tapIDL, oL6.beerIDL,
-				oL6.priceL, oL6.sizeL,),//end user6 Vbox
-			widget.NewVBox(
-				oL7.orderIDL, oL7.userIDL, oL7.tapIDL, oL7.beerIDL,
-				oL7.priceL, oL7.sizeL,),//end user7 Vbox
-			widget.NewVBox(
-				oL8.orderIDL, oL8.userIDL, oL8.tapIDL, oL8.beerIDL,
-				oL8.priceL, oL8.sizeL,),//end user8 Vbox
-    ),//end Hbox
-  ) //adding label widget to window
-
-
-	go runProgram(myCanvas, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-
-	w.Resize(fyne.NewSize(500, 230))
+	w.Resize(fyne.NewSize(1920, 1080)) //wouldn't fit on my screen lol
+	w.SetFixedSize(true) //the weird stuff doesn't happen when I put this line in
+	w.SetFullScreen(true)
 	w.ShowAndRun()
-
-
 
 	endProgram()
 }
 
 
-func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
+func runProgram(b beerbot) {
 	//Interrupt to handle command line crtl-c and exit cleanly
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -244,8 +177,8 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	//Main program loop
 	for webConnectionAlive == true{
 
-		//fmt.Println("Created togglePour goroutine wait groups!")
 
+		//Sleep for 100ms to save CPU time
 		time.Sleep(100*time.Millisecond)
 
 		//Check order queue for orders to pull
@@ -259,7 +192,7 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 					//Get user orders
 					userOrders := getOrderData(tapUUID, orderIdToServe[i], authToken)
 
-					go togglePour(*userOrders, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+					go togglePour(*userOrders, b)
 
 				}
 				//fmt.Println("Order ID Array before processOrder: ", orderIdToServe)
@@ -279,140 +212,495 @@ func runProgram(c fyne.Canvas, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels
 	endProgram()
 }
 
+//Called by makeUI() to create a VBox with several labels and an image
+func (b *beerbot) makeTapItems(tapNum int) fyne.CanvasObject {
+	//Sets tap number and tap label
+	b.orders[tapNum-1].tapNum = tapNum
+	tapLabel := "Tap " + strconv.Itoa(tapNum)
+	b.orders[tapNum-1].label = canvas.NewText(tapLabel, color.Gray{200})
+	b.orders[tapNum-1].label.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].label.TextSize = 18
+	//Scan tag
+	b.orders[tapNum-1].status = canvas.NewText("Scan Tag to Pour", color.Gray{200})
+	b.orders[tapNum-1].status.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].status.TextSize = 18
+	//name
+	b.orders[tapNum-1].userName = canvas.NewText("-", color.Gray{128})
+	b.orders[tapNum-1].userName.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 12
+	//dob
+	b.orders[tapNum-1].dob = canvas.NewText("-", color.Gray{128})
+	b.orders[tapNum-1].dob.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 10
+	//Beer choice
+	b.orders[tapNum-1].beer = canvas.NewText("-", color.Gray{128})
+	b.orders[tapNum-1].beer.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 10
+	//Pour size
+	b.orders[tapNum-1].size = canvas.NewText("-", color.Gray{128})
+	b.orders[tapNum-1].size.Alignment = fyne.TextAlignCenter
+	b.orders[tapNum-1].userName.TextSize = 10
 
-//Update Gui Content
-func updateGUI(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
-		fmt.Println("Updating GUI display for TAP #: ", customerOrder.tapID)
-	switch customerOrder.tapID {
-		case 1:
-			oL1.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL1.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL1.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL1.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL1.priceL.SetText(customerOrder.price)
-			oL1.sizeL.SetText(customerOrder.size)
-		case 2:
-			oL2.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL2.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL2.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL2.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL2.priceL.SetText(customerOrder.price)
-			oL2.sizeL.SetText(customerOrder.size)
-		case 3:
-			oL3.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL3.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL3.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL3.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL3.priceL.SetText(customerOrder.price)
-			oL3.sizeL.SetText(customerOrder.size)
-		case 4:
-			oL4.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL4.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL4.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL4.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL4.priceL.SetText(customerOrder.price)
-			oL4.sizeL.SetText(customerOrder.size)
-		case 5:
-			oL5.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL5.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL5.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL5.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL5.priceL.SetText(customerOrder.price)
-			oL5.sizeL.SetText(customerOrder.size)
-		case 6:
-			oL6.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL6.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL6.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL6.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL6.priceL.SetText(customerOrder.price)
-			oL6.sizeL.SetText(customerOrder.size)
-		case 7:
-			oL7.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL7.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL7.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL7.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL7.priceL.SetText(customerOrder.price)
-			oL7.sizeL.SetText(customerOrder.size)
-		case 8:
-			oL8.orderIDL.SetText(strconv.Itoa(customerOrder.orderID))
-			oL8.userIDL.SetText(strconv.Itoa(customerOrder.user))
-			oL8.tapIDL.SetText(strconv.Itoa(customerOrder.tapID))
-			oL8.beerIDL.SetText(strconv.Itoa(customerOrder.beerID))
-			oL8.priceL.SetText(customerOrder.price)
-			oL8.sizeL.SetText(customerOrder.size)
-		default:
-			fmt.Println("INVALID Update GUI Tap #!!:", customerOrder.tapID)
+	//Initial image
+	myURL := "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" //Pic of sam
+	img := loadImage(myURL)
+
+	b.orders[tapNum-1].img = img
+
+
+	return container.NewVBox(b.orders[tapNum-1].label,
+												b.orders[tapNum-1].status, b.orders[tapNum-1].userName,
+												b.orders[tapNum-1].dob, b.orders[tapNum-1].beer,
+												b.orders[tapNum-1].size, b.orders[tapNum-1].img)
+}//end makeTapIems
+
+
+//creates the 8 orders and put them in a 4x2 grid
+func (b *beerbot) makeUI() fyne.CanvasObject {
+	items := []fyne.CanvasObject{}
+
+	//For each order, create a set of labels and a canvas image
+	for _, v := range []int{1,2,3,4,5,6,7,8} {
+		orderContainer := b.makeTapItems(v) //creates label and image and put them into VBOX
+		items = append(items, orderContainer) //adds the VBox to an array
+	}
+
+	return container.NewGridWithRows(2, items...)
+}//end makeUI
+
+
+//Add the id face picture with the given parameters
+func loadImage(url string) *canvas.Image {
+		req, _ := http.NewRequest("GET", url, nil)
+		res, _ := http.DefaultClient.Do(req)
+		defer res.Body.Close()
+		body, _ := ioutil.ReadAll(res.Body)
+
+		imgLoc := os.TempDir() + "/idImg.jpg" //Location for any device
+		err := ioutil.WriteFile(imgLoc, body, 0644)
+		if err != nil{
+			log.Fatal ("ioutil TempFile error", err)
 		}
+
+		img := canvas.NewImageFromFile(imgLoc)
+		//For some reason when this is called, all the images are updated instead of just 1
+		// img.FillMode = canvas.ImageFillContain //try commenting this out
+		img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
+
+		return img
+}//end loadImage
+
+//Change the existing id image shown on the GUI
+func changeImage (url string, img *canvas.Image){
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	imgLoc := os.TempDir() + "/idImg.jpg"
+	err := ioutil.WriteFile(imgLoc, body, 0644)
+	if err != nil{
+		log.Fatal ("ioutil TempFile error", err)
+	}
+
+	file, err := os.Open(imgLoc)
+	if err != nil {
+		panic(err)
+	}
+
+	img.File = file.Name()
+	//img.FillMode = canvas.ImageFillContain
+	img.SetMinSize(fyne.NewSize(300,300)) // approx ~1:1.5 (ID picture ratio)
+	img.Refresh()
+
+	file.Close()
+}//end changeImage
+
+
+
+func (b *beerbot) changeLabel (customerOrder Order, tap int) {
+	switch tap {
+		case 1:
+			t := b.orders[0].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[0].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[0].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[0].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[0].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		case 2:
+			t := b.orders[1].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[1].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[1].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[1].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[1].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		case 3:
+			t := b.orders[2].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[2].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[2].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[2].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[2].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		case 4:
+			t := b.orders[3].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[3].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[3].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[3].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[3].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		case 5:
+			t := b.orders[4].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[4].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[4].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[4].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[4].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		case 6:
+			t := b.orders[5].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[5].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[5].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[5].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[5].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		case 7:
+			t := b.orders[6].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[6].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[6].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[6].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[6].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		case 8:
+			t := b.orders[7].status
+			t.Text = "Pour Now!"
+			t.Refresh()
+
+			a := b.orders[7].userName
+			a.Text = customerOrder.firstName + " " + customerOrder.lastName
+			a.Refresh()
+
+			c := b.orders[7].dob
+			c.Text = customerOrder.dob
+			c.Refresh()
+
+			d := b.orders[7].beer
+			d.Text = "BeerID: " + strconv.Itoa(customerOrder.beerID)
+			d.Refresh()
+
+			e := b.orders[7].size
+			e.Text = customerOrder.size + " Oz"
+			e.Refresh()
+
+		default:
+	}
+}
+
+func (b *beerbot) clearLabel (tap int) {
+	switch tap {
+		case 1:
+			t := b.orders[0].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[0].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[0].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[0].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[0].size
+			e.Text = "-"
+			e.Refresh()
+
+		case 2:
+			t := b.orders[1].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[1].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[1].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[1].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[1].size
+			e.Text = "-"
+			e.Refresh()
+
+		case 3:
+			t := b.orders[2].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[2].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[2].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[2].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[2].size
+			e.Text = "-"
+			e.Refresh()
+
+		case 4:
+			t := b.orders[3].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[3].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[3].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[3].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[3].size
+			e.Text = "-"
+			e.Refresh()
+
+		case 5:
+			t := b.orders[4].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[4].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[4].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[4].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[4].size
+			e.Text = "-"
+			e.Refresh()
+
+		case 6:
+			t := b.orders[5].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[5].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[5].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[5].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[5].size
+			e.Text = "-"
+			e.Refresh()
+
+		case 7:
+			t := b.orders[6].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[6].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[6].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[6].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[6].size
+			e.Text = "-"
+			e.Refresh()
+
+		case 8:
+			t := b.orders[7].status
+			t.Text = "Scan Tag to Pour"
+			t.Refresh()
+
+			a := b.orders[7].userName
+			a.Text = "-"
+			a.Refresh()
+
+			c := b.orders[7].dob
+			c.Text = "-"
+			c.Refresh()
+
+			d := b.orders[7].beer
+			d.Text = "-"
+			d.Refresh()
+
+			e := b.orders[7].size
+			e.Text = "-"
+			e.Refresh()
+
+		default:
+
+	}
 }
 
 
-//Update Gui Content
-func clearGUIOrder(tapID int, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
-		fmt.Println("Clearing GUI display for TAP #: ", tapID)
-	switch tapID {
-		case 1:
-			oL1.orderIDL.SetText("-")
-			oL1.userIDL.SetText("-")
-			oL1.tapIDL.SetText("-")
-			oL1.beerIDL.SetText("-")
-			oL1.priceL.SetText("-")
-			oL1.sizeL.SetText("-")
-		case 2:
-			oL2.orderIDL.SetText("-")
-			oL2.userIDL.SetText("-")
-			oL2.tapIDL.SetText("-")
-			oL2.beerIDL.SetText("-")
-			oL2.priceL.SetText("-")
-			oL2.sizeL.SetText("-")
-		case 3:
-			oL3.orderIDL.SetText("-")
-			oL3.userIDL.SetText("-")
-			oL3.tapIDL.SetText("-")
-			oL3.beerIDL.SetText("-")
-			oL3.priceL.SetText("-")
-			oL3.sizeL.SetText("-")
-		case 4:
-			oL4.orderIDL.SetText("-")
-			oL4.userIDL.SetText("-")
-			oL4.tapIDL.SetText("-")
-			oL4.beerIDL.SetText("-")
-			oL4.priceL.SetText("-")
-			oL4.sizeL.SetText("-")
-		case 5:
-			oL5.orderIDL.SetText("-")
-			oL5.userIDL.SetText("-")
-			oL5.tapIDL.SetText("-")
-			oL5.beerIDL.SetText("-")
-			oL5.priceL.SetText("-")
-			oL5.sizeL.SetText("-")
-		case 6:
-			oL6.orderIDL.SetText("-")
-			oL6.userIDL.SetText("-")
-			oL6.tapIDL.SetText("-")
-			oL6.beerIDL.SetText("-")
-			oL6.priceL.SetText("-")
-			oL6.sizeL.SetText("-")
-		case 7:
-			oL7.orderIDL.SetText("-")
-			oL7.userIDL.SetText("-")
-			oL7.tapIDL.SetText("-")
-			oL7.beerIDL.SetText("-")
-			oL7.priceL.SetText("-")
-			oL7.sizeL.SetText("-")
-		case 8:
-			oL8.orderIDL.SetText("-")
-			oL8.userIDL.SetText("-")
-			oL8.tapIDL.SetText("-")
-			oL8.beerIDL.SetText("-")
-			oL8.priceL.SetText("-")
-			oL8.sizeL.SetText("-")
-		default:
-			fmt.Println("INVALID Clear GUI Tap #!!:", tapID)
-		}
-}
+//Get user data for given order
+func getUserData(customerOrder *Order, authToken string) {
+	url := "http://96.30.244.56:3000/api/v1/tap_users/"+ strconv.Itoa(customerOrder.user)
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Host", "96.30.244.56:3000")
+	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("Authorization", authToken)
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
 
-//Get user data given orderID
-func getUserData(customerOrder Order, authToken string) {
+	//fmt.Println(res)
+	//fmt.Println("getUserData body: ", string(body))
+
+	var verifyResp []byte = body
+	var verifyData TapUserResponse
+
+	err := json.Unmarshal(verifyResp, &verifyData)
+	if err != nil {
+		fmt.Println("unmarshal error:", err)
+	}
+
+
+	customerOrder.email = verifyData.UserEmail
+	customerOrder.firstName = verifyData.FirstName
+	customerOrder.lastName = verifyData.LastName
+	customerOrder.dob = verifyData.DoB
+	customerOrder.mobilePhone = verifyData.MobilePhone
+	customerOrder.pictureURL = verifyData.PhotoURL
 
 }
 
@@ -437,7 +725,7 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	//fmt.Println(res)
-	fmt.Println("getOrders body: ", string(body))
+	//fmt.Println("getOrders body: ", string(body))
 
 	var verifyResp []byte = body
 	var verifyData OrderResponse
@@ -447,12 +735,12 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 		fmt.Println("unmarshal error:", err)
 	}
 
-	fmt.Println("Verify Order Response Dump:")
-	fmt.Println("verifyData: ", verifyData)
-	//fmt.Println("userID: ", verifyData.UserID)
+	//fmt.Println("Verify Order Response Dump:")
+	//fmt.Println("verifyData: ", verifyData)
 
 	//If data isn't empty then import data into local order struct
-	if verifyData.UserID != 0 && verifyData.WasPoured == false{
+	if verifyData.UserID != 0 && verifyData.WasPoured == false && verifyData.TapID != 0 && verifyData.BeerID != 0{
+		//fmt.Println("Passed order null checks!")
 		o.user = verifyData.UserID
 		o.orderID = verifyData.OrderID
 		o.tapID = verifyData.TapID
@@ -471,8 +759,8 @@ func getOrderData(uuid string, orderID int, authToken string) *Order {
 		//Round our float and store it away in local order struct
 		o.tap[verifyData.TapID-1] = int(math.Round(pulses))
 
-
-		//Get user data
+		//Get user data filled into the order struct
+		getUserData(&o, authToken)
 	}
 
 	fmt.Println("getOrders o: ", o)
@@ -566,15 +854,16 @@ func processOrder(uuid string, orderID int, authToken string) bool{
 
 
 //Initiates pour routine (this should be the last thing called, serves order)
-func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 orderLabels, oL4 orderLabels, oL5 orderLabels, oL6 orderLabels, oL7 orderLabels, oL8 orderLabels) {
+func togglePour(customerOrder Order, b beerbot) {
 	//This is just a timeout function so that the program will timeout
 	c1 := make(chan string, 1)
 	// Run your long running function in it's own goroutine and pass back it's
 	// response into our channel.
 
+	//Set this outside the switch range as a fail safe
 	tapToClose := 9
-	//Update GUI with retreived user order
-	updateGUI(customerOrder, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+
+	if customerOrder.tapID != 0 && customerOrder.beerID != 0 {
 
 	go func() {
 		var wg1 sync.WaitGroup
@@ -582,7 +871,12 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 		//Solenoid normal state = closed
 		for i := 0; i <= numberOfTaps; i++ {
 			if customerOrder.tap[i] != 0 {
+				//Update GUI with retreived user order
+				changeImage(customerOrder.pictureURL, b.orders[i].img)
+				b.changeLabel(customerOrder, i+1)
+				//Add to our waitgroup
 				wg1.Add(1)
+				//Shoot off a thread to pour customer's order on specific tap
 				go gpio_rpi.Pour(customerOrder.tap[i], i+1, &wg1)
 				tapToClose = i+1
 			}
@@ -595,15 +889,22 @@ func togglePour(customerOrder Order, oL1 orderLabels, oL2 orderLabels, oL3 order
 	select {
 		case res := <-c1:
 			fmt.Println(res)
+
 			//Clear GUI after finished pouring order
-			clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
-		case <-time.After(15 * time.Second):
-			fmt.Println("out of time :(")
+			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
+			b.clearLabel(tapToClose)
+
+		case <-time.After(120 * time.Second):
+			fmt.Println("pur out of time :(")
 			// Close solenoids incase timeout
 			gpio_rpi.CloseSolenoids(tapToClose)
+
 			//Clear GUI after finished pouring order
-			clearGUIOrder(tapToClose, oL1, oL2, oL3, oL4, oL5, oL6, oL7, oL8)
+			go changeImage("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640", b.orders[tapToClose-1].img)
+			b.clearLabel(tapToClose)
+
 	}
+}
 }
 
 
@@ -614,7 +915,6 @@ func authTapController(uuid string, tapControlID int) string{
 	authPost := AuthPOST{}
 	authPost.TapControlPOST.TapControlID = tapControlID
 	authPost.TapControlPOST.TapUUID = uuid
-
 
 	payload, err := json.Marshal(authPost)
 	if err != nil {
@@ -633,9 +933,6 @@ func authTapController(uuid string, tapControlID int) string{
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-
-	//fmt.Println(res)
-	//fmt.Println("body: ", string(body))
 
 	var authResp []byte = body
 	var verifyAuth AuthResponse
@@ -672,7 +969,6 @@ func goid() int {
 	return id
 }
 
-
 /*#############################DEPRECATED/FOR REFERENCE ONLY##############################################################*/
 
 /*
@@ -697,96 +993,4 @@ func togglePour(customerOrder Order) {
 	wg.Wait()
 	fmt.Println("Finished all go routines!")
 }
-*/
-
-
-/*
-//Create struct for verify response
-type verifyResponse struct {
-	ID        int    `json:"id"`
-	Username  string `json:"username"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
-	URL       string `json:"url"`
-}
-
-type processResponse struct {
-	Processed bool `json:"processed"`
-}
-*/
-
-/*
-//Test code for reading from USB (STD-IN) QR scanner
-func scanCode() string {
-	var userCode string
-
-	scanner := bufio.NewScanner(os.Stdin)
-
-	for scanner.Scan() {
-		fmt.Println("Scanned barcode: ", scanner.Text())
-		userCode = scanner.Text()
-		if scanner.Text() != "" {
-			break
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "reading standard input:", err)
-	}
-
-	return userCode
-}
-*/
-
-
-/*
-func main() {
-
-//API test code below
-
-//Verify and process the order!
-fmt.Println("Verify Order")
-
-var verifyResp []byte = verifyOrder(testOrder.user)
-var verifyData verifyResponse
-
-err := json.Unmarshal(verifyResp, &verifyData)
-if err != nil {
-	fmt.Println("error:", err)
-}
-
-fmt.Println("Verify Order Response Dump:")
-fmt.Println("id: ", verifyData.ID)
-fmt.Println("username: ", verifyData.Username)
-fmt.Println("created_at: ", verifyData.CreatedAt)
-fmt.Println("updated_at: ", verifyData.UpdatedAt)
-fmt.Println("url: ", verifyData.URL)
-
-if verifyData.Username != "null" {
-
-	fmt.Println("Process/Delete Order")
-
-	var processData processResponse
-
-	var processResponse []byte = processOrder(verifyData.Username)
-
-	err := json.Unmarshal(processResponse, &processData)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-
-	fmt.Println("Process Order Response Dump:")
-	fmt.Println("processed: ", processData.Processed)
-
-	if processData.Processed == true {
-		//Let user pour the drink!
-		//Call pour!
-		//togglePour(drinkSize[tap-1], tap)
-		togglePour(*testOrder)
-		fmt.Println("ORDER PROCESSED, LET USER POUR")
-	} else {
-		fmt.Println("ORDER DOES NOT EXIST, DO NOT LET USER POUR")
-	}
-}
-}
-
 */
