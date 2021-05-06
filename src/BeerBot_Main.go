@@ -169,7 +169,10 @@ func runProgram(b beerbot) {
 	fmt.Println("GPIO Initialized!")
 
 	//Authenticate with API to get our Authentication Token for API communication
+	fmt.Println("Tap ID: ", tapControlID)
+	fmt.Println("Tap UUID: ", tapUUID)
 	authToken = authTapController(tapUUID, tapControlID)
+	fmt.Println("Authenticated with token: ", authToken)
 
 	//Main program loop
 	for webConnectionAlive == true{
@@ -939,7 +942,7 @@ func authTapController(uuid string, tapControlID int) string{
 		fmt.Println("unmarshal error:", errR)
 	}
 
-	fmt.Println(verifyAuth.AuthenToken)
+	//fmt.Println(verifyAuth.AuthenToken)
 	return verifyAuth.AuthenToken
 }
 
